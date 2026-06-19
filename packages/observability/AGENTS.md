@@ -1,5 +1,5 @@
 <!-- Owner: @CristianDavidEC -->
-# AGENTS.md — `@app/observability`
+# AGENTS.md — `@todo-list-poc-infra/observability`
 
 Logging estructurado + propagación de `correlationId`. Multi-runtime.
 Ver también el [`AGENTS.md` raíz](../../AGENTS.md).

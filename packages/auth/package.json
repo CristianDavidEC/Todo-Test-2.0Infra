@@ -1,5 +1,5 @@
 {
-  "name": "@app/auth",
+  "name": "@todo-list-poc-infra/auth",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -13,22 +13,22 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@app/types": "workspace:*",
+    "@todo-list-poc-infra/types": "workspace:*",
     "jose": "^5.9.6"
   },
   "peerDependencies": {
-    "@app/db": "workspace:*",
+    "@todo-list-poc-infra/db": "workspace:*",
     "@auth0/nextjs-auth0": "^4.0.0",
     "@nestjs/common": "^10.0.0 || ^11.0.0"
   },
   "peerDependenciesMeta": {
-    "@app/db": { "optional": true },
+    "@todo-list-poc-infra/db": { "optional": true },
     "@auth0/nextjs-auth0": { "optional": true },
     "@nestjs/common": { "optional": true }
   },
   "devDependencies": {
-    "@app/config": "workspace:*",
-    "@app/db": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
+    "@todo-list-poc-infra/db": "workspace:*",
     "@types/node": "^22.10.0"
   }
 }

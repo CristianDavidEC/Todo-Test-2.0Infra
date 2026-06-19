@@ -8,14 +8,14 @@ import type { Config } from "drizzle-kit";
 //   1. variable ya exportada en el shell / pasada inline
 //   2. packages/db/.env  (local al package)
 //   3. .env en la raíz del monorepo
-loadEnv(); // ./.env (cwd = packages/db al correr con --filter @app/db)
+loadEnv(); // ./.env (cwd = packages/db al correr con --filter @todo-list-poc-infra/db)
 loadEnv({ path: resolve(process.cwd(), "../../.env") }); // raíz del monorepo
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
     "DATABASE_URL no está definida.\n" +
       "Ponla en packages/db/.env o en el .env de la raíz, o pásala inline:\n" +
-      '  DATABASE_URL="postgresql://...neon.tech/neondb?sslmode=require" pnpm --filter @app/db db:migrate\n' +
+      '  DATABASE_URL="postgresql://...neon.tech/neondb?sslmode=require" pnpm --filter @todo-list-poc-infra/db db:migrate\n' +
       "Es el connection string de tu branch Neon (o del proyecto dev). Ver docs/SETUP-NEON.md.",
   );
 }

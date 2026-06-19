@@ -1,5 +1,5 @@
 /**
- * @app/types
+ * @todo-list-poc-infra/types
  *
  * Paquete de tipos y schemas Zod compartidos entre apps.
  * Convención: schemas Zod son la source of truth; los tipos TS se infieren con z.infer.

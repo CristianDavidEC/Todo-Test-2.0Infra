@@ -1,5 +1,5 @@
 {
-  "name": "@app/observability",
+  "name": "@todo-list-poc-infra/observability",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -15,7 +15,7 @@
     "pino-pretty": "^13.0.0"
   },
   "devDependencies": {
-    "@app/config": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
     "@types/aws-lambda": "^8.10.145",
     "@types/node": "^22.10.0",
     "vitest": "^2.1.8"

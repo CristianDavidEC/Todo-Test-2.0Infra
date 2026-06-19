@@ -9,7 +9,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import type { AuthSession } from "@app/auth";
+import type { AuthSession } from "@todo-list-poc-infra/auth";
 import { Auth0Guard } from "../../auth/auth0.guard";
 import { RolesGuard } from "../../auth/roles.guard";
 import { Roles } from "../../auth/roles.decorator";

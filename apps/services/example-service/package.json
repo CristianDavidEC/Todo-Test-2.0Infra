@@ -1,5 +1,5 @@
 {
-  "name": "@app/example-service",
+  "name": "@todo-list-poc-infra/example-service",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,11 +14,11 @@
     "@nestjs/core": "^11.1.0",
     "@nestjs/platform-express": "^11.1.0",
     "@nestjs/swagger": "^11.0.0",
-    "@app/auth": "workspace:*",
-    "@app/core": "workspace:*",
-    "@app/db": "workspace:*",
-    "@app/observability": "workspace:*",
-    "@app/types": "workspace:*",
+    "@todo-list-poc-infra/auth": "workspace:*",
+    "@todo-list-poc-infra/core": "workspace:*",
+    "@todo-list-poc-infra/db": "workspace:*",
+    "@todo-list-poc-infra/observability": "workspace:*",
+    "@todo-list-poc-infra/types": "workspace:*",
     "@aws-lambda-powertools/logger": "^2.10.0",
     "@neondatabase/serverless": "^0.10.4",
     "drizzle-orm": "^0.36.4",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",
-    "@app/config": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.0",
     "esbuild": "^0.24.0",

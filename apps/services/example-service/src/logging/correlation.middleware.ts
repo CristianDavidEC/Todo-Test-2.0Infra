@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { CORRELATION_HEADER, extractCorrelationId, runWithCorrelation } from "@app/observability";
+import { CORRELATION_HEADER, extractCorrelationId, runWithCorrelation } from "@todo-list-poc-infra/observability";
 
 /**
- * Ancla cada request HTTP en el AsyncLocalStorage de correlación de `@app/observability`.
+ * Ancla cada request HTTP en el AsyncLocalStorage de correlación de `@todo-list-poc-infra/observability`.
  *
  * Se registra como middleware global de Express en `main.ts` (`app.use(...)`), antes del
  * router de Nest, para que TODO el ciclo de la request (guards, controllers, services,

@@ -3,9 +3,9 @@
  *
  * Estrategia híbrida (ver docs/SETUP-NEON.md):
  *
- *   prod      → proyecto Neon propio (base-apps-prod), aislado
- *   staging   → proyecto Neon propio (base-apps-staging), aislado
- *   dev       → proyecto Neon compartido (base-apps-dev), main branch
+ *   prod      → proyecto Neon propio (todo-list-poc-infra-prod), aislado
+ *   staging   → proyecto Neon propio (todo-list-poc-infra-staging), aislado
+ *   dev       → proyecto Neon compartido (todo-list-poc-infra-dev), main branch
  *   personal  → branch en el proyecto 'dev' (copy-on-write)
  *
  * Por qué híbrida: aislamiento total de prod/staging + sharing de seed canónico
@@ -134,7 +134,7 @@ export const database = new sst.Linkable("Database", {
  * Connection string crudo (Output) para inyectar como env var `DATABASE_URL`
  * en servicios ECS / funciones (ver infra/src/services/workers.ts y apis/main-api.ts).
  * La capa de composición de cada app lee `process.env.DATABASE_URL`, manteniendo
- * `@app/db` libre de SST.
+ * `@todo-list-poc-infra/db` libre de SST.
  */
 export const databaseUrl = connectionString;
 

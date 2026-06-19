@@ -1,5 +1,5 @@
 /**
- * @app/db
+ * @todo-list-poc-infra/db
  *
  * Capa de acceso a datos. Postgres (Drizzle) es el único datastore de la base.
  *

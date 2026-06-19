@@ -5,7 +5,7 @@ import {
   Injectable,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { requireAnyRole, type RequestWithAuth } from "@app/auth";
+import { requireAnyRole, type RequestWithAuth } from "@todo-list-poc-infra/auth";
 import { ROLES_KEY } from "./roles.decorator";
 
 /**

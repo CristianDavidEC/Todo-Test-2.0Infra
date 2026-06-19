@@ -1,6 +1,6 @@
-# Base-Projects-SST — Plantilla base v2.0
+# Todo List POC
 
-Plantilla base de la que nacen los proyectos nuevos de la empresa sobre AWS. Monorepo
+Proyecto **Todo List POC** sobre AWS, partido de la plantilla base v2.0 de la empresa. Monorepo
 Turborepo + pnpm con infraestructura como código en **SST v4 (Ion)**.
 
 <!-- CI/CD: cambio de prueba para validar el workflow pr-checks. -->
@@ -9,14 +9,14 @@ Turborepo + pnpm con infraestructura como código en **SST v4 (Ion)**.
 
 | Capa | Tecnología |
 |---|---|
-| Monorepo | Turborepo + pnpm (workspaces `@app/*`) |
+| Monorepo | Turborepo + pnpm (workspaces `@todo-list-poc-infra/*`) |
 | IaC | SST v4 (Ion) + Pulumi, región `us-east-1` |
 | Frontend | Next.js 16 (App Router, React 19, Tailwind 4) — `apps/web` |
 | API síncrona | NestJS 11 en ECS Fargate — `apps/services/example-service` |
 | Async / eventos | AWS Lambda (TS, sin framework) — `apps/functions` |
-| Base de datos | Neon (Postgres serverless) + Drizzle — `@app/db` |
-| Auth | Auth0 (verificación JWT vía JWKS) — `@app/auth` |
-| Observabilidad | Powertools (Lambda) + Pino (ECS/Next) — `@app/observability` |
+| Base de datos | Neon (Postgres serverless) + Drizzle — `@todo-list-poc-infra/db` |
+| Auth | Auth0 (verificación JWT vía JWKS) — `@todo-list-poc-infra/auth` |
+| Observabilidad | Powertools (Lambda) + Pino (ECS/Next) — `@todo-list-poc-infra/observability` |
 
 **Networking:** VPC con NAT *instance* `t4g.nano` (no NAT Gateway). API Gateway → NestJS por
 VPC Link + Cloud Map (**sin ALB**). Lambdas fuera de VPC.
@@ -50,8 +50,8 @@ proyecto Neon compartidos; sus IDs salen en los **outputs** del deploy (`vpcId`,
 
 ```bash
 pnpm run build | type-check | lint | test     # turbo, todo el monorepo
-pnpm --filter @app/web dev                     # un paquete concreto
-pnpm --filter @app/db db:generate|db:migrate   # migraciones Drizzle
+pnpm --filter @todo-list-poc-infra/web dev                     # un paquete concreto
+pnpm --filter @todo-list-poc-infra/db db:generate|db:migrate   # migraciones Drizzle
 pnpm sst deploy --stage dev|staging|prod
 pnpm sst secret set <KEY> <value> --stage <stage>
 ```

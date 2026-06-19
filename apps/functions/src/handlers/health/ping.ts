@@ -1,5 +1,5 @@
 import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
-import { instrumentHandler, createPowertoolsLogger } from "@app/observability";
+import { instrumentHandler, createPowertoolsLogger } from "@todo-list-poc-infra/observability";
 
 /**
  * Health check / smoke test.

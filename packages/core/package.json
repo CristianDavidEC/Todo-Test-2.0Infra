@@ -1,5 +1,5 @@
 {
-  "name": "@app/core",
+  "name": "@todo-list-poc-infra/core",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -10,11 +10,11 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@app/types": "workspace:*",
+    "@todo-list-poc-infra/types": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@app/config": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
     "@types/node": "^22.10.0",
     "vitest": "^2.1.8"
   }

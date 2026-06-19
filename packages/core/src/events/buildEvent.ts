@@ -1,7 +1,7 @@
 import type { z } from "zod";
-import type { Actor, DomainEvent } from "@app/types";
+import type { Actor, DomainEvent } from "@todo-list-poc-infra/types";
 
-// `globalThis.crypto` (Web Crypto) existe en Node 22+, edge y browser → `@app/core`
+// `globalThis.crypto` (Web Crypto) existe en Node 22+, edge y browser → `@todo-list-poc-infra/core`
 // se mantiene usable en cualquier runtime (no se importa `node:crypto`).
 
 export interface BuildEventInput {

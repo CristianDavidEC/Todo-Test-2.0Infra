@@ -8,7 +8,7 @@ Ver también el [`AGENTS.md` raíz](../AGENTS.md).
 
 - **SST v4 (Ion)** sobre Pulumi. Providers: `aws` (pin `us-east-1`) + `neon`.
 - [`sst.config.ts`](../sst.config.ts) (raíz) solo define `app()` y **delega**: `run()` hace `import("./infra/src/app")`. Lo único que vive ahí además del `app()` es el nombre canónico (`APP_NAME`), los `defaultTags` y la política de removal. No metas recursos en `sst.config.ts`.
-- **Tipos REALES de SST.** `infra/src` se type-checkea contra los tipos generados por SST: [`src/sst-globals.d.ts`](src/sst-globals.d.ts) referencia `.sst/platform/config.d.ts` (vía el preset `@app/config/tsconfig.sst.json`, sin `rootDir`), exponiendo `sst`/`aws`/`neon`/`$app`/`$dev`/etc. con sus tipos reales — un arg inválido en un componente **falla** el type-check. No hay tipos a mano que mantener.
+- **Tipos REALES de SST.** `infra/src` se type-checkea contra los tipos generados por SST: [`src/sst-globals.d.ts`](src/sst-globals.d.ts) referencia `.sst/platform/config.d.ts` (vía el preset `@todo-list-poc-infra/config/tsconfig.sst.json`, sin `rootDir`), exponiendo `sst`/`aws`/`neon`/`$app`/`$dev`/etc. con sus tipos reales — un arg inválido en un componente **falla** el type-check. No hay tipos a mano que mantener.
   **Prerrequisito (`.sst/` está gitignored, un clon nuevo no lo tiene):** corre `pnpm sst install` (genera `.sst/platform`). Además, hasta el primer `sst dev`/`deploy`, crea el stub que `config.d.ts` importa: `echo 'export {};' > .sst/types.generated.ts` (sst lo regenera real al desplegar). Como `.sst/**` queda fuera del hash de Turbo, tras un `sst deploy` o cambio de provider corre `pnpm type-check --force` (si no, sirve caché obsoleta).
 
 ## Estructura por dominios
@@ -38,7 +38,7 @@ src/
 
 3. **Fail-fast en env vars.** Si falta un env requerido (`NEON_ORG_ID`, `SHARED_DEV_VPC_ID`, `NEON_DEV_PROJECT_ID`), lanza `throw new Error` con **instrucciones paso a paso** (ver `neon.ts`/`vpc.ts`). Nada de defaults silenciosos para infra crítica. Para vars compartidas por varios módulos (p.ej. las `AUTH0_*` que inyecta `workers.ts`) usa el helper `requireSharedEnv(name)` ([`helpers/env.ts`](src/helpers/env.ts)): falla temprano en stages compartidos (`dev`/`staging`/`prod`) y deja pasar vacío en stages personales.
 
-4. **Linkable + env-var cruda (frontera anti-SST).** Pasa conexiones al cómputo de dos formas: `sst.Linkable` (`link: [database]`) **y** el `Output` crudo exportado (`databaseUrl`) para inyectar como env var. **`@app/db` y `@app/core` NUNCA importan `sst`** — leen `process.env.DATABASE_URL`. Mantén esa frontera al cablear cómputo nuevo.
+4. **Linkable + env-var cruda (frontera anti-SST).** Pasa conexiones al cómputo de dos formas: `sst.Linkable` (`link: [database]`) **y** el `Output` crudo exportado (`databaseUrl`) para inyectar como env var. **`@todo-list-poc-infra/db` y `@todo-list-poc-infra/core` NUNCA importan `sst`** — leen `process.env.DATABASE_URL`. Mantén esa frontera al cablear cómputo nuevo.
 
 5. **Guard `$dev` para recursos que no existen en modo dev.** `routePrivate`/Cloud Map solo se cablean desplegado: `if (!$dev) { … }` (ver `main-api.ts`). En `sst dev` el ECS corre local.
 
@@ -54,7 +54,7 @@ src/
 
 ## Gotchas
 
-- **`$app.name` = `"base-apps"`** (canónico, en `sst.config.ts` como `APP_NAME`) → se hornea en el nombre de **todo** recurso AWS. **Cambiarlo en un stage ya desplegado fuerza destroy-recreate de todo el stack.**
+- **`$app.name` = `"todo-list-poc-infra"`** (canónico, en `sst.config.ts` como `APP_NAME`) → se hornea en el nombre de **todo** recurso AWS. **Cambiarlo en un stage ya desplegado fuerza destroy-recreate de todo el stack.**
 - **Lambdas SIEMPRE fuera de VPC** (no se les pasa el campo `vpc`); ECS sí va en VPC.
 - **`web.ts` fuerza `openNextVersion: "4.0.3"`** — Next 16 usa `proxy.ts`; el default de SST no lo entiende y rompe el build de OpenNext.
 - **API Gateway es la única superficie pública**; NestJS queda privado tras VPC Link + Cloud Map (sin ALB).

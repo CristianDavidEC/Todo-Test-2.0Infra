@@ -1,5 +1,5 @@
 {
-  "name": "@app/types",
+  "name": "@todo-list-poc-infra/types",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -12,6 +12,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@app/config": "workspace:*"
+    "@todo-list-poc-infra/config": "workspace:*"
   }
 }

@@ -5,14 +5,14 @@ import {
   Logger,
   UnauthorizedException,
 } from "@nestjs/common";
-import { authorizeRequest, type RequestWithAuth } from "@app/auth";
-import { UsersRepository } from "@app/db";
-import { setUserId } from "@app/observability";
+import { authorizeRequest, type RequestWithAuth } from "@todo-list-poc-infra/auth";
+import { UsersRepository } from "@todo-list-poc-infra/db";
+import { setUserId } from "@todo-list-poc-infra/observability";
 
 /**
  * Guard Auth0 idiomático de NestJS.
  *
- * Reutiliza la lógica pura `authorizeRequest()` de `@app/auth` (verifica el JWT
+ * Reutiliza la lógica pura `authorizeRequest()` de `@todo-list-poc-infra/auth` (verifica el JWT
  * vía JWKS público + lazy upsert del usuario en Postgres) y la envuelve en un
  * guard inyectable estáticamente referenciable con `@UseGuards(Auth0Guard)`.
  *
@@ -31,7 +31,7 @@ export class Auth0Guard implements CanActivate {
       req.session = session;
       req.user = user;
       // Propaga el userId al contexto de correlación → los logs posteriores lo incluyen.
-      // `user` ya es un `User` Zod validado (mapeado en el borde por @app/auth).
+      // `user` ya es un `User` Zod validado (mapeado en el borde por @todo-list-poc-infra/auth).
       setUserId(user.id);
       return true;
     } catch (err) {

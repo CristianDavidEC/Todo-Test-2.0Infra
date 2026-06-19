@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { UsersRepository, type UserRow } from "@app/db";
+import { UsersRepository, type UserRow } from "@todo-list-poc-infra/db";
 import type { CreateUserDto, PublicUserDto } from "./users.dto";
 
 /**

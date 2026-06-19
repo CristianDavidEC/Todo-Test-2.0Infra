@@ -5,8 +5,8 @@ import { AuthNav } from "@/components/auth-nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Base App — Plantilla v2.0",
-  description: "Plantilla base monorepo (SST + Next.js + NestJS) para proyectos AWS",
+  title: "Todo List POC",
+  description: "Todo List POC — monorepo SST + Next.js + NestJS sobre AWS",
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
         <Auth0Provider>
           <header className="flex items-center justify-between border-b border-gray-800 px-6 py-3">
             <Link href="/" className="text-sm font-semibold tracking-tight">
-              Base App
+              Todo List POC
             </Link>
             <AuthNav />
           </header>

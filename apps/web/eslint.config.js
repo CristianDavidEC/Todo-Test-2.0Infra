@@ -1,2 +1,2 @@
-// ESLint 9 flat config. Preset lives in @app/config.
-module.exports = require("@app/config/eslint.nextjs.js");
+// ESLint 9 flat config. Preset lives in @todo-list-poc-infra/config.
+module.exports = require("@todo-list-poc-infra/config/eslint.nextjs.js");

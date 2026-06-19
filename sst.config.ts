@@ -1,6 +1,6 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-const APP_NAME = "base-apps";
+const APP_NAME = "todo-list-poc-infra";
 
 export default $config({
   async app(input) {

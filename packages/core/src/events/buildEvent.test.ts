@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
-import { defineEvent } from "@app/types";
+import { defineEvent } from "@todo-list-poc-infra/types";
 import { buildEvent } from "./buildEvent";
 
 const UserRegistered = defineEvent(

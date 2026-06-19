@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 // Subpath dedicado (no el barrel) para no arrastrar el guard NestJS al bundle de Next.
-import type { NextAuth0Session } from "@app/auth/nextjs";
+import type { NextAuth0Session } from "@todo-list-poc-infra/auth/nextjs";
 import { auth0, isAuth0Configured } from "@/lib/auth0";
 import { DashboardView, DashboardUnconfigured } from "@/features/dashboard/dashboard-view";
 import { toDashboardModel } from "@/features/dashboard/dashboard.model";

@@ -16,13 +16,13 @@ gana) que **complementa** a este, no lo contradice. Ver también el [`AGENTS.md`
 Capas con responsabilidad única (`arch-single-responsibility`, `arch-feature-modules`):
 
 ```
-HTTP → Controller → Service → Repository (@app/db) → Postgres
+HTTP → Controller → Service → Repository (@todo-list-poc-infra/db) → Postgres
             ↑ Guards (auth/RBAC)     ↑ lógica de negocio    ↑ datos
 ```
 
 - **Controller** — solo HTTP: rutas, validación de entrada (Zod), serialización de salida, códigos. Sin lógica de negocio ni acceso directo a BD.
 - **Service** (`@Injectable`) — lógica del dominio; orquesta repositorios y mapea fila→DTO público.
-- **Repository** — viene de `@app/db` (patrón repositorio, `arch-use-repository-pattern`). El servicio **nunca** toca la tabla cruda ni arma SQL.
+- **Repository** — viene de `@todo-list-poc-infra/db` (patrón repositorio, `arch-use-repository-pattern`). El servicio **nunca** toca la tabla cruda ni arma SQL.
 - **Feature modules** — se organiza por dominio (`modules/<feature>/`), NO por capa técnica.
 - **Composition modules** — `db/` y `auth/` proveen e **exportan** los providers compartidos (`arch-module-sharing`).
 
@@ -35,9 +35,9 @@ src/
   modules/<feature>/
     <feature>.controller.ts       → rutas HTTP + Swagger + validación Zod
     <feature>.service.ts          → @Injectable, lógica, mapeo a DTO
-    <feature>.dto.ts              → re-export de schemas/tipos Zod de @app/types (NO redefinir)
+    <feature>.dto.ts              → re-export de schemas/tipos Zod de @todo-list-poc-infra/types (NO redefinir)
     <feature>.module.ts           → declara controllers/providers, importa DbModule/AuthModule
-  db/db.module.ts                 → provee repos de @app/db (resuelve DATABASE_URL)
+  db/db.module.ts                 → provee repos de @todo-list-poc-infra/db (resuelve DATABASE_URL)
   auth/                           → Auth0Guard + RolesGuard + @Roles (RBAC)
   common/all-exceptions.filter.ts → filtro global de excepciones (ZodError→400, unique-violation→409, …)
   logging/pino-logger.service.ts  → adaptador Pino → LoggerService de Nest
@@ -53,18 +53,18 @@ src/
 
 **Inyección de dependencias (`di-prefer-constructor-injection`):** siempre por constructor. Los repos
 se proveen con `useFactory` en `DbModule` (resuelve `process.env.DATABASE_URL` → `getPostgresClient`),
-manteniendo `@app/db` libre de SST (regla de capas). DbModule **exporta** el repo; el feature module lo importa.
+manteniendo `@todo-list-poc-infra/db` libre de SST (regla de capas). DbModule **exporta** el repo; el feature module lo importa.
 
 **Auth & RBAC (`security-use-guards`):** `@UseGuards(Auth0Guard, RolesGuard)` + `@Roles("admin")`.
 **El orden importa:** `Auth0Guard` SIEMPRE antes que `RolesGuard` (el primero puebla `request.session`;
 el segundo lee `session.roles`). `Auth0Guard` verifica el JWT (JWKS público) y hace lazy-upsert del usuario.
 `RolesGuard` es claim-based (no toca BD).
 
-**Validación (`security-validate-all-input`):** Zod es la source of truth. Los schemas viven en `@app/types`
+**Validación (`security-validate-all-input`):** Zod es la source of truth. Los schemas viven en `@todo-list-poc-infra/types`
 y el `.dto.ts` solo los **re-exporta** (nunca re-derivar `ZodObject` local → doble instancia de zod = tipos rotos).
 Hoy se valida con `Schema.safeParse(body)` + `BadRequestException` en el controller.
 
-**Logging (`devops-use-logging`):** `PinoLoggerService` (adaptador de `@app/observability`). JSON estructurado
+**Logging (`devops-use-logging`):** `PinoLoggerService` (adaptador de `@todo-list-poc-infra/observability`). JSON estructurado
 + redactor PII. **Nunca** `console.log`.
 
 **Errores (`error-throw-http-exceptions`):** lanzar excepciones HTTP de Nest (`NotFoundException`,
@@ -72,8 +72,8 @@ Hoy se valida con `Schema.safeParse(body)` + `BadRequestException` en el control
 
 ## Build & runtime (por qué esbuild)
 
-Los `@app/*` exponen TS source (`main: ./src/index.ts`), así que `tsc`/`nest build` **no** los resuelve
-en runtime. Solución: **esbuild** (`esbuild.config.mjs`) bundlea los `@app/*` inline en `dist/main.js` y
+Los `@todo-list-poc-infra/*` exponen TS source (`main: ./src/index.ts`), así que `tsc`/`nest build` **no** los resuelve
+en runtime. Solución: **esbuild** (`esbuild.config.mjs`) bundlea los `@todo-list-poc-infra/*` inline en `dist/main.js` y
 **externaliza** los npm deps. Por eso esos npm deps (NestJS, `pg`, `drizzle-orm`, `@neondatabase/serverless`,
 `jose`, `pino`, `zod`, `reflect-metadata`, `rxjs`) se declaran como **deps directas del servicio** (resuelven
 en `node_modules` del contenedor). Dev usa `tsx watch` (TS on-the-fly). `tsconfig.json` extiende
@@ -89,7 +89,7 @@ existe (`--env-file-if-exists`).
 
 | Modo | Comando | Env | Cuándo |
 |---|---|---|---|
-| **Standalone** | `pnpm --filter @app/<servicio> dev` | `.env` de la raíz (lo carga el script vía `../../../.env`) | loop de desarrollo más rápido; apunta `DATABASE_URL` a tu branch Neon |
+| **Standalone** | `pnpm --filter @todo-list-poc-infra/<servicio> dev` | `.env` de la raíz (lo carga el script vía `../../../.env`) | loop de desarrollo más rápido; apunta `DATABASE_URL` a tu branch Neon |
 | **SST** | `pnpm sst dev --stage <user>` | inyectado por SST (Resource links + secrets) | cuando necesitas el cableado completo (API Gateway, Cloud Map, secrets SSM) |
 | **Docker** | `docker compose up <servicio>` (dev, hot-reload) · o `docker build`+`docker run --env-file .env` (paridad prod) | el **mismo** `.env` de la raíz | paridad con el contenedor / debug del deploy — **no** es el loop diario |
 
@@ -105,17 +105,17 @@ existe (`--env-file-if-exists`).
 
 ## Cómo crear un servicio nuevo
 
-1. `apps/services/<nombre>/` con `package.json` (`@app/<nombre>`), `tsconfig.json` (extiende `tsconfig.nest.json`), `eslint.config.js` (preset `@app/config/eslint.node.js`), `esbuild.config.mjs`, `Dockerfile`. Copiar de `example-service`. (El `.env` vive solo en la raíz; no hay `.env`/`.env.example` por servicio.) El script `dev` carga el `.env` raíz con `--env-file-if-exists=../../../.env`.
+1. `apps/services/<nombre>/` con `package.json` (`@todo-list-poc-infra/<nombre>`), `tsconfig.json` (extiende `tsconfig.nest.json`), `eslint.config.js` (preset `@todo-list-poc-infra/config/eslint.node.js`), `esbuild.config.mjs`, `Dockerfile`. Copiar de `example-service`. (El `.env` vive solo en la raíz; no hay `.env`/`.env.example` por servicio.) El script `dev` carga el `.env` raíz con `--env-file-if-exists=../../../.env`.
 2. `main.ts` + `app.module.ts` con las convenciones de arriba. Feature modules en `modules/<feature>/`.
 3. Reusar `db/db.module.ts`, `auth/`, `logging/pino-logger.service.ts` (mismo patrón).
 4. Cablear en `infra/src/services/workers.ts` (+ ruta si necesita superficie pública).
-5. `pnpm --filter @app/<nombre> type-check lint`.
+5. `pnpm --filter @todo-list-poc-infra/<nombre> type-check lint`.
 
 ## Anti-patterns
 
 - ❌ Lógica de negocio o SQL en el controller → controller solo HTTP.
-- ❌ Acceder a la tabla cruda / armar el cliente Postgres a mano → usar el repo de `@app/db` vía DbModule.
-- ❌ Re-derivar schemas Zod localmente → re-exportar de `@app/types`.
+- ❌ Acceder a la tabla cruda / armar el cliente Postgres a mano → usar el repo de `@todo-list-poc-infra/db` vía DbModule.
+- ❌ Re-derivar schemas Zod localmente → re-exportar de `@todo-list-poc-infra/types`.
 - ❌ `console.log` → `PinoLoggerService`.
 - ❌ Invertir el orden de guards (`RolesGuard` antes que `Auth0Guard`) → 403 siempre.
 - ❌ CRUD/lógica async pesada → eso es Lambda (`apps/functions`), no el servicio.
@@ -125,5 +125,5 @@ existe (`--env-file-if-exists`).
 ## See also
 
 - [`AGENTS.md` raíz](../../AGENTS.md) · `.claude/skills/nestjs-best-practices/` (40 reglas)
-- `@app/auth` (guards/JWT/RBAC) · `@app/db` (repos) · `@app/observability` (Pino) · `@app/types` (Zod)
+- `@todo-list-poc-infra/auth` (guards/JWT/RBAC) · `@todo-list-poc-infra/db` (repos) · `@todo-list-poc-infra/observability` (Pino) · `@todo-list-poc-infra/types` (Zod)
 - `infra/src/services/workers.ts` · `infra/src/apis/main-api.ts`

@@ -9,7 +9,7 @@ import { AllExceptionsFilter } from "./common/all-exceptions.filter";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
-  // Logger JSON estructurado compartido (Pino + redactor PII de @app/observability).
+  // Logger JSON estructurado compartido (Pino + redactor PII de @todo-list-poc-infra/observability).
   app.useLogger(new PinoLoggerService());
 
   // Errores estandarizados (ZodError→400, unique→409, resto→500 sin leak).
@@ -27,10 +27,10 @@ async function bootstrap() {
   // NO se expone en prod (el API Gateway es público): solo dev/staging/personales/local.
   if (process.env.APP_STAGE !== "prod") {
     const swaggerConfig = new DocumentBuilder()
-      .setTitle("Base Projects SST — Example Service API")
+      .setTitle("Todo List POC — Example Service API")
       .setDescription(
         [
-          "API de ejemplo (NestJS 11 en ECS Fargate) de la plantilla base v2.0.",
+          "API de ejemplo (NestJS 11 en ECS Fargate) del proyecto Todo List POC.",
           "",
           "Arquitectura: API Gateway → VPC Link + Cloud Map → este servicio (sin ALB).",
           "Los CRUDs síncronos viven aquí; el trabajo async vive en Lambdas.",

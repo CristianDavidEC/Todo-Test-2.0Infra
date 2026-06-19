@@ -1,8 +1,8 @@
 import type { LoggerService } from "@nestjs/common";
-import { createPinoLogger } from "@app/observability";
+import { createPinoLogger } from "@todo-list-poc-infra/observability";
 
 /**
- * Adaptador de Pino (@app/observability) a la interfaz `LoggerService` de NestJS.
+ * Adaptador de Pino (@todo-list-poc-infra/observability) a la interfaz `LoggerService` de NestJS.
  * Se registra en `main.ts` vía `app.useLogger(new PinoLoggerService())`.
  *
  * Mantiene el formato JSON estructurado + redactor PII del package compartido,

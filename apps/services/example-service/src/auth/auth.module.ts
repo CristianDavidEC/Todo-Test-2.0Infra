@@ -7,7 +7,7 @@ import { RolesGuard } from "./roles.guard";
  * Provee el `Auth0Guard` (depende de `UsersRepository` de DbModule) y el
  * `RolesGuard` (RBAC claim-based, solo depende de `Reflector`).
  * Config Auth0 (AUTH0_DOMAIN, AUTH0_AUDIENCE, AUTH0_NAMESPACE) se resuelve
- * desde env vars dentro de `@app/auth` (resolveAuth0Config).
+ * desde env vars dentro de `@todo-list-poc-infra/auth` (resolveAuth0Config).
  */
 @Module({
   imports: [DbModule],

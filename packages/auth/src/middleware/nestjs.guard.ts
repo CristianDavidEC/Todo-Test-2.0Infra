@@ -11,11 +11,11 @@
  *   4. Devuelve `{ session, user }` (user ya es un `User` Zod validado)
  */
 
-import type { User } from "@app/types";
+import type { User } from "@todo-list-poc-infra/types";
 import { extractBearerToken, verifyAuth0Token, JwtVerificationError } from "../auth0/jwt-verifier";
 import { readCustomClaims, DEFAULT_AUTH0_NAMESPACE } from "../types/claims";
 import { rowToUser } from "../helpers/user-mapper";
-import type { UsersRepository } from "@app/db";
+import type { UsersRepository } from "@todo-list-poc-infra/db";
 import type { AuthSession } from "../types/session";
 
 export interface Auth0GuardDeps {

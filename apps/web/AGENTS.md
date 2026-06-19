@@ -9,7 +9,7 @@ arquitectura (Screaming Architecture sobre el App Router). Ver también el [`AGE
 - **Next.js 16 (App Router) + React 19 + Tailwind v4.** Server Components por defecto.
 - Desplegado con **OpenNext** vía `sst.aws.Nextjs` (CloudFront + Lambda + S3). Cableado en [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts).
 - Auth con **Auth0 SDK v4**: el login se intercepta en el network boundary (`proxy.ts`).
-- Consume lógica/auth del monorepo (`@app/core`, `@app/auth`) — **no** reimplementa lógica de negocio en el front.
+- Consume lógica/auth del monorepo (`@todo-list-poc-infra/core`, `@todo-list-poc-infra/auth`) — **no** reimplementa lógica de negocio en el front.
 
 ## Arquitectura: Screaming Architecture
 
@@ -21,7 +21,7 @@ HTTP → app/<ruta>/page.tsx  (THIN: routing, gate de auth, composición)
             ↓ importa
        features/<dominio>/  (la feature: UI + modelo + lógica del dominio)
             ↓ usa
-       components/ (UI compartida)   lib/ (infra compartida: auth0)   @app/* (tipos/lógica)
+       components/ (UI compartida)   lib/ (infra compartida: auth0)   @todo-list-poc-infra/* (tipos/lógica)
 ```
 
 - **`app/`** — routing y composición **solamente**. Una `page.tsx` resuelve el acceso (sesión/redirect) y renderiza la feature. Sin lógica de dominio ni JSX de negocio inline.
@@ -61,8 +61,8 @@ src/
 
 - **Server Components por defecto.** `"use client"` SOLO cuando hay interactividad/hooks de browser (estado, efectos, `useUser()`). Mantén los client components en las hojas (p.ej. `auth-nav`), no en layouts/páginas enteras.
 - **Datos en el server.** `fetch`/sesión/secrets en server components o server actions. Nunca expongas secretos al cliente; solo `NEXT_PUBLIC_*` llega al browser.
-- **Lógica/tipos del monorepo.** Lógica de negocio reutilizable va en `@app/core` (framework-agnóstica), no copiada en el front. Si necesitas schemas Zod compartidos (`@app/types`), añádelo como dep primero (hoy el web no lo consume).
-- **Import por subpath para no inflar el bundle.** `@app/auth/nextjs` (no el barrel `@app/auth`) — el barrel arrastra el guard de NestJS al bundle de Next. Patrón a respetar con cualquier paquete multi-runtime.
+- **Lógica/tipos del monorepo.** Lógica de negocio reutilizable va en `@todo-list-poc-infra/core` (framework-agnóstica), no copiada en el front. Si necesitas schemas Zod compartidos (`@todo-list-poc-infra/types`), añádelo como dep primero (hoy el web no lo consume).
+- **Import por subpath para no inflar el bundle.** `@todo-list-poc-infra/auth/nextjs` (no el barrel `@todo-list-poc-infra/auth`) — el barrel arrastra el guard de NestJS al bundle de Next. Patrón a respetar con cualquier paquete multi-runtime.
 - **`@/*` = `src/*`** (alias en `tsconfig.json`). Usa `@/features/...`, `@/components/...`, `@/lib/...`.
 - **Auth0 inerte sin credenciales.** `isAuth0Configured` (en `lib/auth0.ts`) mantiene el sitio público vivo (no-op) mientras no haya secrets; con secrets el flujo se activa sin cambiar código. Replica ese guard en cualquier página protegida.
 - **Estilos: Tailwind v4** (utilidades en JSX). Sin CSS-in-JS ni librerías de componentes pesadas por defecto.
@@ -74,12 +74,12 @@ Un **único `.env` en la raíz** del monorepo alimenta todo (lo comparten SST, d
 
 ```bash
 cp .env.example .env                     # desde la raíz (una vez)
-pnpm --filter @app/web dev               # http://localhost:3000  (comando general: @app/<frontend>)
+pnpm --filter @todo-list-poc-infra/web dev               # http://localhost:3000  (comando general: @todo-list-poc-infra/<frontend>)
 ```
 
 | Modo | Comando | Env |
 |---|---|---|
-| **Standalone** (recomendado, loop diario) | `pnpm --filter @app/web dev` | `.env` raíz (lo carga `next.config.js`) |
+| **Standalone** (recomendado, loop diario) | `pnpm --filter @todo-list-poc-infra/web dev` | `.env` raíz (lo carga `next.config.js`) |
 | **SST** (cableado real: CloudFront/secrets) | `pnpm sst dev --stage <user>` | inyectado por SST (gana sobre `.env`) |
 
 - El **sitio público funciona sin configurar nada**. Para probar **login**, rellena en el `.env` raíz: `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_AUDIENCE`, `APP_BASE_URL=http://localhost:3000`, y los secrets `AUTH0_CLIENT_SECRET` + `AUTH0_SECRET` (`openssl rand -hex 32`).
@@ -92,20 +92,20 @@ pnpm --filter @app/web dev               # http://localhost:3000  (comando gener
 2. La ruta `app/<ruta>/page.tsx` queda **thin**: resuelve acceso/datos y compone `<FeatureView />`.
 3. Mutaciones → **server actions** dentro de la feature (no API routes salvo necesidad real).
 4. UI genuinamente compartida → `components/`; clients/infra compartida → `lib/`.
-5. `pnpm --filter @app/web type-check lint`.
+5. `pnpm --filter @todo-list-poc-infra/web type-check lint`.
 
 ## Anti-patterns
 
 - ❌ Lógica de dominio o JSX de negocio en `app/page.tsx` → va en `features/<dominio>/`; la ruta es thin.
 - ❌ Organizar por tipo técnico global (`components/`, `hooks/`, `services/` con TODO dentro) → eso no "grita" el dominio; colócalo por feature.
 - ❌ `"use client"` en layouts/páginas completas → empuja el client boundary a las hojas.
-- ❌ Importar el barrel `@app/auth` en vez de `@app/auth/nextjs` → infla el bundle con el guard NestJS.
-- ❌ Reimplementar lógica de `@app/core` (o redefinir tipos que deberían vivir en un paquete compartido) en el front.
+- ❌ Importar el barrel `@todo-list-poc-infra/auth` en vez de `@todo-list-poc-infra/auth/nextjs` → infla el bundle con el guard NestJS.
+- ❌ Reimplementar lógica de `@todo-list-poc-infra/core` (o redefinir tipos que deberían vivir en un paquete compartido) en el front.
 - ❌ Secretos en código cliente o en `NEXT_PUBLIC_*` → secrets solo server-side.
 - ❌ `.env` por app → un solo `.env` en la raíz.
 
 ## See also
 
 - [`AGENTS.md` raíz](../../AGENTS.md) · `.claude/skills/vercel-react-best-practices/` · `.claude/skills/next-best-practices/`
-- `@app/auth` (Auth0/sesión) · `@app/core` (lógica)
+- `@todo-list-poc-infra/auth` (Auth0/sesión) · `@todo-list-poc-infra/core` (lógica)
 - [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts) (OpenNext + Auth0 env/secrets) · `docs/` (arquitectura)

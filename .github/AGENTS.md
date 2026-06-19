@@ -48,7 +48,7 @@ Promoción: `feat/* → dev → test → main` por PR.
 - `requireSharedEnv` (infra) **rompe el deploy** en dev/staging/prod si una env var falta —
   por eso toda config/secreto que el synth necesite debe estar en el `env:` del workflow.
 - **`pr-checks` corre `pnpm sst install` antes de los checks.** Genera `.sst/platform/config.d.ts`
-  (gitignored); sin él, el `type-check` de `@app/infra` falla porque `sst.config.ts` referencia
+  (gitignored); sin él, el `type-check` de `@todo-list-poc-infra/infra` falla porque `sst.config.ts` referencia
   esos tipos globales (`sst`, `$app`, `$dev`, `neon`…). En local el archivo persiste de un
   `sst dev` previo, por eso ahí pasa y en CI no. Los deploys NO lo necesitan: `sst deploy`
   regenera la plataforma. `sst install` no toca AWS ni requiere env vars.

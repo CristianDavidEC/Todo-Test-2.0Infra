@@ -1,5 +1,5 @@
 <!-- Owner: @CristianDavidEC -->
-# AGENTS.md — `@app/example-service`
+# AGENTS.md — `@todo-list-poc-infra/example-service`
 
 Servicio NestJS de **ejemplo/referencia** de la plantilla. Sigue el patrón generalista de
 [`apps/services/AGENTS.md`](../AGENTS.md) — **léelo primero**; aquí solo va lo específico de este servicio.
@@ -25,7 +25,7 @@ Prefijo global `/api`. Swagger en `/api/docs` (JSON en `/api/docs-json`), **solo
   `MeController.adminPing()` es el **ejemplo RBAC** canónico (ver orden de guards en el generalista).
 - **`toPublic(row)`** (función a nivel de módulo en `users.service.ts`, no un método de clase) mapea
   `UserRow` → `PublicUserDto` (omite `auth0UserId`, fechas a ISO). Patrón a copiar: el service nunca devuelve la fila cruda.
-- **DTOs Zod** re-exportados de `@app/types` en `users.dto.ts` (no se redefinen). Swagger describe el shape
+- **DTOs Zod** re-exportados de `@todo-list-poc-infra/types` en `users.dto.ts` (no se redefinen). Swagger describe el shape
   a mano (`PUBLIC_USER_EXAMPLE`) porque los DTOs son Zod, no clases.
 - **Auth0 (cableado, sin credenciales por defecto):** el login real funciona en cuanto el proyecto setea los secrets del tenant; `MeController` hace lazy-upsert vía `Auth0Guard`. Los roles
   (`/api/me/admin/ping`) dependen de una Auth0 Action que pueble los claims — **omitida por diseño** en la
@@ -42,4 +42,4 @@ Prefijo global `/api`. Swagger en `/api/docs` (JSON en `/api/docs-json`), **solo
 ## See also
 
 - [`apps/services/AGENTS.md`](../AGENTS.md) — patrón obligatorio de todo servicio (la referencia principal).
-- [`AGENTS.md` raíz](../../AGENTS.md) · `@app/auth` · `@app/db` · `@app/types`.
+- [`AGENTS.md` raíz](../../AGENTS.md) · `@todo-list-poc-infra/auth` · `@todo-list-poc-infra/db` · `@todo-list-poc-infra/types`.

@@ -1,4 +1,4 @@
-import { nextSessionToAuthSession, type NextAuth0Session } from "@app/auth/nextjs";
+import { nextSessionToAuthSession, type NextAuth0Session } from "@todo-list-poc-infra/auth/nextjs";
 
 /**
  * Vista-modelo del dashboard, derivada de la sesión Auth0.

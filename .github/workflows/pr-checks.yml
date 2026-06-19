@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       # Genera .sst/platform/config.d.ts (gitignored) — sin él, el type-check de
-      # @app/infra falla porque sst.config.ts referencia esos tipos globales. No
+      # @todo-list-poc-infra/infra falla porque sst.config.ts referencia esos tipos globales. No
       # toca AWS ni requiere env vars (solo instala providers / sintetiza app()).
       - run: pnpm sst install
       - run: pnpm lint

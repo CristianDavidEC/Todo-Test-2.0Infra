@@ -1,5 +1,5 @@
 {
-  "name": "@app/config",
+  "name": "@todo-list-poc-infra/config",
   "version": "0.0.0",
   "private": true,
   "files": [

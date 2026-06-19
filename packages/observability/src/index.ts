@@ -1,5 +1,5 @@
 /**
- * @app/observability
+ * @todo-list-poc-infra/observability
  *
  * Logging y correlación de requests para todo runtime (Lambda, ECS/NestJS, Next.js).
  *

@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
-import { getPostgresClient, UsersRepository } from "@app/db";
+import { getPostgresClient, UsersRepository } from "@todo-list-poc-infra/db";
 
 /**
  * Capa de composición de acceso a datos.
  *
- * `@app/db` se mantiene libre de SST (regla de capas): aquí resolvemos la
+ * `@todo-list-poc-infra/db` se mantiene libre de SST (regla de capas): aquí resolvemos la
  * connection string desde `process.env.DATABASE_URL`, que la infra inyecta
  * como env var en el servicio ECS (ver infra/src/services/workers.ts) y que
  * en local viene del `.env`.

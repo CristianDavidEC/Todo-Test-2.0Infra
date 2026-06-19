@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { validateEmail } from "@app/core";
+import { validateEmail } from "@todo-list-poc-infra/core";
 
 const stack = [
   { name: "Turborepo + pnpm", desc: "Monorepo build system" },
@@ -13,8 +13,8 @@ const stack = [
 export default function Home() {
   const example = {
     id: "1",
-    name: "Base App",
-    description: "Plantilla base v2.0",
+    name: "Todo List POC",
+    description: "Todo List POC",
     createdAt: new Date().toISOString(),
   };
 
@@ -44,7 +44,7 @@ export default function Home() {
             <div>
               <p className="text-sm font-medium text-gray-400">Tipado end-to-end</p>
               <p className="text-xs text-gray-500 mt-1">
-                Validando con <code className="text-gray-300">@app/core</code>
+                Validando con <code className="text-gray-300">@todo-list-poc-infra/core</code>
               </p>
             </div>
             <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${
