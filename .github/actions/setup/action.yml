@@ -1,0 +1,21 @@
+name: Setup
+description: >
+  Instala pnpm + Node 22 con caché del store de pnpm y resuelve dependencias con
+  el lockfile congelado. Requiere un `actions/checkout` previo (es un composite
+  action local, el repo debe estar en disco). pnpm/action-setup lee la versión
+  desde el campo `packageManager` de package.json (pnpm@9.15.4), no hace falta fijarla.
+runs:
+  using: composite
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: pnpm
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

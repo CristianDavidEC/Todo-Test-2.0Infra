@@ -1,0 +1,28 @@
+{
+  "name": "base-apps",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "sst": "sst",
+    "deploy": "sst deploy",
+    "remove": "sst remove"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.3",
+    "sst": "4.15.2",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  }
+}

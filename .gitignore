@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+.open-next/
+.turbo/
+# Memoria personal de Claude Code (no versionada)
+CLAUDE.local.md
+
+# Skills materializadas (regenerables desde skills-lock.json). Solo se versiona el lockfile.
+# .claude/ ya está ignorado arriba; .agents/ lo crea `npx skills experimental_install`.
+.agents/
+
+# SST
+.sst/
+sst-env.d.ts
+
+# Kiro
+.kiro/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Docker
+docker-compose.override.yml
+
+# Coverage
+coverage/
+
+# graphify (knowledge graph output - artefacto local regenerable)
+graphify-out/

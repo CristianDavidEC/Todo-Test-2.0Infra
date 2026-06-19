@@ -1,0 +1,27 @@
+{
+  "name": "@app/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "tsconfig.*.json",
+    "eslint.*.js",
+    "vitest/**"
+  ],
+  "exports": {
+    "./eslint.base.js": "./eslint.base.js",
+    "./eslint.node.js": "./eslint.node.js",
+    "./eslint.nextjs.js": "./eslint.nextjs.js",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.node.json": "./tsconfig.node.json",
+    "./tsconfig.nextjs.json": "./tsconfig.nextjs.json",
+    "./tsconfig.nest.json": "./tsconfig.nest.json",
+    "./tsconfig.sst.json": "./tsconfig.sst.json",
+    "./vitest/base": "./vitest/base.ts"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint-config-next": "^16.2.6",
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^2.1.8"
+  }
+}

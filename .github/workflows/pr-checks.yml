@@ -1,0 +1,31 @@
+name: PR Checks
+
+# Corre en cada PR hacia una rama de ambiente. NO despliega: solo valida.
+# Las tareas usan turbo (paralelo + caché) — objetivo < 5 min con caché caliente.
+on:
+  pull_request:
+    branches: [dev, test, main]
+
+# Cancela checks viejos del mismo PR si llega un push nuevo.
+concurrency:
+  group: pr-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: lint · type-check · test · build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      # Genera .sst/platform/config.d.ts (gitignored) — sin él, el type-check de
+      # @app/infra falla porque sst.config.ts referencia esos tipos globales. No
+      # toca AWS ni requiere env vars (solo instala providers / sintetiza app()).
+      - run: pnpm sst install
+      - run: pnpm lint
+      - run: pnpm type-check
+      - run: pnpm test
+      - run: pnpm build

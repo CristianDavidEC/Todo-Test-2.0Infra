@@ -1,0 +1,51 @@
+name: Deploy prod
+
+# Rama `main` → stage `prod`. Auto-deploy en cada push (merge de PR test → main).
+#
+# GATE DE APROBACIÓN: el job usa el GitHub Environment `production`. Si configuras
+# "Required reviewers" en ese environment (recomendado — ver docs/SETUP-CICD.md), el
+# deploy queda PAUSADO esperando aprobación manual antes de tocar producción. Sin
+# reviewers configurados, el deploy es totalmente automático.
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: sst deploy --stage prod
+    runs-on: ubuntu-latest
+    environment: production
+    # Config que el infra lee de process.env al sintetizar (en local viene del .env).
+    env:
+      # Compartidas entre stages (variables/secret a nivel repo)
+      NEON_ORG_ID: ${{ vars.NEON_ORG_ID }}
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+      # Config por stage (Variables del GitHub Environment) — requireSharedEnv rompe si faltan
+      AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN }}
+      AUTH0_CLIENT_ID: ${{ vars.AUTH0_CLIENT_ID }}
+      AUTH0_AUDIENCE: ${{ vars.AUTH0_AUDIENCE }}
+      APP_BASE_URL: ${{ vars.APP_BASE_URL }}
+      # Secretos por stage (Secrets del GitHub Environment)
+      AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+      AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar credenciales AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: ./.github/actions/setup
+
+      - name: Deploy
+        run: pnpm sst deploy --stage prod

@@ -1,0 +1,7 @@
+{
+  "extends": "../packages/config/tsconfig.sst.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src", "../sst.config.ts"]
+}
