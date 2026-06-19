@@ -8,7 +8,7 @@ Ver también el [`AGENTS.md` raíz](../../AGENTS.md).
 
 - Solo `zod`. **Cero** imports de SDK/runtime (aws, sst, auth0).
 - **Colocación:** un tipo lo usan **2+ apps** → va aquí; una sola app → local en esa app.
-- Consumido por `@todo-list-poc-infra/core`, `@todo-list-poc-infra/auth`, `apps/services/example-service`.
+- Consumido por `@todo-list-poc-infra/core`, `@todo-list-poc-infra/auth`, `apps/services/todo-service`.
 
 ## Estructura
 

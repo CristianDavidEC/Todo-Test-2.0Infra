@@ -27,10 +27,10 @@ async function bootstrap() {
   // NO se expone en prod (el API Gateway es público): solo dev/staging/personales/local.
   if (process.env.APP_STAGE !== "prod") {
     const swaggerConfig = new DocumentBuilder()
-      .setTitle("Todo List POC — Example Service API")
+      .setTitle("Todo List POC — API")
       .setDescription(
         [
-          "API de ejemplo (NestJS 11 en ECS Fargate) del proyecto Todo List POC.",
+          "API síncrona (NestJS 11 en ECS Fargate) del proyecto Todo List POC.",
           "",
           "Arquitectura: API Gateway → VPC Link + Cloud Map → este servicio (sin ALB).",
           "Los CRUDs síncronos viven aquí; el trabajo async vive en Lambdas.",
@@ -50,7 +50,7 @@ async function bootstrap() {
     SwaggerModule.setup("docs", app, document, {
       useGlobalPrefix: true,
       jsonDocumentUrl: "docs-json",
-      customSiteTitle: "Example Service — API Docs",
+      customSiteTitle: "Todo List POC — API Docs",
     });
   }
 

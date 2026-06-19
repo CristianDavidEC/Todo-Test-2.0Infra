@@ -13,15 +13,15 @@ COPY packages/core/package.json ./packages/core/
 COPY packages/db/package.json ./packages/db/
 COPY packages/auth/package.json ./packages/auth/
 COPY packages/observability/package.json ./packages/observability/
-COPY apps/services/example-service/package.json ./apps/services/example-service/
+COPY apps/services/todo-service/package.json ./apps/services/todo-service/
 
 RUN pnpm install --frozen-lockfile
 
-# Código fuente (los @app/* se bundlean con esbuild en el build).
+# Código fuente (los @todo-list-poc-infra/* se bundlean con esbuild en el build).
 COPY packages/ ./packages/
-COPY apps/services/example-service/ ./apps/services/example-service/
+COPY apps/services/todo-service/ ./apps/services/todo-service/
 
-WORKDIR /app/apps/services/example-service
+WORKDIR /app/apps/services/todo-service
 RUN pnpm run build
 
 # Stage 2: Production
@@ -45,8 +45,8 @@ COPY --from=builder /app/packages/core/package.json ./packages/core/
 COPY --from=builder /app/packages/db/package.json ./packages/db/
 COPY --from=builder /app/packages/auth/package.json ./packages/auth/
 COPY --from=builder /app/packages/observability/package.json ./packages/observability/
-COPY --from=builder /app/apps/services/example-service/package.json ./apps/services/example-service/
-COPY --from=builder /app/apps/services/example-service/dist/ ./apps/services/example-service/dist/
+COPY --from=builder /app/apps/services/todo-service/package.json ./apps/services/todo-service/
+COPY --from=builder /app/apps/services/todo-service/dist/ ./apps/services/todo-service/dist/
 
 RUN pnpm install --frozen-lockfile --prod
 
@@ -54,7 +54,7 @@ RUN pnpm install --frozen-lockfile --prod
 RUN chown -R node:node /app
 USER node
 
-WORKDIR /app/apps/services/example-service
+WORKDIR /app/apps/services/todo-service
 
 EXPOSE 3001
 

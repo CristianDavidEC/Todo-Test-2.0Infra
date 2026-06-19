@@ -37,7 +37,7 @@ pnpm run clean                  # Limpiar builds y node_modules
 sst dev --stage <tu-nombre>
 
 # Terminal 2: Servicio NestJS
-pnpm --filter @todo-list-poc-infra/example-service dev   # Sin Docker (tsx watch)
+pnpm --filter @todo-list-poc-infra/todo-service dev   # Sin Docker (tsx watch)
 docker compose up                        # Con Docker
 
 # Terminal 3: Frontend Next.js

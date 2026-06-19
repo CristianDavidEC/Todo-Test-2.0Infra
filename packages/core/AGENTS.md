@@ -8,7 +8,7 @@ Ver también el [`AGENTS.md` raíz](../../AGENTS.md).
 
 - Solo `zod` y `@todo-list-poc-infra/types`. Para IDs usa `globalThis.crypto.randomUUID()` (Web Crypto, disponible en Node 22+/edge/browser) — **no** importa `node:crypto`, así core sigue siendo usable en cualquier runtime.
 - 🚫 **PROHIBIDO importar** `aws-sdk`/`@aws-sdk/*`, `aws-lambda`, `sst`, `@auth0/*`. Es la regla dura del paquete (hoy verificado limpio). Si necesitas un SDK, va en el adapter/app que consume core, **no aquí**.
-- Importable desde web, Lambdas y servicios ECS por igual; hoy el único que lo **importa** es `apps/web`. `apps/services/example-service` lo declara como dependencia (listo para usarlo, como ejemplo del molde) pero aún no lo importa; `apps/functions` no lo declara.
+- Importable desde web, Lambdas y servicios ECS por igual; hoy el único que lo **importa** es `apps/web`. `apps/services/todo-service` lo declara como dependencia (lista para usar) pero aún no lo importa; `apps/functions` no lo declara.
 
 ## Estructura
 

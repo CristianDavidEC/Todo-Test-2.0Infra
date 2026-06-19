@@ -12,7 +12,7 @@ Turborepo + pnpm con infraestructura como código en **SST v4 (Ion)**.
 | Monorepo | Turborepo + pnpm (workspaces `@todo-list-poc-infra/*`) |
 | IaC | SST v4 (Ion) + Pulumi, región `us-east-1` |
 | Frontend | Next.js 16 (App Router, React 19, Tailwind 4) — `apps/web` |
-| API síncrona | NestJS 11 en ECS Fargate — `apps/services/example-service` |
+| API síncrona | NestJS 11 en ECS Fargate — `apps/services/todo-service` |
 | Async / eventos | AWS Lambda (TS, sin framework) — `apps/functions` |
 | Base de datos | Neon (Postgres serverless) + Drizzle — `@todo-list-poc-infra/db` |
 | Auth | Auth0 (verificación JWT vía JWKS) — `@todo-list-poc-infra/auth` |

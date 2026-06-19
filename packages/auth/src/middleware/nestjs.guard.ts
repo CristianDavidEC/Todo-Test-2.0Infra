@@ -1,7 +1,7 @@
 /**
  * Lógica pura de autorización Auth0 (verificación JWT + lazy sync en Postgres),
  * agnóstica de framework. La app NestJS la envuelve en un Guard `@Injectable`
- * (ver apps/services/example-service/src/auth/auth0.guard.ts) — ese es el patrón
+ * (ver apps/services/todo-service/src/auth/auth0.guard.ts) — ese es el patrón
  * canónico; este módulo NO crea el Guard para no acoplar `@nestjs/common`.
  *
  * `authorizeRequest` ejecuta:

@@ -1,7 +1,7 @@
 /**
  * Services — Fargate (ECS) vía SST.
  *
- * `example-service` (NestJS) es la API principal de CRUDs síncronos (regla de la base:
+ * `todo-service` (NestJS) es la API principal de CRUDs síncronos (regla de la base:
  * ECS por defecto, Lambda solo async). Se expone a través del API Gateway vía
  * VPC Link + Cloud Map (sin ALB — ver apis/main-api.ts). El `serviceRegistry`
  * crea el registro Cloud Map necesario para esa integración privada.
@@ -22,9 +22,9 @@ const logRetention = getLogRetention(stage);
 
 export const cluster = new sst.aws.Cluster("MainCluster", { vpc });
 
-export const exampleService = cluster.addService("ExampleService", {
+export const todoService = cluster.addService("TodoService", {
   image: {
-    dockerfile: "apps/services/example-service/Dockerfile",
+    dockerfile: "apps/services/todo-service/Dockerfile",
     context: ".",
   },
   // Registro Cloud Map (puerto del contenedor NestJS) — requerido para el
@@ -57,6 +57,6 @@ export const exampleService = cluster.addService("ExampleService", {
   // En dev corre local con live-reload en lugar de buildear la imagen.
   dev: {
     command: "pnpm dev",
-    directory: "apps/services/example-service",
+    directory: "apps/services/todo-service",
   },
 });

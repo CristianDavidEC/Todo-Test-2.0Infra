@@ -12,10 +12,10 @@ export class HealthController {
   @ApiOkResponse({
     description: "Servicio operativo",
     schema: {
-      example: { status: "ok", service: "example-service" },
+      example: { status: "ok", service: "todo-service" },
     },
   })
   check() {
-    return { status: "ok", service: "example-service" };
+    return { status: "ok", service: "todo-service" };
   }
 }

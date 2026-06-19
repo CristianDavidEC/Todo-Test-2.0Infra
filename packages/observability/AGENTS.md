@@ -7,7 +7,7 @@ Ver también el [`AGENTS.md` raíz](../../AGENTS.md).
 ## Scope
 
 - Dos loggers según destino: **Powertools** (Lambda) / **Pino** (ECS, NestJS, Next.js). Ambos son **deps normales** (no peer).
-- Consumido por `apps/functions` (ping) y `apps/services/example-service` (`PinoLoggerService`).
+- Consumido por `apps/functions` (ping) y `apps/services/todo-service` (`PinoLoggerService`).
 
 ## Estructura
 
@@ -21,7 +21,7 @@ src/
 ## Patrones
 
 1. **Elige el logger por runtime.** `createPowertoolsLogger({service,stage})` en Lambda (sampling 10% en prod). `createPinoLogger({service,stage})` en el resto (pretty en dev, JSON en prod). No los mezcles.
-2. **`correlationId` vía `AsyncLocalStorage`** — nunca lo pases a mano. `runWithCorrelation(ctx, fn)` en el punto de entrada; `getCorrelationId()` para leerlo aguas abajo (devuelve `undefined` fuera de contexto — manéjalo). En **ECS/NestJS/Next.js** la propagación NO es automática: `createPinoLogger` lleva un `mixin` que inyecta `correlationId`/`userId` (del store) en cada línea, pero requiere que la app **ancle la request**. El package provee las primitivas (`runWithCorrelation`/mixin para ECS, `instrumentHandler` para Lambda); el `correlationMiddleware` de NestJS lo provee la **APP** (`apps/services/example-service/src/logging/correlation.middleware.ts`, `app.use(...)` en `main.ts`), no este package. **Sin ese middleware los logs del servicio no llevan correlationId** (el equivalente ECS de "sin `instrumentHandler`").
+2. **`correlationId` vía `AsyncLocalStorage`** — nunca lo pases a mano. `runWithCorrelation(ctx, fn)` en el punto de entrada; `getCorrelationId()` para leerlo aguas abajo (devuelve `undefined` fuera de contexto — manéjalo). En **ECS/NestJS/Next.js** la propagación NO es automática: `createPinoLogger` lleva un `mixin` que inyecta `correlationId`/`userId` (del store) en cada línea, pero requiere que la app **ancle la request**. El package provee las primitivas (`runWithCorrelation`/mixin para ECS, `instrumentHandler` para Lambda); el `correlationMiddleware` de NestJS lo provee la **APP** (`apps/services/todo-service/src/logging/correlation.middleware.ts`, `app.use(...)` en `main.ts`), no este package. **Sin ese middleware los logs del servicio no llevan correlationId** (el equivalente ECS de "sin `instrumentHandler`").
 3. **HTTP saliente DEBE propagar el id:** `injectCorrelationHeader(headers, getCorrelationId())` antes de despachar (devuelve un objeto **nuevo**, spread-éalo).
 4. **Lambdas pasan por `instrumentHandler(handler, { logger })`** — extrae correlation + `requestId`, loguea `handler.start`/`end`/error con `durationMs`, y limpia las keys en `finally`. **Sin él, el correlation se pierde** aguas abajo.
 5. **Redacción automática** de secretos (password, token, authorization, etc.), con **paridad real entre runtimes**: Pino combina su `redact` nativo (`PINO_REDACT_PATHS`, rápido pero de profundidad fija) **+** un hook `formatters.log` que pasa cada objeto por `redactObject` → redacción por-clave a CUALQUIER profundidad (recursiva). Powertools **NO** tiene redacción nativa, así que la ruta Lambda usa un `RedactingLogFormatter` propio que deep-redacta los atributos con el mismo `redactObject` (`DEFAULT_REDACT_KEYS`). Ambas rutas comparten la lista de claves y el mismo comportamiento recursivo.

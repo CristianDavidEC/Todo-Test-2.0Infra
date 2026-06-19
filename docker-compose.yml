@@ -3,22 +3,22 @@
 #
 # Uso:
 #   docker compose up                    # Levantar todos los servicios
-#   docker compose up example-service    # Levantar solo uno
+#   docker compose up todo-service    # Levantar solo uno
 #   docker compose down                  # Detener todo
 #
 # Las variables de entorno de conexión a AWS se toman del `.env` de la raíz del repo
 # (única fuente de verdad; ver el `env_file: - .env` de abajo).
 
 services:
-  example-service:
+  todo-service:
     build:
       context: .
-      dockerfile: apps/services/example-service/Dockerfile
+      dockerfile: apps/services/todo-service/Dockerfile
       target: builder
     command: pnpm dev
-    working_dir: /app/apps/services/example-service
+    working_dir: /app/apps/services/todo-service
     volumes:
-      - ./apps/services/example-service/src:/app/apps/services/example-service/src
+      - ./apps/services/todo-service/src:/app/apps/services/todo-service/src
       - ./packages:/app/packages
     ports:
       - "3001:3001"

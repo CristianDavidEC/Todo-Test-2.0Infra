@@ -10,7 +10,7 @@ import { createPinoLogger } from "@todo-list-poc-infra/observability";
  */
 export class PinoLoggerService implements LoggerService {
   private readonly logger = createPinoLogger({
-    service: "example-service",
+    service: "todo-service",
     stage: process.env.SST_STAGE ?? process.env.NODE_ENV ?? "local",
   });
 

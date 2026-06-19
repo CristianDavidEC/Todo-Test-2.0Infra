@@ -105,7 +105,7 @@ existe (`--env-file-if-exists`).
 
 ## Cómo crear un servicio nuevo
 
-1. `apps/services/<nombre>/` con `package.json` (`@todo-list-poc-infra/<nombre>`), `tsconfig.json` (extiende `tsconfig.nest.json`), `eslint.config.js` (preset `@todo-list-poc-infra/config/eslint.node.js`), `esbuild.config.mjs`, `Dockerfile`. Copiar de `example-service`. (El `.env` vive solo en la raíz; no hay `.env`/`.env.example` por servicio.) El script `dev` carga el `.env` raíz con `--env-file-if-exists=../../../.env`.
+1. `apps/services/<nombre>/` con `package.json` (`@todo-list-poc-infra/<nombre>`), `tsconfig.json` (extiende `tsconfig.nest.json`), `eslint.config.js` (preset `@todo-list-poc-infra/config/eslint.node.js`), `esbuild.config.mjs`, `Dockerfile`. Tomar como referencia la estructura de `todo-service`. (El `.env` vive solo en la raíz; no hay `.env`/`.env.example` por servicio.) El script `dev` carga el `.env` raíz con `--env-file-if-exists=../../../.env`.
 2. `main.ts` + `app.module.ts` con las convenciones de arriba. Feature modules en `modules/<feature>/`.
 3. Reusar `db/db.module.ts`, `auth/`, `logging/pino-logger.service.ts` (mismo patrón).
 4. Cablear en `infra/src/services/workers.ts` (+ ruta si necesita superficie pública).

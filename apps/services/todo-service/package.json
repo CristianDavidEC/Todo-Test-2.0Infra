@@ -1,5 +1,5 @@
 {
-  "name": "@todo-list-poc-infra/example-service",
+  "name": "@todo-list-poc-infra/todo-service",
   "version": "0.0.0",
   "private": true,
   "scripts": {

@@ -1,7 +1,7 @@
 <!-- Owner: @CristianDavidEC -->
-# AGENTS.md — `@todo-list-poc-infra/example-service`
+# AGENTS.md — `@todo-list-poc-infra/todo-service`
 
-Servicio NestJS de **ejemplo/referencia** de la plantilla. Sigue el patrón generalista de
+**API NestJS principal del proyecto** (CRUDs síncronos). Sigue el patrón generalista de
 [`apps/services/AGENTS.md`](../AGENTS.md) — **léelo primero**; aquí solo va lo específico de este servicio.
 
 ## Qué expone
@@ -37,7 +37,7 @@ Prefijo global `/api`. Swagger en `/api/docs` (JSON en `/api/docs-json`), **solo
 - **Dockerfile = el molde endurecido:** corre como usuario no-root `node`, `tini` como `ENTRYPOINT` (PID 1, señales/zombies), `HEALTHCHECK` contra `/api/health`, y `ENV NODE_ENV=production` (modo prod de las libs + evita que Pino caiga a `pino-pretty` en prod). `docker-compose.yml` también trae su healthcheck.
 - **Health check de la task ECS:** `workers.ts` define un `health` a nivel de task (`wget --spider http://localhost:3001/api/health`) — sin ALB, es ECS quien marca la task unhealthy y la reemplaza si NestJS se cuelga sin crashear.
 - Boot verificado: `node dist/main.js` → `GET /api/health` 200, `GET /api/me` 401 (sin token), `GET /api/users` 401 (sin token).
-- Es el **molde** para nuevos servicios: clónalo y adáptalo siguiendo [`../AGENTS.md`](../AGENTS.md).
+- Su estructura y `Dockerfile` sirven de **referencia** para crear nuevos servicios (ver [`../AGENTS.md`](../AGENTS.md)).
 
 ## See also
 

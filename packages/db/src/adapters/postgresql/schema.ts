@@ -1,7 +1,7 @@
 import { pgTable, text, uuid, timestamp, index, uniqueIndex } from "drizzle-orm/pg-core";
 
 // El RBAC de la plantilla es por claims de Auth0 (ver `requireAnyRole`/`RolesGuard`
-// en el example-service, que leen roles del JWT, NO de la BD). Si un proyecto necesita
+// en el todo-service, que leen roles del JWT, NO de la BD). Si un proyecto necesita
 // roles/permisos por BD, añade las tablas siguiendo la receta de packages/db/AGENTS.md.
 export const users = pgTable(
   "users",

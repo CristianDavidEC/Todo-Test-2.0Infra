@@ -68,7 +68,7 @@ src/
 ## Recetas (al añadir…)
 
 - **Ruta Lambda** → `api.route("METHOD /path", { handler, link: [...] })` en `apis/main-api.ts` + handler en `apps/functions`.
-- **Endpoint NestJS** → ya cubierto por `ANY /api/{proxy+}`; el código va en `apps/services/example-service`.
+- **Endpoint NestJS** → ya cubierto por `ANY /api/{proxy+}`; el código va en `apps/services/todo-service`.
 - **Cola/evento** → escribir `events/queues.ts` + `import "./events/queues"` en `app.ts` (fase eventos).
 - **Credencial nueva** → leerla con `requireSharedEnv("X")` + agregarla al `env:` de los 3 `deploy-*.yml` (Variable si no sensible, Secret si sensible). SSM solo si el proyecto lo justifica (manifest vacío por defecto).
 - **Recurso de dominio nuevo** → carpeta + módulo side-effect + import ordenado en `app.ts`.

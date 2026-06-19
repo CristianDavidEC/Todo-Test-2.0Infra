@@ -8,7 +8,7 @@ Ver también el [`AGENTS.md` raíz](../../AGENTS.md).
 
 - **Postgres (Drizzle)** es el único datastore de la plantilla. MongoDB y el RBAC por BD **no vienen** en la base (por simplicidad) — se reañaden por proyecto siguiendo las recetas de abajo.
 - **SST-free**: lee `process.env.DATABASE_URL` (la infra lo inyecta). No importes `sst`.
-- Consumido por `@todo-list-poc-infra/auth` (lazyUpsert, peerDep type-only) y `apps/services/example-service`. **`apps/functions` NO lo consume hoy** (solo usa `@todo-list-poc-infra/observability`; un handler que necesite Postgres añade `@todo-list-poc-infra/db` a sus deps).
+- Consumido por `@todo-list-poc-infra/auth` (lazyUpsert, peerDep type-only) y `apps/services/todo-service`. **`apps/functions` NO lo consume hoy** (solo usa `@todo-list-poc-infra/observability`; un handler que necesite Postgres añade `@todo-list-poc-infra/db` a sus deps).
 
 ## Estructura
 
