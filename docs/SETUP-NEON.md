@@ -167,7 +167,7 @@ Para resetear datos a estado de `main` (un script `pnpm db:reset` no existe — 
 ```bash
 # Manual: borra tu branch en Neon UI (Branches → tu stage → ⋮ → Delete)
 # y vuelve a correr `sst dev --stage $USER` para re-crearla forked de main.
-# Re-aplica migrations con: pnpm --filter @app/db db:migrate
+# El sst dev re-aplica las migrations solo (nuevo neonDb.id dispara DbMigrate).
 ```
 
 Para destruir tu stage al terminar feature:
@@ -178,47 +178,55 @@ pnpm sst remove --stage $USER      # destruye stage AWS + branch Neon automátic
 
 ---
 
-## 8. Migrations entre proyectos
+## 8. Migrations automáticas en cada deploy
 
-Cada proyecto Neon es independiente → migrations corren 1 vez por proyecto.
+> **Estado actual: las migrations se aplican AUTOMÁTICAMENTE en cada `sst dev` / `sst deploy`,
+> en todos los stages (personal, dev, staging, prod), local y en CI.** No hay que correrlas a mano
+> ni tocar los workflows de deploy.
 
-> **Estado actual: las migrations se aplican MANUALMENTE.** Los workflows de deploy
-> (`deploy-dev.yml`/`deploy-staging.yml`/`deploy-prod.yml`) solo corren `pnpm sst deploy`; **no**
-> ejecutan migrations, ni hay tag-release, approval de migración ni smoke tests en CI. El flujo
-> automatizado de abajo es el **patrón recomendado / objetivo (pendiente — ver `ROADMAP.md`)**, no el
-> comportamiento implementado.
+El cableado vive en [`infra/src/databases/migrate.ts`](../infra/src/databases/migrate.ts): un recurso
+Pulumi `command.local.Command` (`DbMigrate`) corre `drizzle-kit migrate` **después** de que Neon creó
+el proyecto/branch del stage. La dependencia es implícita — el `DATABASE_URL` inyectado es el Output
+`databaseUrl` de [`neon.ts`](../infra/src/databases/neon.ts), así que Pulumi espera a que el connection
+string del stage se resuelva antes de correr el comando.
 
-Con Drizzle Kit (manual, hoy):
+Re-corre solo cuando hace falta, vía `triggers`:
+
+- **hash del contenido de `packages/db/migrations/`** (los `.sql` + `meta/_journal.json`): cambia al
+  generar/editar una migración → re-aplica.
+- **`neonDb.id`**: si la branch/proyecto se recrea (p.ej. borras y re-forkas tu branch personal) → nuevo
+  id → re-aplica el schema sobre la BD nueva.
+
+Si nada de eso cambia entre deploys, el comando **no** se re-ejecuta. Y es idempotente de todos modos:
+drizzle-kit registra lo aplicado en la tabla `__drizzle_migrations`, así que nunca aplica algo dos veces.
+
+`@todo-list-poc-infra/db` sigue SST-free: la capa infra le pasa el `DATABASE_URL` por env var y el package
+solo lee `process.env.DATABASE_URL` desde su `drizzle.config`. El connection string inyectado gana sobre
+cualquier `.env` local (dotenv no sobre-escribe vars ya presentes).
+
+### Generar una migración (esto sigue siendo manual)
+
+Lo único manual es **generar** el SQL cuando cambias el schema; **aplicarlo** lo hace el deploy:
 
 ```bash
-# Aplicar migrations a tu branch personal (local dev)
-pnpm --filter @app/db db:migrate
-
-# Aplicar a 'dev' main (manual)
-DATABASE_URL=<dev_main_url> pnpm --filter @app/db db:migrate
-
-# Aplicar a staging (manual)
-DATABASE_URL=<staging_url> pnpm --filter @app/db db:migrate
-
-# Aplicar a prod (manual)
-DATABASE_URL=<prod_url> pnpm --filter @app/db db:migrate
+# 1. editas packages/db/src/adapters/postgresql/schema.ts
+# 2. generas la migración (drizzle-kit compara schema vs migrations/)
+pnpm --filter @todo-list-poc-infra/db db:generate
+# 3. commit del .sql generado → el siguiente sst dev/deploy lo aplica solo
 ```
 
-### Patrón objetivo (ROADMAP — aún NO implementado en CI)
+> ⚠️ **Prod**: el `DbMigrate` corre DDL contra prod en cada push a la rama de prod. Está mitigado por el
+> approval gate del GitHub Environment `production` (el deploy no arranca sin aprobación). Si la migración
+> falla, **falla el deploy** — intencional.
 
-La meta es promover migrations por proyecto a través de los stages:
+### Aplicar a mano (escape hatch / debugging)
 
+Casi nunca lo necesitas, pero el comando manual sigue funcionando contra cualquier connection string:
+
+```bash
+pnpm --filter @todo-list-poc-infra/db db:migrate                      # usa DATABASE_URL del .env
+DATABASE_URL=<otra_url> pnpm --filter @todo-list-poc-infra/db db:migrate
 ```
-dev branch (todos los devs) → main de dev project
-                                        ↓ (objetivo: validación + tests en CI)
-                                  staging project main
-                                        ↓ (objetivo: UAT, smoke tests)
-                                  prod project main
-```
-
-Cuando se implemente, CI aplicaría la promoción automáticamente; por ahora cada stage compartido se
-migra a mano con los comandos de arriba y el dev solo corre `pnpm --filter @app/db db:migrate` para su
-branch personal.
 
 ---
 

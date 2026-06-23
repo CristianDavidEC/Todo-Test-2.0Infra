@@ -129,18 +129,20 @@ pnpm --filter @app/infra type-check
 Puedes entrar al directorio y correr `pnpm dev` directamente, pero pierdes que Turbo construya las
 dependencias primero; lo recomendado es siempre `--filter` desde la raíz.
 
-### Migraciones de BD (Drizzle, en `@app/db`)
+### Migraciones de BD (Drizzle, en `@todo-list-poc-infra/db`)
 
-Requieren `DATABASE_URL` en el `.env` de la raíz.
+**Se aplican solas en cada `sst dev` / `sst deploy`** (recurso `DbMigrate` en
+`infra/src/databases/migrate.ts`), así que `db:migrate` a mano casi nunca hace falta. Lo único manual es
+**generar** el SQL cuando cambias el schema.
 
 ```bash
-pnpm --filter @app/db db:generate   # drizzle-kit generate (genera SQL desde el schema)
-pnpm --filter @app/db db:migrate    # drizzle-kit migrate  (aplica migraciones)
-pnpm --filter @app/db db:studio     # drizzle-kit studio   (UI web)
+pnpm --filter @todo-list-poc-infra/db db:generate   # genera SQL desde el schema (manual)
+pnpm --filter @todo-list-poc-infra/db db:migrate    # aplica a mano (escape hatch; requiere DATABASE_URL en .env)
+pnpm --filter @todo-list-poc-infra/db db:studio     # drizzle-kit studio (UI web)
 ```
 
 `adapters/postgresql/schema.ts` es la fuente de verdad; tras editarlo corre `db:generate` y commitea el
-SQL resultante.
+SQL resultante — el siguiente `sst dev`/`sst deploy` lo aplica automáticamente.
 
 ### SST v4 (Ion/Pulumi)
 

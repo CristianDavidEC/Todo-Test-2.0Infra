@@ -161,18 +161,27 @@ pnpm sst dev --stage <tu-usuario>
 
 ## Paso 7 — Migraciones de base de datos
 
-El schema vive en `packages/db` (Drizzle). Para aplicar las migraciones a tu branch Neon,
-pon el connection string en `.env` (de la consola de Neon → *Connection Details*, o del
-output del deploy):
+El schema vive en `packages/db` (Drizzle). **Las migraciones se aplican solas en cada `sst dev` /
+`sst deploy`** (recurso `DbMigrate` en `infra/src/databases/migrate.ts`), así que normalmente **no
+tienes que correr `db:migrate` a mano** — al levantar `sst dev` tu branch queda migrada.
+
+Lo único manual es **generar** la migración cuando cambias el schema:
+
+```bash
+# editas packages/db/src/adapters/postgresql/schema.ts y luego:
+pnpm --filter @todo-list-poc-infra/db db:generate   # genera el .sql → lo aplica el próximo deploy
+```
+
+Comandos de apoyo (opcionales). El manual de `db:migrate` necesita el connection string en `.env`
+(de la consola de Neon → *Connection Details*, o del output del deploy):
 
 ```ini
 DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
 ```
 
 ```bash
-pnpm --filter @app/db db:migrate     # aplica migraciones existentes
-pnpm --filter @app/db db:studio      # (opcional) explorar la BD
-# Si cambias el schema: pnpm --filter @app/db db:generate  → genera la migración
+pnpm --filter @todo-list-poc-infra/db db:migrate    # aplicar a mano (escape hatch / debugging)
+pnpm --filter @todo-list-poc-infra/db db:studio     # explorar la BD
 ```
 
 ---
@@ -244,5 +253,5 @@ pnpm sst remove --stage <tu-usuario>
 - [ ] (Escenario A) `sst deploy --stage dev` hecho → outputs copiados a `.env`/`.env.example`
 - [ ] (Escenario B) `NEON_DEV_PROJECT_ID` + `SHARED_DEV_VPC_ID` en `.env`
 - [ ] `sst dev --stage <tu-usuario>` levanta el stack
-- [ ] Migraciones aplicadas (`db:migrate`)
+- [ ] Migraciones aplicadas automáticamente por el `sst dev` (recurso `DbMigrate`)
 - [ ] `http://localhost:3000` y `/api/health` responden
