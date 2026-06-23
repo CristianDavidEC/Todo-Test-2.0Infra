@@ -307,6 +307,9 @@ importers:
       '@todo-list-poc-infra/config':
         specifier: workspace:*
         version: link:../config
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@25.5.0)(lightningcss@1.32.0)(terser@5.46.1)
 
 packages:
 

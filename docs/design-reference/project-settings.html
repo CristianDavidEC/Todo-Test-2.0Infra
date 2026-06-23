@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CandyProject - Project Settings</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: DM Sans -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#4a3068",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#e0d6e0",
+                    "secondary-fixed": "#eedcff",
+                    "secondary-fixed-dim": "#c8a8e8",
+                    "primary-container": "#f080c0",
+                    "surface-bright": "#fef7ff",
+                    "surface": "#fef7ff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffe8e8",
+                    "inverse-primary": "#f0a0cc",
+                    "on-surface-variant": "#604868",
+                    "inverse-surface": "#2e1a28",
+                    "tertiary-fixed-dim": "#80d0f0",
+                    "on-primary-container": "#2e1a28",
+                    "surface-tint": "#e040a0",
+                    "on-tertiary-container": "#00334d",
+                    "inverse-on-surface": "#fef7ff",
+                    "surface-container-low": "#fbf2fb",
+                    "surface-container": "#f8eef8",
+                    "surface-container-highest": "#ece2ec",
+                    "surface-container-high": "#f2e8f2",
+                    "secondary": "#7c52aa",
+                    "on-tertiary-fixed": "#001a33",
+                    "on-tertiary-fixed-variant": "#005580",
+                    "outline-variant": "#dcc8e0",
+                    "on-background": "#2e1a28",
+                    "primary-fixed-dim": "#f0a0cc",
+                    "primary-fixed": "#ffd6ee",
+                    "background": "#fef7ff",
+                    "tertiary-fixed": "#c8eaff",
+                    "tertiary": "#0096cc",
+                    "primary": "#e040a0",
+                    "on-error-container": "#9b1c1c",
+                    "on-secondary-container": "#2e2040",
+                    "on-primary-fixed-variant": "#a02070",
+                    "outline": "#907898",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#1a1030",
+                    "tertiary-container": "#40c0ee",
+                    "on-surface": "#2e1a28",
+                    "on-primary-fixed": "#3d0028",
+                    "surface-variant": "#f2e8f2",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#eedcff",
+                    "error": "#e53e3e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["DM Sans", "sans-serif"],
+                    "display": ["DM Sans", "sans-serif"],
+                    "body": ["DM Sans", "sans-serif"],
+                    "label": ["DM Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'DM Sans', sans-serif; background-color: #fef7ff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bouncy { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .bouncy:hover { transform: scale(1.03); }
+        .bouncy:active { transform: scale(0.95); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #dcc8e0; border-radius: 10px; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="text-on-surface overflow-hidden">
+<!-- Sidebar Navigation -->
+<nav class="fixed left-0 top-0 h-full flex flex-col p-4 z-40 bg-surface dark:bg-surface-container-low border-r border-outline-variant h-screen w-64 rounded-r-xl shadow-[4px_0_16px_rgba(124,82,170,0.1)]">
+<div class="mb-8 px-4 py-2">
+<h1 class="text-xl font-black text-primary">CandyProject</h1>
+<p class="text-xs font-medium text-on-surface-variant opacity-70">Joyful Productivity</p>
+</div>
+<div class="flex-1 space-y-2">
+<!-- Kanban -->
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors font-body font-medium hover:scale-[1.03] hover:shadow-md transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span>Kanban</span>
+</a>
+<!-- Metrics -->
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors font-body font-medium hover:scale-[1.03] hover:shadow-md transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Metrics</span>
+</a>
+<!-- Sprints -->
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors font-body font-medium hover:scale-[1.03] hover:shadow-md transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span>Sprints</span>
+</a>
+<!-- Team -->
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors font-body font-medium hover:scale-[1.03] hover:shadow-md transition-all duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Team</span>
+</a>
+<!-- Settings (ACTIVE) -->
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-full px-4 py-3 font-bold bouncy shadow-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="mt-auto space-y-4">
+<button class="w-full bg-primary text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(224,64,160,0.3)] bouncy">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span>AI Sidekick</span>
+</button>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="text-sm font-medium">Help Center</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 h-screen overflow-y-auto custom-scrollbar p-8">
+<!-- Top App Bar Content (Embedded) -->
+<header class="flex justify-between items-center mb-10 w-full">
+<div>
+<h2 class="text-3xl font-black tracking-tight text-primary">Project Settings</h2>
+<p class="text-on-surface-variant font-medium">Fine-tune your workspace experience</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container h-10 px-4 rounded-full flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-primary">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Search settings..." type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="A vibrant professional headshot of a female tech project manager with a friendly expression. She is in a brightly lit modern office with soft pink and purple neon accents in the background, matching the playful CandyProject brand aesthetic. The lighting is soft and flattering, creating a premium high-quality feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcj_xlsY5YPhTaQ7U75MMMXXeU35RziPNRvfR5nH7H0ZOuqjuezUZMfLR3PHeBAnTd9Qoe64MPbFniRzbvseZ_7YBDWMyEotFPlkIOhwGJguPn8YKlQPStHjGUzlCamdurIenA48Q8NL3v1dvwQk2VUxdUDvcSZMGArVKDGAV8cvNy1TuFr3rfeff0PZCGOau6EuQOuOD_2aRAEf48_bj2IhDYY3R14Cqo1PX2eHhyRbQJBM4uLXf0SeGePOeUgyb1qU5DJpdpruiE"/>
+</div>
+</div>
+</header>
+<!-- Bento Grid Settings Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- AI Sidekick Optimization Suggestion (Banner) -->
+<div class="col-span-12 bg-tertiary-container/20 border-2 border-tertiary rounded-lg p-6 flex items-start gap-6 relative overflow-hidden">
+<div class="z-10 flex items-center justify-center w-12 h-12 rounded-full bg-tertiary text-white shadow-[0_4px_12px_rgba(0,150,204,0.3)]">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="z-10 flex-1">
+<h3 class="text-tertiary font-black text-xl mb-1">AI Suggestion: Team Flow Optimization</h3>
+<p class="text-on-surface-variant font-medium max-w-2xl">Based on last week's activity, I recommend enabling <span class="text-tertiary font-bold">"Auto-Archive Completed Sprints"</span> to keep your Kanban board snappy. Your team tends to clear 15+ tasks on Friday afternoons!</p>
+<div class="mt-4 flex gap-3">
+<button class="bg-tertiary text-white px-6 py-2 rounded-full font-bold text-sm bouncy shadow-md">Apply Recommendation</button>
+<button class="text-tertiary font-bold text-sm px-4 py-2 hover:bg-tertiary/10 rounded-full transition-colors">Maybe Later</button>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute right-[-20px] bottom-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[160px]">smart_toy</span>
+</div>
+</div>
+<!-- Workspace Customization -->
+<div class="col-span-12 lg:col-span-7 bg-white rounded-lg p-8 shadow-[0_4px_16px_rgba(224,64,160,0.08)] border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">palette</span>
+<h3 class="text-2xl font-black text-on-surface">Workspace Identity</h3>
+</div>
+<div class="space-y-8">
+<!-- Brand Logo -->
+<div class="flex items-center gap-8">
+<div class="relative group">
+<div class="w-24 h-24 rounded-2xl bg-primary-fixed-dim flex items-center justify-center border-4 border-dashed border-primary/30 group-hover:border-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-primary text-4xl">add_a_photo</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-sm">edit</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-black text-on-surface-variant mb-1 uppercase tracking-wider">Workspace Name</label>
+<input class="text-2xl font-bold text-primary bg-transparent border-b-2 border-primary/20 focus:border-primary focus:ring-0 w-full py-1" type="text" value="CandyProject"/>
+<p class="text-xs text-on-surface-variant mt-2">Visible to all team members and on external links.</p>
+</div>
+</div>
+<!-- Theme Colors -->
+<div>
+<label class="block text-sm font-black text-on-surface-variant mb-4 uppercase tracking-wider">Brand Palette</label>
+<div class="flex flex-wrap gap-4">
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full bg-[#e040a0] ring-4 ring-primary ring-offset-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">check</span>
+</div>
+<span class="text-[10px] font-bold mt-2 block">Hot Pink</span>
+</div>
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full bg-[#7c52aa] hover:scale-110 transition-transform"></div>
+<span class="text-[10px] font-bold mt-2 block text-on-surface-variant">Purple Pop</span>
+</div>
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full bg-[#0096cc] hover:scale-110 transition-transform"></div>
+<span class="text-[10px] font-bold mt-2 block text-on-surface-variant">Sky High</span>
+</div>
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full bg-[#f97316] hover:scale-110 transition-transform"></div>
+<span class="text-[10px] font-bold mt-2 block text-on-surface-variant">Orange Crush</span>
+</div>
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full bg-[#10b981] hover:scale-110 transition-transform"></div>
+<span class="text-[10px] font-bold mt-2 block text-on-surface-variant">Lime Fizz</span>
+</div>
+<div class="group cursor-pointer text-center">
+<div class="w-14 h-14 rounded-full border-2 border-dashed border-outline flex items-center justify-center hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-outline">add</span>
+</div>
+<span class="text-[10px] font-bold mt-2 block text-on-surface-variant">Custom</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Roles & Permissions -->
+<div class="col-span-12 lg:col-span-5 bg-white rounded-lg p-8 shadow-[0_4px_16px_rgba(124,82,170,0.08)] border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">verified_user</span>
+<h3 class="text-2xl font-black text-on-surface">Team Roles</h3>
+</div>
+<div class="space-y-4">
+<div class="p-4 rounded-xl bg-secondary-container/30 border border-secondary/20 flex items-center justify-between group hover:bg-secondary-container/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary text-white flex items-center justify-center">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Administrators</h4>
+<p class="text-xs text-on-surface-variant">Full access to all settings</p>
+</div>
+</div>
+<span class="bg-secondary text-white text-[10px] font-black px-2 py-1 rounded-full uppercase">3 Users</span>
+</div>
+<div class="p-4 rounded-xl border border-outline-variant flex items-center justify-between group hover:border-secondary transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined">edit_note</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Project Managers</h4>
+<p class="text-xs text-on-surface-variant">Edit tasks &amp; roadmaps</p>
+</div>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] font-black px-2 py-1 rounded-full uppercase">8 Users</span>
+</div>
+<div class="p-4 rounded-xl border border-outline-variant flex items-center justify-between group hover:border-secondary transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Contributors</h4>
+<p class="text-xs text-on-surface-variant">View &amp; complete assigned tasks</p>
+</div>
+</div>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] font-black px-2 py-1 rounded-full uppercase">24 Users</span>
+</div>
+<button class="w-full mt-4 py-3 border-2 border-dashed border-secondary text-secondary font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-secondary/5 transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+                        Create Custom Role
+                    </button>
+</div>
+</div>
+<!-- Smart Automations & Toggles -->
+<div class="col-span-12 lg:col-span-6 bg-white rounded-lg p-8 shadow-[0_4px_16px_rgba(0,150,204,0.08)] border border-outline-variant/30">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-3xl">auto_fix_high</span>
+<h3 class="text-2xl font-black text-on-surface">Smart Automations</h3>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-container text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Powered by AI</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-on-surface">AI Sprint Summarizer</h4>
+<p class="text-sm text-on-surface-variant">Generate weekly progress reports automatically.</p>
+</div>
+<button class="w-14 h-8 bg-tertiary rounded-full relative p-1 transition-colors duration-300" onclick="toggleSwitch(this)">
+<div class="w-6 h-6 bg-white rounded-full translate-x-6 transition-transform duration-300 shadow-sm"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-on-surface">Auto-Focus Mode</h4>
+<p class="text-sm text-on-surface-variant">Mute notifications when deadline is &lt; 2 hours.</p>
+</div>
+<button class="w-14 h-8 bg-outline-variant rounded-full relative p-1 transition-colors duration-300" onclick="toggleSwitch(this)">
+<div class="w-6 h-6 bg-white rounded-full translate-x-0 transition-transform duration-300 shadow-sm"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-on-surface">Magic Task Sizing</h4>
+<p class="text-sm text-on-surface-variant">Predict story points based on historical data.</p>
+</div>
+<button class="w-14 h-8 bg-tertiary rounded-full relative p-1 transition-colors duration-300" onclick="toggleSwitch(this)">
+<div class="w-6 h-6 bg-white rounded-full translate-x-6 transition-transform duration-300 shadow-sm"></div>
+</button>
+</div>
+</div>
+</div>
+<!-- Integrations -->
+<div class="col-span-12 lg:col-span-6 bg-white rounded-lg p-8 shadow-[0_4px_16px_rgba(124,82,170,0.08)] border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary text-3xl">hub</span>
+<h3 class="text-2xl font-black text-on-surface">Integrations</h3>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 rounded-2xl border-2 border-outline-variant flex items-center justify-between hover:border-primary transition-all cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-on-background flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="A clean vector minimalist logo of Slack, high resolution with vibrant colors on a white background, professional digital asset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBST7TaVJG2fG2Xm8xwp04oA0oWlbVcEoXzlHgi9hO-2PAjGEw8DGYmbljbh2JW5vZAgwAYKINqx0lgizM6hItpyC0amw5Tb7f5gLRPpcMe9FkQJBiLQVqt3P0PxUtTss-erPdLrkeN38G7vO4ja5wHRN7kAQNFEt30xE1MNQNBwRbu0iZJf9n2ITCSQ3AToKgUdqJeDKFQ5sgL9kaivJlnNU-ZuHoHUhuYlj2RRwa1qlEkMQqIUJJ6c6xuKzXgfm_08t0B-njAuVEE"/>
+</div>
+<span class="font-black text-on-surface">Slack</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">link</span>
+</div>
+<div class="p-4 rounded-2xl border-2 border-primary bg-primary/5 flex items-center justify-between hover:scale-105 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="A clean vector minimalist logo of GitHub, high resolution, professional digital asset for a tech integration screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCShHg8Ou0UKenobrpsH39FMi0ZyZM_OP7LuDtIxIOZoLcT-nNezHZnmyCW2n6NkMudFhNdVU_6okDI4qJCYQ2m7hl2U3xZ27wL32qS5BcC1GsHw95YeWHhzzN5KVju8fM829dSNfS4rN-n1bbdBuWQ354c5AHLE5spfgrqM7OF656buu0zeY_i-XCw_zHkVLywt2TWabsR7BhFQSJN7EDmVJg5dVi7Oht1dtPUpxKXrkikj-twsUHIhvtWp7_kaMB5HlmEGf7RgF_W"/>
+</div>
+<span class="font-black text-primary">GitHub</span>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<div class="p-4 rounded-2xl border-2 border-outline-variant flex items-center justify-between hover:border-tertiary transition-all cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#0061ff] flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="A clean vector minimalist logo of Dropbox, high resolution with vibrant colors on a white background, professional digital asset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH4_-HXnLSdWHiKQ3MaQOo1XSgWaro-yLY31ug0xM-HRH1KKY6DiZVBirOXNlGEi_wuII-gVbq49Ju7kr1qael7zC_nPXlWxoluf4XdGFU95SZEG3zqdlF4eQSvrCPlFAy26Cjdn3IyLwvSO90dND0Yx5_Nd4hZDeALPJNyNv3ONCgdtGqnACIACH6iibwzpXrRvZc9A7K_wawUiuQzLBc3TbI-EJYJYKCEsivLuBzCCfQrFcU9gq54g55hPXmOqT3JhRsAAQh1C6B"/>
+</div>
+<span class="font-black text-on-surface">Dropbox</span>
+</div>
+<span class="material-symbols-outlined text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">link</span>
+</div>
+<div class="p-4 rounded-2xl border-2 border-outline-variant flex items-center justify-between hover:border-secondary transition-all cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#E0332B] flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="A clean vector minimalist logo of Adobe Creative Cloud, high resolution with vibrant colors on a white background, professional digital asset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARH9dtFQxNRlUTZxBVGenk1fcMIvRdWz9wxUOm28bQ2Q21lPTHE2Cbmi-Qz_k-O3P0CMf7euewRaNLAAwD4aesweozKMiYkf6u9gcjp4I5CfedW15f6Sqv9w8fkVsv20rbmAwcFmNPuR2qGOlZtvm23YDwmLJ1agQUX-zQ8vACGcI4Du_R9Br0WHY3BErzvfDrFAdmePPk_n_PvL-aowxTC4HP0tVI9QxIKME5NBUXEAZ-sxm7_uo_962zQWN5ohEDYXdlXR1-vTIs"/>
+</div>
+<span class="font-black text-on-surface">Adobe CC</span>
+</div>
+<span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">link</span>
+</div>
+</div>
+<button class="mt-6 w-full py-2 text-on-surface-variant font-bold hover:text-primary transition-colors text-sm">View all 15+ integrations →</button>
+</div>
+<!-- Danger Zone -->
+<div class="col-span-12 bg-error-container/20 border-2 border-error/20 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+<div>
+<h3 class="text-error font-black text-xl mb-1">Danger Zone</h3>
+<p class="text-on-surface-variant text-sm font-medium">Permanently delete this workspace and all associated data. This action cannot be undone.</p>
+</div>
+<button class="bg-error text-white px-8 py-3 rounded-full font-bold bouncy shadow-[0_4px_16px_rgba(229,62,62,0.3)]">Delete Workspace</button>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-12 mb-8 flex justify-end gap-4">
+<button class="px-8 py-3 rounded-full font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors">Discard Changes</button>
+<button class="px-10 py-3 rounded-full font-bold bg-primary text-white shadow-[0_4px_20px_rgba(224,64,160,0.4)] bouncy">Save All Changes</button>
+</div>
+</main>
+<script>
+        function toggleSwitch(btn) {
+            const circle = btn.querySelector('div');
+            const isActive = circle.classList.contains('translate-x-6');
+            
+            if (isActive) {
+                circle.classList.remove('translate-x-6');
+                circle.classList.add('translate-x-0');
+                btn.classList.remove('bg-tertiary');
+                btn.classList.add('bg-outline-variant');
+            } else {
+                circle.classList.remove('translate-x-0');
+                circle.classList.add('translate-x-6');
+                btn.classList.remove('bg-outline-variant');
+                btn.classList.add('bg-tertiary');
+            }
+        }
+
+        // Add some atmospheric motion
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            // Subtle shift for a premium feel
+        });
+    </script>
+</body></html>
