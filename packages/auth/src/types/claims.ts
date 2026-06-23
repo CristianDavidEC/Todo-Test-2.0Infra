@@ -9,7 +9,7 @@
  * negocio de cada proyecto. Este reader y el resto del mecanismo RBAC (helpers,
  * RolesGuard, dashboard) están listos; mientras no exista una Action, `roles` y
  * `permissions` llegan vacíos (la autenticación funciona igual). Cada proyecto
- * derivado implementa su Action — guía/ejemplo en docs/SETUP-AUTH0.md §6.
+ * derivado implementa su Action según sus reglas de negocio.
  */
 
 export const DEFAULT_AUTH0_NAMESPACE = "https://app.example.com/";

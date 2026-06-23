@@ -1,7 +1,7 @@
 /**
  * Neon (Postgres serverless) — BD principal de la plantilla.
  *
- * Estrategia híbrida (ver docs/SETUP-NEON.md):
+ * Estrategia híbrida:
  *
  *   prod      → proyecto Neon propio (todo-list-poc-infra-prod), aislado
  *   staging   → proyecto Neon propio (todo-list-poc-infra-staging), aislado
@@ -20,8 +20,6 @@
  *   6. `pnpm sst deploy --stage dev`  ← crea el proyecto compartido
  *   7. Capturar NEON_DEV_PROJECT_ID del output → committed a .env.example
  *   8. Devs pueden hacer `pnpm sst dev --stage $USER` → branch auto
- *
- * Ver docs/SETUP-NEON.md para guía paso a paso.
  */
 
 import { isProduction, isStaging, isPersonalStage } from "../helpers/stage";
@@ -35,8 +33,7 @@ if (!NEON_ORG_ID) {
     "NEON_ORG_ID env var requerido.\n" +
       "1. Crea una org en https://console.neon.tech\n" +
       "2. Copia el Organization ID desde Settings → General\n" +
-      "3. Agrégalo a .env como NEON_ORG_ID=org-xxxx\n" +
-      "4. Ver docs/SETUP-NEON.md para detalles."
+      "3. Agrégalo a .env como NEON_ORG_ID=org-xxxx"
   );
 }
 
@@ -88,8 +85,7 @@ if (isProduction(stage) || isStaging(stage)) {
         `2. Captura el Project ID del output (o de Neon UI → Settings)\n` +
         `3. Agrégalo a .env.example y .env como:\n` +
         `     NEON_DEV_PROJECT_ID=proj-xxxxxxxxxxxxxxxx\n` +
-        `4. Re-corre el comando.\n` +
-        `Ver docs/SETUP-NEON.md §6.1 para más detalle.`
+        `4. Re-corre el comando.`
     );
   }
 

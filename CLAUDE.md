@@ -11,7 +11,7 @@ Every app/package/infra folder has its own `AGENTS.md` with local rules, pattern
 | Working in… | Read |
 |---|---|
 | repo-wide layout / workflow / adding services | `AGENTS.md` (root) |
-| `.github` — CI/CD (workflows, OIDC) | `.github/AGENTS.md` (setup: `docs/SETUP-CICD.md`) |
+| `.github` — CI/CD (workflows, OIDC) | `.github/AGENTS.md` |
 | `apps/web` — Next.js frontend | `apps/web/AGENTS.md` |
 | `apps/functions` — Lambda handlers | `apps/functions/AGENTS.md` |
 | `apps/services/*` — NestJS on ECS | `apps/services/AGENTS.md` + the service's own `AGENTS.md` |
@@ -98,4 +98,4 @@ Stages: each developer uses their own personal stage; `dev` and `staging` are sh
 
 `.claude/skills/` contains skills with nested `AGENTS.md` guidance (e.g. `vercel-react-best-practices`, `nestjs-best-practices`, `next-best-practices`, `turborepo`) — consult them when working on the corresponding area.
 
-Architecture deep-dives live in `docs/` (numbered 01–08 plus `ARCHITECTURE.md` as the index; `SETUP-ONBOARDING.md` is the developer getting-started guide, with `SETUP-AUTH0.md`/`SETUP-AWS.md`/`SETUP-NEON.md` for the per-service detail). Deferred/future work is in `ROADMAP.md` (root).
+Architecture lives in the per-folder `AGENTS.md` files (routed from the table above). The product's functional definition (modules, domain model, execution order) is in `docs/DEFINICION-FUNCIONAL.md`.

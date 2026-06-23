@@ -56,6 +56,24 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3001;
   await app.listen(port);
+
+  // URLs legibles (texto plano, NO JSON) para que VSCode auto-forwardee el puerto
+  // —igual que hace con `next dev`— y para abrir el servicio rápido en local.
+  // Solo fuera de prod: en ECS los logs deben quedar como JSON estructurado limpio.
+  if (process.env.APP_STAGE !== "prod") {
+    const url = `http://localhost:${port}`;
+    // eslint-disable-next-line no-console
+    console.log(
+      [
+        "",
+        "🚀 todo-service listo:",
+        `   API:     ${url}/api`,
+        `   Health:  ${url}/api/health`,
+        `   Swagger: ${url}/api/docs`,
+        "",
+      ].join("\n"),
+    );
+  }
 }
 
 void bootstrap();
