@@ -10,14 +10,14 @@ export function AuthNav() {
   const { user, isLoading } = useUser();
 
   if (isLoading) {
-    return <span className="text-sm text-gray-500">…</span>;
+    return <span className="text-sm text-ink-muted">…</span>;
   }
 
   if (!user) {
     return (
       <a
         href="/auth/login"
-        className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-sm text-emerald-400 hover:bg-emerald-500/20"
+        className="rounded-pill bg-primary px-4 py-1.5 text-sm font-medium text-white shadow-candy-primary transition-transform hover:scale-[1.03]"
       >
         Iniciar sesión
       </a>
@@ -26,10 +26,10 @@ export function AuthNav() {
 
   return (
     <div className="flex items-center gap-3 text-sm">
-      <span className="text-gray-400">{user.name ?? user.email}</span>
+      <span className="text-ink-muted">{user.name ?? user.email}</span>
       <a
         href="/auth/logout"
-        className="rounded-md border border-gray-700 px-3 py-1.5 text-gray-300 hover:bg-gray-800"
+        className="rounded-pill border border-primary/30 px-4 py-1.5 font-medium text-primary transition-transform hover:scale-[1.03]"
       >
         Cerrar sesión
       </a>

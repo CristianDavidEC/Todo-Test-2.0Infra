@@ -26,33 +26,33 @@ export default function Home() {
       <div className="w-full max-w-2xl space-y-10">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-400">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-pill bg-primary-fixed px-4 py-1.5 text-sm font-bold text-primary">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             Scaffold activo
           </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             {example.name}
           </h1>
-          <p className="text-lg text-gray-400">
+          <p className="text-lg text-ink-muted">
             {example.description}
           </p>
         </div>
 
         {/* Type-safety check */}
-        <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+        <div className="rounded-card bg-surface p-5 shadow-candy-primary">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-400">Tipado end-to-end</p>
-              <p className="text-xs text-gray-500 mt-1">
-                Validando con <code className="text-gray-300">@todo-list-poc-infra/core</code>
+              <p className="text-sm font-medium text-ink">Tipado end-to-end</p>
+              <p className="text-xs text-ink-muted mt-1">
+                Validando con <code className="text-primary">@todo-list-poc-infra/core</code>
               </p>
             </div>
-            <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${
+            <span className={`inline-flex items-center gap-1.5 rounded-pill px-3 py-1 text-sm font-bold ${
               isValid
-                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                : "bg-red-500/10 text-red-400 border border-red-500/30"
+                ? "bg-primary-fixed text-primary"
+                : "bg-red-100 text-red-600"
             }`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${isValid ? "bg-emerald-400" : "bg-red-400"}`} />
+              <span className={`h-1.5 w-1.5 rounded-full ${isValid ? "bg-primary" : "bg-red-500"}`} />
               {isValid ? "Validación OK" : errors.join(", ")}
             </span>
           </div>
@@ -63,10 +63,10 @@ export default function Home() {
           {stack.map((item) => (
             <div
               key={item.name}
-              className="rounded-lg border border-gray-800 bg-gray-900/50 p-4 transition-colors hover:border-gray-700 hover:bg-gray-900"
+              className="rounded-card bg-surface p-4 shadow-candy-secondary transition-transform hover:scale-[1.03]"
             >
               <p className="text-sm font-medium">{item.name}</p>
-              <p className="text-xs text-gray-500 mt-1">{item.desc}</p>
+              <p className="text-xs text-ink-muted mt-1">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -75,15 +75,15 @@ export default function Home() {
         <div className="text-center">
           <Link
             href="/dashboard"
-            className="inline-flex rounded-md border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-400 hover:bg-emerald-500/20"
+            className="inline-flex rounded-pill bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-candy-primary transition-transform hover:scale-[1.03]"
           >
             Ir al dashboard (protegido) →
           </Link>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-600">
-          Monorepo cloud scaffold — listo para construir
+        <p className="text-center text-xs text-ink-muted">
+          CandyProject — sistema de diseño Candy activo
         </p>
       </div>
     </main>

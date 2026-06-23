@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+/*
+ * Sistema de diseño "Candy" — fuente de verdad: docs/DESIGN.md.
+ * Tailwind v4 CSS-first: estos tokens generan utilidades (bg-primary,
+ * rounded-card, shadow-candy-primary, font-sans…). NO hardcodear hex en
+ * componentes; usar siempre estos tokens para que el estilo se replique en
+ * cada vista.
+ */
+@theme {
+  /* Paleta */
+  --color-primary: #e040a0; /* hot pink — acciones primarias, marca */
+  --color-secondary: #7c52aa; /* purple — secundario, tags, categorías */
+  --color-tertiary: #0096cc; /* sky blue — info, links, highlights */
+  --color-background: #fef7ff; /* pink-white — fondo cálido */
+  --color-surface: #ffffff; /* fill de cards/inputs */
+  --color-ink: #2a1633; /* texto principal (plum oscuro, legible) */
+  --color-ink-muted: #6b5b75; /* texto secundario */
+  --color-primary-fixed: #ffd9ec; /* pastel pink — fill de badges/tags */
+
+  /* Tipografía */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radios — todo redondeado, sin esquinas duras */
+  --radius-card: 1rem; /* 16px — cards/contenedores */
+  --radius-pill: 9999px; /* pill — botones, badges, inputs */
+
+  /* Sombras tintadas (color del elemento al 15-20%) */
+  --shadow-candy-primary: 0 4px 16px rgba(224, 64, 160, 0.2);
+  --shadow-candy-secondary: 0 4px 16px rgba(124, 82, 170, 0.2);
+  --shadow-candy-tertiary: 0 4px 16px rgba(0, 150, 204, 0.2);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-ink);
+}
