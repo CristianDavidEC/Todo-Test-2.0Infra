@@ -13,6 +13,7 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@todo-list-poc-infra/auth": "workspace:*",
     "@todo-list-poc-infra/core": "workspace:*",
+    "@todo-list-poc-infra/types": "workspace:*",
     "@auth0/nextjs-auth0": "^4.22.0",
     "next": "^16.2.6",
     "postcss": "^8.5.8",

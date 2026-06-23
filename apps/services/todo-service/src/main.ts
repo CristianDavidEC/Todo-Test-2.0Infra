@@ -45,6 +45,7 @@ async function bootstrap() {
       .addTag("health", "Health check del servicio")
       .addTag("users", "Lectura de usuarios (requiere JWT)")
       .addTag("me", "Usuario autenticado (requiere JWT)")
+      .addTag("workspaces", "Workspaces y miembros (multi-tenancy, RBAC por workspace)")
       .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup("docs", app, document, {

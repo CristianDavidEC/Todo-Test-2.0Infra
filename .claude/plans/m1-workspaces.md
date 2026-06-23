@@ -177,3 +177,60 @@ Validación continua: `pnpm turbo run type-check lint build`.
 - `packages/types/src/schemas/workspace.ts` (nuevo) · `index.ts`
 - `apps/services/todo-service/src/modules/workspaces/*` (nuevo) · `db/db.module.ts` · `app.module.ts` · `main.ts`
 - `apps/web/src/lib/auth0.ts` (audience) · `apps/web/src/features/workspaces/*` (nuevo) · `app/workspaces`, `app/w/[id]` rutas
+
+---
+
+## F. Runbook Fase 5 — verificación end-to-end (SST + Neon, NO Docker)
+
+> Estado al cierre de Fase 4: **Fases 1–4 completas**, todas las puertas offline en verde
+> (`turbo run type-check lint build` = 20 tasks ✓; tests db 6 / types 10 / core 6 ✓; boot del
+> servicio con 10 rutas mapeadas y orden de guards 401 ✓). Lo que falta es runtime real.
+>
+> **El proyecto NO usa Docker para la DB.** El entorno real se levanta con `sst dev` (Neon +
+> ECS + API Gateway + web). La migración `0001` se aplica **sola** (`infra/src/databases/migrate.ts`,
+> hash-triggered).
+
+### F.0 Prerequisito Auth0 (el que más muerde)
+El `Auth0Guard` exige `email` en custom claims bajo `AUTH0_NAMESPACE` (default
+`https://app.example.com/`). El **access token** de Auth0 no trae `email`/`profile` por defecto:
+hace falta una **Auth0 Action (Login flow)** que añada `https://app.example.com/email` (y
+`https://app.example.com/roles` si se usan). Sin ella → `401 "JWT missing email claim"` aunque
+todo lo demás esté bien. `aud` sí valida solo (mismo `AUTH0_AUDIENCE` en web y servicio).
+
+`.env` raíz (ya tiene las claves, faltan valores reales):
+`AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`, `AUTH0_SECRET` (`openssl rand -hex 32`),
+`AUTH0_AUDIENCE=https://api.todo.com`, `APP_BASE_URL=http://localhost:3000`. En el tenant: registrar
+`http://localhost:3000/auth/callback` como Allowed Callback URL.
+
+### F.1 Levantar entorno
+```bash
+sst dev --stage <tu-nombre>     # provisiona Neon, corre servicio + API + web; aplica migración 0001
+```
+
+### F.2 Backend (Swagger `/api/docs`) — casos críticos
+Necesita un Bearer token con `aud=https://api.todo.com` (del flujo de login, ver F.0).
+
+| Caso | Esperado |
+|---|---|
+| `POST /api/workspaces` | 201; el creador queda `owner` |
+| `GET /api/workspaces` | lista activos, con `role`; archivados ocultos |
+| `GET /api/workspaces/:id` (no-miembro) | **404** (no filtra existencia) |
+| `PATCH /api/workspaces/:id` (member) | **403** |
+| `POST /api/workspaces/:id/members` email no registrado | **404** "debe registrarse primero" |
+| `POST /api/workspaces/:id/members` email duplicado | **409** |
+| `DELETE …/members/:userId` del último owner | **409** (BR-5) |
+| `PATCH …/members/:userId/role` degradando al último owner | **409** (BR-5) |
+| `POST /api/workspaces/:id/leave` siendo el último owner | **409** (BR-5) |
+
+### F.3 Web e2e (`http://localhost:3000`)
+Login → `/workspaces` (empty-state si no hay membresías) → crear (picker color preset + emoji) →
+entrar a `/w/[id]` → `/w/[id]/members` (agregar por email, cambiar rol, remover; controles solo
+para owner). La **primera** llamada web→API valida el fix de audience: 401 aquí = audience mal;
+403/404 = guard OK (audience bien).
+
+### F.4 Test de integración BR-5 (concurrencia `FOR UPDATE`) — DIFERIDO
+Es el único test que faltó por necesitar Postgres vivo. Con el `DATABASE_URL` que expone `sst dev`
+(la rama Neon del stage), se puede correr un vitest que: inserta 2 users + 1 workspace + 2 owners,
+dispara 2 `leave` en paralelo y verifica que **exactamente uno** falla con `LastOwnerError` (el lock
+serializa). Pendiente de escribir; debe ser opt-in (`RUN_DB_IT=1`) y auto-limpiar sus filas para no
+ensuciar la rama compartida.

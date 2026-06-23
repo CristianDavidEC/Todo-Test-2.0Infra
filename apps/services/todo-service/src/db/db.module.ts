@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { getPostgresClient, UsersRepository } from "@todo-list-poc-infra/db";
+import { getPostgresClient, UsersRepository, WorkspacesRepository } from "@todo-list-poc-infra/db";
 
 /**
  * Capa de composición de acceso a datos.
@@ -18,7 +18,11 @@ import { getPostgresClient, UsersRepository } from "@todo-list-poc-infra/db";
       provide: UsersRepository,
       useFactory: () => new UsersRepository(getPostgresClient(process.env.DATABASE_URL)),
     },
+    {
+      provide: WorkspacesRepository,
+      useFactory: () => new WorkspacesRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
   ],
-  exports: [UsersRepository],
+  exports: [UsersRepository, WorkspacesRepository],
 })
 export class DbModule {}
