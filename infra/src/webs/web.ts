@@ -32,9 +32,9 @@ export const web = new sst.aws.Nextjs("Web", {
     AUTH0_DOMAIN: requireSharedEnv("AUTH0_DOMAIN"),
     AUTH0_CLIENT_ID: requireSharedEnv("AUTH0_CLIENT_ID"),
     AUTH0_AUDIENCE: requireSharedEnv("AUTH0_AUDIENCE"),
-    // URL del API Gateway para que el frontend sepa a dónde llamar (en vez de
-    // hardcodearla). NEXT_PUBLIC_* queda disponible en el bundle del cliente.
-    NEXT_PUBLIC_API_URL: apiUrl,
+    // URL del API para que el frontend sepa a dónde llamar. En local (sst dev)
+    // el NestJS corre en localhost:3001; en producción, usa el API Gateway.
+    NEXT_PUBLIC_API_URL: $dev ? "http://localhost:3001" : apiUrl,
     // URL base — requerida por Auth0 para construir el redirect_uri del callback.
     // Es distinta en local vs desplegado, por eso es condicional:
     //   - `sst dev` (local live, $dev=true)  → http://localhost:3000

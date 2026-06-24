@@ -9,7 +9,7 @@ arquitectura (Screaming Architecture sobre el App Router). Ver también el [`AGE
 - **Next.js 16 (App Router) + React 19 + Tailwind v4.** Server Components por defecto.
 - Desplegado con **OpenNext** vía `sst.aws.Nextjs` (CloudFront + Lambda + S3). Cableado en [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts).
 - Auth con **Auth0 SDK v4**: el login se intercepta en el network boundary (`proxy.ts`).
-- Consume lógica/auth del monorepo (`@app/core`, `@app/auth`) — **no** reimplementa lógica de negocio en el front.
+- Consume lógica/auth del monorepo (`@todo-list-poc-infra/core`, `@todo-list-poc-infra/auth`) — **no** reimplementa lógica de negocio en el front.
 
 ## Arquitectura: Screaming Architecture
 
@@ -21,7 +21,7 @@ HTTP → app/<ruta>/page.tsx  (THIN: routing, gate de auth, composición)
             ↓ importa
        features/<dominio>/  (la feature: UI + modelo + lógica del dominio)
             ↓ usa
-       components/ (UI compartida)   lib/ (infra compartida: auth0)   @app/* (tipos/lógica)
+       components/ (UI compartida)   lib/ (infra compartida: auth0)   @todo-list-poc-infra/* (tipos/lógica)
 ```
 
 - **`app/`** — routing y composición **solamente**. Una `page.tsx` resuelve el acceso (sesión/redirect) y renderiza la feature. Sin lógica de dominio ni JSX de negocio inline.
@@ -61,11 +61,39 @@ src/
 
 - **Server Components por defecto.** `"use client"` SOLO cuando hay interactividad/hooks de browser (estado, efectos, `useUser()`). Mantén los client components en las hojas (p.ej. `auth-nav`), no en layouts/páginas enteras.
 - **Datos en el server.** `fetch`/sesión/secrets en server components o server actions. Nunca expongas secretos al cliente; solo `NEXT_PUBLIC_*` llega al browser.
-- **Lógica/tipos del monorepo.** Lógica de negocio reutilizable va en `@app/core` (framework-agnóstica), no copiada en el front. Si necesitas schemas Zod compartidos (`@app/types`), añádelo como dep primero (hoy el web no lo consume).
-- **Import por subpath para no inflar el bundle.** `@app/auth/nextjs` (no el barrel `@app/auth`) — el barrel arrastra el guard de NestJS al bundle de Next. Patrón a respetar con cualquier paquete multi-runtime.
+- **Lógica/tipos del monorepo.** Lógica de negocio reutilizable va en `@todo-list-poc-infra/core` (framework-agnóstica), no copiada en el front. Si necesitas schemas Zod compartidos (`@todo-list-poc-infra/types`), añádelo como dep primero (hoy el web no lo consume).
+- **Import por subpath para no inflar el bundle.** `@todo-list-poc-infra/auth/nextjs` (no el barrel `@todo-list-poc-infra/auth`) — el barrel arrastra el guard de NestJS al bundle de Next. Patrón a respetar con cualquier paquete multi-runtime.
 - **`@/*` = `src/*`** (alias en `tsconfig.json`). Usa `@/features/...`, `@/components/...`, `@/lib/...`.
 - **Auth0 inerte sin credenciales.** `isAuth0Configured` (en `lib/auth0.ts`) mantiene el sitio público vivo (no-op) mientras no haya secrets; con secrets el flujo se activa sin cambiar código. Replica ese guard en cualquier página protegida.
-- **Estilos: Tailwind v4** (utilidades en JSX). Sin CSS-in-JS ni librerías de componentes pesadas por defecto.
+- **Estilos: Tailwind v4 + sistema de diseño Candy** (utilidades en JSX). Sin CSS-in-JS ni librerías de componentes pesadas por defecto. Ver la sección **Sistema de diseño** abajo — es de cumplimiento obligatorio en cada vista.
+
+## Sistema de diseño — Candy (obligatorio en cada vista)
+
+Fuente de verdad: [`docs/DESIGN.md`](../../docs/DESIGN.md) (estilo visual) y [`docs/candyproject_prd_project_brief.md`](../../docs/candyproject_prd_project_brief.md) (producto). North star: **"Joyful Pop"** — vibrante, saturado, redondeado, microinteracciones bouncy. Mientras no haya MCP de Stitch, estos docs **son** la guía; cada vista debe replicar este estilo.
+
+**Tokens (definidos en [`src/app/globals.css`](src/app/globals.css) con `@theme` de Tailwind v4 — NO hardcodear hex):**
+
+| Token | Utilidad Tailwind | Uso |
+|---|---|---|
+| `--color-primary` `#e040a0` | `bg-primary` / `text-primary` | Hot pink — acciones primarias, marca |
+| `--color-secondary` `#7c52aa` | `bg-secondary` / `text-secondary` | Purple — secundario, tags, categorías |
+| `--color-tertiary` `#0096cc` | `bg-tertiary` / `text-tertiary` | Sky blue — info, links, highlights |
+| `--color-background` `#fef7ff` | `bg-background` | Fondo de la app (en `body`) |
+| `--color-surface` `#fff` | `bg-surface` | Fill de cards/inputs |
+| `--color-ink` / `--color-ink-muted` | `text-ink` / `text-ink-muted` | Texto principal / secundario |
+| `--color-primary-fixed` `#ffd9ec` | `bg-primary-fixed` | Pastel pink — fill de badges/tags |
+| `--radius-card` 16px | `rounded-card` | Cards/contenedores |
+| `--radius-pill` | `rounded-pill` | Botones, badges, inputs |
+| `--shadow-candy-*` | `shadow-candy-primary/secondary/tertiary` | Sombras tintadas (15-20% del color) |
+| `--font-sans` (DM Sans) | `font-sans` (default) | Tipografía única; bold en headings, medium en labels |
+
+**Patrones de componente (replica estos, ver `page.tsx`/`dashboard-view.tsx` como referencia):**
+- **Botón:** `rounded-pill bg-primary px-5 py-2.5 font-medium text-white shadow-candy-primary transition-transform hover:scale-[1.03]`. Secundario: `border border-primary/30 text-primary` sin fill.
+- **Card:** `rounded-card bg-surface p-5 shadow-candy-{primary|secondary}`; hover lift con `transition-transform hover:scale-[1.03]`.
+- **Badge/Tag:** `rounded-pill bg-primary-fixed px-3 py-1 text-xs font-bold text-primary`.
+- **Input:** `rounded-pill bg-surface` con focus ring rosa (`focus:ring-2 focus:ring-primary`).
+
+**Reglas:** todo redondeado (sin esquinas duras), nada washed-out (abraza saturación/contraste), animaciones bouncy con `ease-out` (no rígidas), sombras siempre tintadas al color del elemento. Cuando vuelva el MCP de Stitch, prevalece su output exportado pero estos tokens siguen siendo la capa base.
 
 ## Ejecución local
 
@@ -74,12 +102,12 @@ Un **único `.env` en la raíz** del monorepo alimenta todo (lo comparten SST, d
 
 ```bash
 cp .env.example .env                     # desde la raíz (una vez)
-pnpm --filter @app/web dev               # http://localhost:3000  (comando general: @app/<frontend>)
+pnpm --filter @todo-list-poc-infra/web dev               # http://localhost:3000  (comando general: @todo-list-poc-infra/<frontend>)
 ```
 
 | Modo | Comando | Env |
 |---|---|---|
-| **Standalone** (recomendado, loop diario) | `pnpm --filter @app/web dev` | `.env` raíz (lo carga `next.config.js`) |
+| **Standalone** (recomendado, loop diario) | `pnpm --filter @todo-list-poc-infra/web dev` | `.env` raíz (lo carga `next.config.js`) |
 | **SST** (cableado real: CloudFront/secrets) | `pnpm sst dev --stage <user>` | inyectado por SST (gana sobre `.env`) |
 
 - El **sitio público funciona sin configurar nada**. Para probar **login**, rellena en el `.env` raíz: `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_AUDIENCE`, `APP_BASE_URL=http://localhost:3000`, y los secrets `AUTH0_CLIENT_SECRET` + `AUTH0_SECRET` (`openssl rand -hex 32`).
@@ -92,20 +120,21 @@ pnpm --filter @app/web dev               # http://localhost:3000  (comando gener
 2. La ruta `app/<ruta>/page.tsx` queda **thin**: resuelve acceso/datos y compone `<FeatureView />`.
 3. Mutaciones → **server actions** dentro de la feature (no API routes salvo necesidad real).
 4. UI genuinamente compartida → `components/`; clients/infra compartida → `lib/`.
-5. `pnpm --filter @app/web type-check lint`.
+5. `pnpm --filter @todo-list-poc-infra/web type-check lint`.
 
 ## Anti-patterns
 
 - ❌ Lógica de dominio o JSX de negocio en `app/page.tsx` → va en `features/<dominio>/`; la ruta es thin.
 - ❌ Organizar por tipo técnico global (`components/`, `hooks/`, `services/` con TODO dentro) → eso no "grita" el dominio; colócalo por feature.
 - ❌ `"use client"` en layouts/páginas completas → empuja el client boundary a las hojas.
-- ❌ Importar el barrel `@app/auth` en vez de `@app/auth/nextjs` → infla el bundle con el guard NestJS.
-- ❌ Reimplementar lógica de `@app/core` (o redefinir tipos que deberían vivir en un paquete compartido) en el front.
+- ❌ Importar el barrel `@todo-list-poc-infra/auth` en vez de `@todo-list-poc-infra/auth/nextjs` → infla el bundle con el guard NestJS.
+- ❌ Reimplementar lógica de `@todo-list-poc-infra/core` (o redefinir tipos que deberían vivir en un paquete compartido) en el front.
 - ❌ Secretos en código cliente o en `NEXT_PUBLIC_*` → secrets solo server-side.
 - ❌ `.env` por app → un solo `.env` en la raíz.
 
 ## See also
 
 - [`AGENTS.md` raíz](../../AGENTS.md) · `.claude/skills/vercel-react-best-practices/` · `.claude/skills/next-best-practices/`
-- `@app/auth` (Auth0/sesión) · `@app/core` (lógica)
-- [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts) (OpenNext + Auth0 env/secrets) · `docs/` (arquitectura)
+- `@todo-list-poc-infra/auth` (Auth0/sesión) · `@todo-list-poc-infra/core` (lógica)
+- [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts) (OpenNext + Auth0 env/secrets)
+- [`docs/DESIGN.md`](../../docs/DESIGN.md) (sistema Candy) · [`docs/DEFINICION-FUNCIONAL.md`](../../docs/DEFINICION-FUNCIONAL.md) (módulos del producto)

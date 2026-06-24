@@ -10,8 +10,19 @@ import { Auth0Client } from "@auth0/nextjs-auth0/server";
  * (auth0.getSession). La base se entrega SIN credenciales reales por defecto;
  * sin ellas el flujo de login no funciona en runtime (estado esperado hasta
  * que cada proyecto setee los secrets del tenant).
+ *
+ * `authorizationParams.audience` es CRÍTICO para llamar al backend: sin él, el
+ * access token que emite Auth0 no lleva el claim `aud` = API, y el `todo-service`
+ * (que valida `aud` contra `AUTH0_AUDIENCE`) responde 401 a TODA llamada. El mismo
+ * `AUTH0_AUDIENCE` se inyecta al web y al servicio (ver infra), así que el token
+ * valida. `offline_access` habilita el refresh token para `getAccessToken()`.
  */
-export const auth0 = new Auth0Client();
+export const auth0 = new Auth0Client({
+  authorizationParameters: {
+    audience: process.env.AUTH0_AUDIENCE,
+    scope: "openid profile email offline_access",
+  },
+});
 
 /**
  * ¿Auth0 tiene credenciales reales en runtime?

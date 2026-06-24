@@ -1,5 +1,5 @@
 {
-  "name": "@app/db",
+  "name": "@todo-list-poc-infra/db",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -18,7 +18,7 @@
     "pg": "^8.13.1"
   },
   "devDependencies": {
-    "@app/config": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
     "@types/node": "^22.10.0",
     "@types/pg": "^8.11.10",
     "dotenv": "^16.4.5",

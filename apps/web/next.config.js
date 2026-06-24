@@ -12,8 +12,8 @@ if (existsSync(rootEnv)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: [
-    "@app/core",
-    "@app/auth",
+    "@todo-list-poc-infra/core",
+    "@todo-list-poc-infra/auth",
   ],
 };
 

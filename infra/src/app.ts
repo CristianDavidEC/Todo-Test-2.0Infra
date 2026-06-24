@@ -17,6 +17,7 @@ import "./shared/secrets";
 
 // 2. Bases de datos (independiente de cómputo, depende de secrets/networking)
 import { neonDb } from "./databases/neon";
+import "./databases/migrate"; // drizzle-kit migrate auto en cada deploy (tras crear Neon)
 
 // 3. Storage / 4. Eventos → ver infra/src/{storage,events}/ + ROADMAP.md
 

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CandyProject - Team Management</title>
+<!-- Google Fonts: DM Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#4a3068",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#e0d6e0",
+                    "secondary-fixed": "#eedcff",
+                    "secondary-fixed-dim": "#c8a8e8",
+                    "primary-container": "#f080c0",
+                    "surface-bright": "#fef7ff",
+                    "surface": "#fef7ff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffe8e8",
+                    "inverse-primary": "#f0a0cc",
+                    "on-surface-variant": "#604868",
+                    "inverse-surface": "#2e1a28",
+                    "tertiary-fixed-dim": "#80d0f0",
+                    "on-primary-container": "#2e1a28",
+                    "surface-tint": "#e040a0",
+                    "on-tertiary-container": "#00334d",
+                    "inverse-on-surface": "#fef7ff",
+                    "surface-container-low": "#fbf2fb",
+                    "surface-container": "#f8eef8",
+                    "surface-container-highest": "#ece2ec",
+                    "surface-container-high": "#f2e8f2",
+                    "secondary": "#7c52aa",
+                    "on-tertiary-fixed": "#001a33",
+                    "on-tertiary-fixed-variant": "#005580",
+                    "outline-variant": "#dcc8e0",
+                    "on-background": "#2e1a28",
+                    "primary-fixed-dim": "#f0a0cc",
+                    "primary-fixed": "#ffd6ee",
+                    "background": "#fef7ff",
+                    "tertiary-fixed": "#c8eaff",
+                    "tertiary": "#0096cc",
+                    "primary": "#e040a0",
+                    "on-error-container": "#9b1c1c",
+                    "on-secondary-container": "#2e2040",
+                    "on-primary-fixed-variant": "#a02070",
+                    "outline": "#907898",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#1a1030",
+                    "tertiary-container": "#40c0ee",
+                    "on-surface": "#2e1a28",
+                    "on-primary-fixed": "#3d0028",
+                    "surface-variant": "#f2e8f2",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#eedcff",
+                    "error": "#e53e3e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["DM Sans"],
+                    "display": ["DM Sans"],
+                    "body": ["DM Sans"],
+                    "label": ["DM Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bouncy {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .bouncy:hover { transform: scale(1.05); }
+        .bouncy:active { transform: scale(0.95); }
+        .card-shadow {
+            box-shadow: 0 4px 16px rgba(224, 64, 160, 0.1);
+        }
+        .purple-shadow {
+            box-shadow: 0 4px 16px rgba(124, 82, 170, 0.15);
+        }
+        .blue-shadow {
+            box-shadow: 0 4px 16px rgba(0, 150, 204, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center px-6 w-full sticky top-0 z-50 bg-background h-16 shadow-[0_4px_16px_rgba(224,64,160,0.1)]">
+<div class="flex items-center gap-8">
+<h1 class="text-2xl font-black tracking-tight text-primary">CandyProject</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:scale-105 hover:text-primary transition-transform duration-200" href="#">Kanban</a>
+<a class="text-on-surface-variant font-medium hover:scale-105 hover:text-primary transition-transform duration-200" href="#">Metrics</a>
+<a class="text-on-surface-variant font-medium hover:scale-105 hover:text-primary transition-transform duration-200" href="#">Sprints</a>
+<a class="text-primary font-bold border-b-4 border-primary pb-1 hover:scale-105 transition-transform duration-200" href="#">Team</a>
+<a class="text-on-surface-variant font-medium hover:scale-105 hover:text-primary transition-transform duration-200" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">notifications</button>
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">help</button>
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">smart_toy</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly user for a productivity app profile. The person is smiling warmly against a soft, pastel pink studio background with clean lighting and high resolution details, matching the joyful pop aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJmqOyHSZQIM03F-B9IuvbK4yg0Zg1frMFMatE2rTmzH8IrDIz9j-OiQSqUv_o7MzrVaFDdm_CR4Z45DlHxAUZuTXxUDANJQk1Eh4T9FWzdE38ijjU8bAU2tPGjZ4SnPbZF4yut-4HVh6CXEHb_bJV0Ua0R9I5N7KulaINz9nSjw-Z7LQihh6EVp9vUnYq82s-m06asUw-K8Uv0wU02Flz4z_h7gWAAjim0vzc2u_MLteS_n-u9Ic1pNv2p180RLgR357re83SEJGb"/>
+</div>
+</div>
+</header>
+<div class="flex flex-col md:flex-row">
+<!-- SideNavBar Shell -->
+<aside class="hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex-col p-4 z-40 bg-surface border-r border-outline-variant shadow-[4px_0_16px_rgba(124,82,170,0.1)] rounded-r-xl">
+<div class="mb-8 flex items-center gap-3 px-4">
+<div class="w-10 h-10 bg-primary-fixed rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div>
+<p class="text-lg font-black text-primary leading-none">CandyProject</p>
+<p class="text-xs text-on-surface-variant font-medium">Joyful Productivity</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors hover:scale-[1.03] duration-200" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span>Kanban</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors hover:scale-[1.03] duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Metrics</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors hover:scale-[1.03] duration-200" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span>Sprints</span>
+</a>
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-full px-4 py-3 font-bold hover:scale-[1.03] duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors hover:scale-[1.03] duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<button class="mt-auto bouncy bg-primary text-on-primary font-bold py-4 rounded-full flex items-center justify-center gap-2 mb-6 card-shadow">
+<span class="material-symbols-outlined">auto_awesome</span>
+                AI Sidekick
+            </button>
+<div class="pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 text-on-surface-variant rounded-full px-4 py-3 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Help Center</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-grow p-6 md:ml-64 space-y-8">
+<!-- Header Section -->
+<section class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<div>
+<h2 class="text-4xl font-black text-on-background tracking-tight">Meet the Crew</h2>
+<p class="text-lg text-on-surface-variant">The heart and soul behind the magic.</p>
+</div>
+<div class="flex gap-3">
+<button class="bouncy bg-secondary text-on-secondary px-6 py-3 rounded-full font-bold flex items-center gap-2 purple-shadow">
+<span class="material-symbols-outlined">person_add</span>
+                        Invite Member
+                    </button>
+<button class="bouncy bg-tertiary-container text-on-tertiary-container px-6 py-3 rounded-full font-bold flex items-center gap-2 blue-shadow">
+<span class="material-symbols-outlined">ios_share</span>
+                        Export Report
+                    </button>
+</div>
+</section>
+<!-- AI Health Summary & Stats Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- AI Sidekick Team Health -->
+<div class="lg:col-span-8 bg-surface-container-low rounded-xl p-8 relative overflow-hidden border-2 border-primary-container/20 card-shadow">
+<div class="relative z-10 flex flex-col md:flex-row gap-6">
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center flex-shrink-0 animate-pulse">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="space-y-4">
+<h3 class="text-2xl font-black text-primary">Team Health: Radiant!</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed">
+                                Our productivity is peaking at 94%. <span class="font-bold text-secondary">Alex</span> is currently juggling 5 tasks and might benefit from some offloading. <span class="font-bold text-tertiary">Sofia</span> just cleared her sprint early—time for a new challenge or a well-deserved high-five!
+                            </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-4 py-1 rounded-full text-sm font-bold">1 Overloaded</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-4 py-1 rounded-full text-sm font-bold">2 Ready for Work</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-4 py-1 rounded-full text-sm font-bold">Optimal Mood</span>
+</div>
+</div>
+</div>
+<!-- Subtle background decoration -->
+<div class="absolute -bottom-10 -right-10 opacity-10">
+<span class="material-symbols-outlined text-[120px] text-primary">celebration</span>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="lg:col-span-4 grid grid-cols-2 gap-4">
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center bouncy">
+<span class="text-4xl font-black text-primary">12</span>
+<span class="text-sm font-bold text-on-surface-variant">Active Members</span>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center bouncy">
+<span class="text-4xl font-black text-secondary">42</span>
+<span class="text-sm font-bold text-on-surface-variant">Wins This Week</span>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center bouncy">
+<span class="text-4xl font-black text-tertiary">89%</span>
+<span class="text-sm font-bold text-on-surface-variant">Burn Down</span>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center bouncy">
+<span class="text-4xl font-black text-on-surface-variant">5</span>
+<span class="text-sm font-bold text-on-surface-variant">Pending Invites</span>
+</div>
+</div>
+</section>
+<!-- Team Member Profiles Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Member 1 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 bouncy card-shadow group">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden border-4 border-primary-fixed ring-4 ring-background">
+<img class="w-full h-full object-cover" data-alt="A portrait of a cheerful female UI designer with bright orange hair and modern glasses. She is posing in a vibrant, high-energy creative studio environment with colorful geometric shapes and soft pastel pink and purple lighting. The style is professional and joyful, matching the CandyProject aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzqb6wbC2AEJdMYBYBRUhdWwQtdU4Pior8hk4GWUsdJLMWu7G2NadQ6nsytIokgjomVBXWZ4MtsAVF0dytJZYBKw3EiRXhhr_NOOXIrhGtDyZ26Fb6eNPulD3kA1KmhnQb3IsUrxlY19A5rFq-fMv2anNvK1Ez6P3nWSTWHmLm6zDdPN8f7GPRd91RlKDniWF9xrQxw0sZMNBNZzCKyoATu0wmlflnHeXlucwwGuCzAIdoNqWx3WUjtxCPeVaigWNskt4msNhe-xba"/>
+</div>
+<div>
+<h4 class="font-black text-xl text-on-surface">Alex Rivera</h4>
+<p class="text-sm font-bold text-secondary">Lead Designer</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm font-bold mb-1">
+<span class="text-on-surface-variant">Capacity</span>
+<span class="text-error">95%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full w-[95%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Active Task</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-bold text-sm text-on-surface">Refactoring UI Shells</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+</div>
+<!-- Member 2 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 bouncy card-shadow group">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden border-4 border-tertiary-fixed ring-4 ring-background">
+<img class="w-full h-full object-cover" data-alt="A profile photo of a focused male developer with a friendly beard and a minimalist grey t-shirt. He is set against a clean, light-filled office space with pops of sky blue and soft violet. The lighting is crisp and modern, emphasizing a joyful and productive work environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVi90WDpaD4ZsiYq0XpCWNRlDe30buS1wWty9wxeXrWxzmz0WdpF4oJfdhFEd4W8D7Bc1JnBK8ocEr3jcHgI2K0QtrNM4kOWQbWtHJDlQbEzbFQqtrYJtnK5RfWiKhCVRTSXM-9cjkk6gk6fw2cYAp_VUZChdEsJLcq48zGYP58obWvQgpVSK6nmJWz0YN77G7goHTwJFPAg8T2egi8Nl9gEoCe_GeiDZvLLhv06K5A8JXSuRX9dG0KUUkheVuUF6D6ESRMRBoGqFF"/>
+</div>
+<div>
+<h4 class="font-black text-xl text-on-surface">Sam Chen</h4>
+<p class="text-sm font-bold text-tertiary">Full-stack Dev</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm font-bold mb-1">
+<span class="text-on-surface-variant">Capacity</span>
+<span class="text-tertiary">60%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full w-[60%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Active Task</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-bold text-sm text-on-surface">Optimizing API Calls</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="material-symbols-outlined text-on-surface-variant text-xl opacity-30">workspace_premium</span>
+</div>
+</div>
+</div>
+<!-- Member 3 -->
+<div class="bg-surface border border-outline-variant rounded-xl p-6 bouncy card-shadow group">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden border-4 border-secondary-fixed ring-4 ring-background">
+<img class="w-full h-full object-cover" data-alt="A cheerful portrait of a female project manager with a bright smile. She is wearing a colorful scarf in a modern workspace filled with sunlight and pastel green plants. The aesthetic is warm, vibrant, and clean, fitting a high-end productivity app's joyful pop style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgGcsonrBenaXDyUR8t9m23Wvgs9WbenG-n70fZeQJOMVSCVxGrpqOgJCl_I4mkLW6-q_NnHQmxHGpJIRTHgb27FjQLB-Y2fNHgrvQzAoSeOa1MT5-kGiVzvpr18pRcg-n6tlDnkbTyzesP_Xudm7T63yCLk8dpejlcKPjR1nJbzKABHhbvwIMGG-ouZyUL_E9H_0SrJB_rqUvvXiWg8IA0i8MuF3jkPp_wcB4iXpr1OybsBcSOSYiSnHV3HDs05hwv-_pig06rAHB"/>
+</div>
+<div>
+<h4 class="font-black text-xl text-on-surface">Elena Rodriguez</h4>
+<p class="text-sm font-bold text-secondary">Product Manager</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm font-bold mb-1">
+<span class="text-on-surface-variant">Capacity</span>
+<span class="text-primary">40%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[40%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-lg p-3">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Active Task</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-bold text-sm text-on-surface">Reviewing Q4 Roadmap</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Team Achievements / Recent Wins Section -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<h3 class="text-3xl font-black text-on-background tracking-tight">Recent Wins</h3>
+<span class="bg-secondary text-on-secondary text-xs font-bold px-3 py-1 rounded-full">New Milestone</span>
+</div>
+<div class="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-4">
+<!-- Win 1 -->
+<div class="min-w-[320px] bg-secondary-container/30 border-2 border-secondary/20 p-6 rounded-2xl flex items-center gap-4 flex-shrink-0 bouncy">
+<div class="w-14 h-14 bg-secondary rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div>
+<h5 class="font-black text-secondary leading-tight">Sprint Champion</h5>
+<p class="text-sm text-on-surface-variant">Team cleared 50 story points in record time!</p>
+<p class="text-xs text-on-surface-variant mt-2 font-bold opacity-60">2 hours ago</p>
+</div>
+</div>
+<!-- Win 2 -->
+<div class="min-w-[320px] bg-tertiary-container/30 border-2 border-tertiary/20 p-6 rounded-2xl flex items-center gap-4 flex-shrink-0 bouncy">
+<div class="w-14 h-14 bg-tertiary rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-tertiary text-2xl" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div>
+<h5 class="font-black text-tertiary leading-tight">Zero-Bug Sprint</h5>
+<p class="text-sm text-on-surface-variant">No critical bugs found during deployment.</p>
+<p class="text-xs text-on-surface-variant mt-2 font-bold opacity-60">Yesterday</p>
+</div>
+</div>
+<!-- Win 3 -->
+<div class="min-w-[320px] bg-primary-container/30 border-2 border-primary/20 p-6 rounded-2xl flex items-center gap-4 flex-shrink-0 bouncy">
+<div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-primary text-2xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<h5 class="font-black text-primary leading-tight">AI Integration Live</h5>
+<p class="text-sm text-on-surface-variant">The Sidekick is now officially smart.</p>
+<p class="text-xs text-on-surface-variant mt-2 font-bold opacity-60">2 days ago</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Visible on Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-high h-16 flex items-center justify-around px-4 z-50">
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">view_kanban</span>
+<span class="text-[10px] font-bold">Kanban</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-bold">Metrics</span>
+</button>
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[10px] font-bold">Team</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">bolt</span>
+<span class="text-[10px] font-bold">Sprints</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</nav>
+<script>
+        // Microinteraction for members grid - slight parallax-ish effect or interactive hover
+        const cards = document.querySelectorAll('.bouncy');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
+    </script>
+</body></html>

@@ -1,6 +1,6 @@
-# AGENTS.md — base-apps
+# AGENTS.md — todo-list-poc-infra
 
-Plantilla base v2.0 (monorepo cloud-native) para arrancar proyectos nuevos de la empresa — **no es una app concreta**, es el molde. Stack: Turborepo + pnpm, SST (Ion, v4) sobre Pulumi en AWS, Next.js 16 (App Router), Lambdas TypeScript nativas, NestJS 11 en Fargate, Postgres (Neon + Drizzle) como única BD.
+Proyecto **Todo List POC** (monorepo cloud-native), partido de la plantilla base v2.0 de la empresa. Stack: Turborepo + pnpm, SST (Ion, v4) sobre Pulumi en AWS, Next.js 16 (App Router), Lambdas TypeScript nativas, NestJS 11 en Fargate, Postgres (Neon + Drizzle) como única BD.
 
 ## Estructura del monorepo
 
@@ -10,12 +10,12 @@ apps/
   functions/        → AWS Lambda handlers (TypeScript nativo, sin framework)
   services/         → Servicios Fargate (NestJS)
 packages/
-  types/            → @app/types — tipos compartidos (schemas Zod = source of truth)
-  core/             → @app/core — lógica de negocio (sin deps AWS)
-  db/               → @app/db — capa de BD Postgres (Neon + Drizzle), patrón Repository
-  auth/             → @app/auth — Auth0 (verificación JWT/JWKS, lazy upsert, claims RBAC)
-  observability/    → @app/observability — logging (Powertools/Pino) + correlationId
-  config/           → @app/config — tsconfig y eslint centralizados
+  types/            → @todo-list-poc-infra/types — tipos compartidos (schemas Zod = source of truth)
+  core/             → @todo-list-poc-infra/core — lógica de negocio (sin deps AWS)
+  db/               → @todo-list-poc-infra/db — capa de BD Postgres (Neon + Drizzle), patrón Repository
+  auth/             → @todo-list-poc-infra/auth — Auth0 (verificación JWT/JWKS, lazy upsert, claims RBAC)
+  observability/    → @todo-list-poc-infra/observability — logging (Powertools/Pino) + correlationId
+  config/           → @todo-list-poc-infra/config — tsconfig y eslint centralizados
 infra/              → Infraestructura SST v4/Ion (apis, databases, events, networking, services, storage, webs, shared, helpers)
 docs/               → Documentación de arquitectura (8 secciones numeradas + ARCHITECTURE.md índice + SETUP-*)
 ```
@@ -37,26 +37,26 @@ pnpm run clean                  # Limpiar builds y node_modules
 sst dev --stage <tu-nombre>
 
 # Terminal 2: Servicio NestJS
-pnpm --filter @app/example-service dev   # Sin Docker (tsx watch)
+pnpm --filter @todo-list-poc-infra/todo-service dev   # Sin Docker (tsx watch)
 docker compose up                        # Con Docker
 
 # Terminal 3: Frontend Next.js
-pnpm --filter @app/web dev
+pnpm --filter @todo-list-poc-infra/web dev
 ```
 
 ## Filtrar comandos por paquete
 
 ```bash
-pnpm --filter @app/web <comando>
-pnpm --filter @app/core <comando>
-pnpm --filter @app/functions <comando>
+pnpm --filter @todo-list-poc-infra/web <comando>
+pnpm --filter @todo-list-poc-infra/core <comando>
+pnpm --filter @todo-list-poc-infra/functions <comando>
 ```
 
 ## Convenciones de código
 
 - TypeScript strict mode en todo el monorepo.
 - Configuraciones de tsconfig y eslint centralizadas en `packages/config/` (ESLint 9 flat config).
-- Cada paquete extiende las configuraciones base de `@app/config`.
+- Cada paquete extiende las configuraciones base de `@todo-list-poc-infra/config`.
 - Turbo tasks: `build`, `dev`, `lint`, `test`, `type-check`, `clean`.
 - `type-check` es topológico (`dependsOn: ["^type-check"]`); `lint` es local (sin deps).
 
@@ -147,8 +147,8 @@ sst refresh --stage <stage>           # Sincroniza el estado de SST con los recu
 
 ## Testing
 
-Vitest está cableado: preset `@app/config/vitest/base`, task `test` en Turbo y `pnpm test` en la raíz, con tests de ejemplo. Ver `packages/config/AGENTS.md`. El testing más amplio (integración, e2e, coverage gates) está en `ROADMAP.md`.
+Vitest está cableado: preset `@todo-list-poc-infra/config/vitest/base`, task `test` en Turbo y `pnpm test` en la raíz, con tests de ejemplo. Ver `packages/config/AGENTS.md`. El testing más amplio (integración, e2e, coverage gates) está en `ROADMAP.md`.
 
 ## Documentación adicional
 
-La documentación de arquitectura está en `docs/` (8 archivos numerados 01-08 + `docs/ARCHITECTURE.md` como índice + `SETUP-*`, siendo `SETUP-ONBOARDING.md` la guía de inicio del dev). Lo pendiente/futuro está en `ROADMAP.md` (raíz).
+La arquitectura vive en los `AGENTS.md` por carpeta (este archivo + cada app/package/infra). La definición funcional del producto (módulos, modelo de dominio, orden de ejecución) está en `docs/DEFINICION-FUNCIONAL.md`.

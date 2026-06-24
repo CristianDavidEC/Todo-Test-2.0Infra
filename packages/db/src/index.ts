@@ -1,5 +1,5 @@
 /**
- * @app/db
+ * @todo-list-poc-infra/db
  *
  * Capa de acceso a datos. Postgres (Drizzle) es el único datastore de la base.
  *
@@ -19,7 +19,13 @@ export {
   supportsTransactions,
   withTransaction,
   users,
+  workspaces,
+  workspaceMemberships,
   UsersRepository,
+  WorkspacesRepository,
+  assertKeepsAnOwner,
+  LastOwnerError,
+  MembershipNotFoundError,
   wasJustCreated,
   schema,
 } from "./adapters/postgresql";
@@ -29,4 +35,12 @@ export type {
   UserRow,
   NewUserRow,
   LazyUpsertInput,
+  WorkspaceRow,
+  NewWorkspaceRow,
+  WorkspaceMembershipRow,
+  NewWorkspaceMembershipRow,
+  WorkspaceRole,
+  CreateWorkspaceInput,
+  WorkspaceWithRole,
+  WorkspaceMemberRow,
 } from "./adapters/postgresql";

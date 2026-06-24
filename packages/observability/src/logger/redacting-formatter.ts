@@ -16,7 +16,7 @@ export interface RedactingFormatterOptions {
  *
  * Existe porque el `Logger` de Powertools NO tiene redacción nativa de claves (a
  * diferencia de la opción `redact` de Pino). Sin esto, la garantía PII documentada en
- * `@app/observability` sería falsa en toda la ruta Lambda. `logFormatter` y
+ * `@todo-list-poc-infra/observability` sería falsa en toda la ruta Lambda. `logFormatter` y
  * `logRecordOrder` son mutuamente excluyentes en el Logger, así que el orden se aplica
  * aquí (misma lógica que `PowertoolsLogFormatter`).
  */

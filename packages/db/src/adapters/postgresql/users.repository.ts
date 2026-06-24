@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { users, type NewUserRow, type UserRow } from "./schema";
 import type { PostgresClient } from "./client";
 
@@ -32,6 +32,22 @@ export class UsersRepository {
       .select()
       .from(users)
       .where(eq(users.auth0UserId, auth0UserId))
+      .limit(1);
+    return rows[0] ?? null;
+  }
+
+  /**
+   * Busca un usuario por email. OJO: `email` NO es único en `users` (el unique real
+   * es `auth0_user_id`; `users_email_idx` es solo índice de búsqueda, y `lazyUpsert`
+   * keya por Auth0 id). Dos filas podrían compartir email; devolvemos la más antigua
+   * (`created_at asc`) de forma determinística. Usado por "agregar miembro por email" (BR-6).
+   */
+  async findByEmail(email: string): Promise<UserRow | null> {
+    const rows = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .orderBy(asc(users.createdAt))
       .limit(1);
     return rows[0] ?? null;
   }

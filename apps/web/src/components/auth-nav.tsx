@@ -1,23 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0";
 
-/**
- * Barra de auth (client component). Usa el hook `useUser()` del SDK v4, que
- * lee la sesión desde el endpoint `/auth/profile` montado por el proxy.
- */
 export function AuthNav() {
   const { user, isLoading } = useUser();
 
   if (isLoading) {
-    return <span className="text-sm text-gray-500">…</span>;
+    return <span className="text-sm text-ink-muted">…</span>;
   }
 
   if (!user) {
     return (
       <a
         href="/auth/login"
-        className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-sm text-emerald-400 hover:bg-emerald-500/20"
+        className="rounded-pill bg-gradient-to-r from-primary to-secondary px-5 py-2 text-sm font-bold text-white shadow-candy-primary transition-all hover:scale-[1.05]"
       >
         Iniciar sesión
       </a>
@@ -25,14 +22,22 @@ export function AuthNav() {
   }
 
   return (
-    <div className="flex items-center gap-3 text-sm">
-      <span className="text-gray-400">{user.name ?? user.email}</span>
-      <a
-        href="/auth/logout"
-        className="rounded-md border border-gray-700 px-3 py-1.5 text-gray-300 hover:bg-gray-800"
+    <div className="flex items-center gap-4">
+      <Link
+        href="/workspaces"
+        className="rounded-pill bg-secondary-fixed px-4 py-1.5 text-sm font-bold text-secondary transition-all hover:bg-secondary hover:text-white hover:scale-[1.03]"
       >
-        Cerrar sesión
-      </a>
+        Workspaces
+      </Link>
+      <div className="border-l border-outline-variant pl-4 flex items-center gap-3">
+        <span className="text-sm text-ink-muted">{user.name ?? user.email}</span>
+        <a
+          href="/auth/logout"
+          className="rounded-pill border border-primary/30 px-3 py-1 text-xs font-medium text-primary transition-all hover:bg-primary/5 hover:scale-[1.03]"
+        >
+          Salir
+        </a>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 <!-- Owner: @CristianDavidEC -->
-# AGENTS.md — `@app/functions`
+# AGENTS.md — `@todo-list-poc-infra/functions`
 
 AWS Lambda handlers en **TypeScript nativo, sin framework**. Tipos desde `@types/aws-lambda`.
 Este archivo es la guía local; el más cercano gana sobre el [`AGENTS.md` raíz](../../AGENTS.md).
@@ -28,13 +28,13 @@ src/
 
 ## Patrón estándar (obligatorio)
 
-**Todo handler se envuelve en `instrumentHandler` de `@app/observability`.** Eso extrae el
+**Todo handler se envuelve en `instrumentHandler` de `@todo-list-poc-infra/observability`.** Eso extrae el
 `correlationId`, loggea start/end/error y lo propaga vía `AsyncLocalStorage`. El logger se crea
 con `createPowertoolsLogger`.
 
 ```ts
 import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
-import { instrumentHandler, createPowertoolsLogger } from "@app/observability";
+import { instrumentHandler, createPowertoolsLogger } from "@todo-list-poc-infra/observability";
 
 const logger = createPowertoolsLogger({ service: "functions", stage: process.env.SST_STAGE ?? "unknown" });
 
@@ -51,10 +51,10 @@ export const handler = instrumentHandler<APIGatewayProxyEventV2, APIGatewayProxy
 
 ### Acceso a recursos (DB, secrets)
 
-Los recursos se **linkean en infra** y se leen como env vars. La única dep del paquete hoy es `@app/observability` (core/db/types se removieron por no usarse); **cada handler nuevo agrega los `@app/*` que de verdad necesite** (p.ej. `@app/db` para Postgres):
+Los recursos se **linkean en infra** y se leen como env vars. La única dep del paquete hoy es `@todo-list-poc-infra/observability` (core/db/types se removieron por no usarse); **cada handler nuevo agrega los `@todo-list-poc-infra/*` que de verdad necesite** (p.ej. `@todo-list-poc-infra/db` para Postgres):
 
 ```ts
-import { getPostgresClient } from "@app/db"; // añade @app/db a las deps del paquete
+import { getPostgresClient } from "@todo-list-poc-infra/db"; // añade @todo-list-poc-infra/db a las deps del paquete
 const db = getPostgresClient(process.env.DATABASE_URL); // auto-detecta el driver HTTP de Neon en Lambda
 ```
 
@@ -76,13 +76,13 @@ y devolver `batchItemFailures` para reintento parcial → DLQ. Ver `ROADMAP.md` 
      `api.route("POST /webhooks/stripe", { handler: "apps/functions/src/handlers/webhooks/stripe.handler", link: [database, secrets.StripeSecretKey] })`
      (el string es **ruta del archivo + nombre del export `handler`**).
    - Cola/bus → `queue.subscribe("apps/functions/src/handlers/<dominio>/<accion>.handler")` (fase de eventos, diferida — ver `ROADMAP.md`).
-3. `pnpm --filter @app/functions type-check && pnpm --filter @app/functions lint`.
+3. `pnpm --filter @todo-list-poc-infra/functions type-check && pnpm --filter @todo-list-poc-infra/functions lint`.
 
 ## Comandos
 
 ```bash
-pnpm --filter @app/functions type-check   # tsc --noEmit
-pnpm --filter @app/functions lint         # eslint src
+pnpm --filter @todo-list-poc-infra/functions type-check   # tsc --noEmit
+pnpm --filter @todo-list-poc-infra/functions lint         # eslint src
 pnpm sst dev --stage <usuario>            # corre las Lambdas en vivo (desde la raíz)
 ```
 
@@ -91,16 +91,16 @@ No hay script `build`: SST **bundlea con esbuild** en `sst dev`/`sst deploy` (ts
 
 ## Anti-patterns (no hacer)
 
-- ❌ `console.log` o loggers caseros → usar `@app/observability` (`createPowertoolsLogger`). *(Por esto se removió `shared/logger.ts`.)*
+- ❌ `console.log` o loggers caseros → usar `@todo-list-poc-infra/observability` (`createPowertoolsLogger`). *(Por esto se removió `shared/logger.ts`.)*
 - ❌ Extraer/propagar el `correlationId` a mano → ya lo hace `instrumentHandler` / `getCorrelationId()` de observability. *(Por esto se removió `shared/middleware.ts`.)*
 - ❌ CRUDs o lógica síncrona user-facing aquí → van en NestJS/ECS (§4.1).
 - ❌ Hardcodear connection strings / secrets → usar `link:` en infra + env vars (`process.env.DATABASE_URL`).
 - ❌ Handler sin `instrumentHandler` → pierdes logging estructurado y correlación.
-- ❌ Meter lógica de negocio rica aquí → va en `@app/core` (puro); el handler solo orquesta (parse → core → respuesta).
+- ❌ Meter lógica de negocio rica aquí → va en `@todo-list-poc-infra/core` (puro); el handler solo orquesta (parse → core → respuesta).
 
 ## See also
 
 - [`AGENTS.md` raíz](../../AGENTS.md) — stack, estructura y comandos del monorepo.
-- `@app/observability` — `instrumentHandler`, `createPowertoolsLogger`, correlación.
+- `@todo-list-poc-infra/observability` — `instrumentHandler`, `createPowertoolsLogger`, correlación.
 - [`infra/src/apis/main-api.ts`](../../infra/src/apis/main-api.ts) — cableado de rutas/links.
 - [`ROADMAP.md`](../../ROADMAP.md) — Fase eventos (EventBridge + SQS + DLQ).

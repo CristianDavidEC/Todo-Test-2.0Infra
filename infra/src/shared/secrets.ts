@@ -3,7 +3,7 @@
  *
  * POR DEFECTO ESTÁ VACÍO. La plantilla maneja TODAS las credenciales como env vars
  * (una sola fuente de verdad): en local del `.env`, en deploy de las Variables/Secrets
- * del GitHub Environment. Ver docs/SETUP-CICD.md.
+ * del GitHub Environment.
  *
  * Este manifest es un escape-hatch OPCIONAL: si un proyecto necesita que un secreto
  * viva en SSM (encriptado en AWS, fuera del runner de CI) en vez de pasar por env,

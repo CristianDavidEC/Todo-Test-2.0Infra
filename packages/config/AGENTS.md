@@ -1,5 +1,5 @@
 <!-- Owner: @CristianDavidEC -->
-# AGENTS.md — `@app/config`
+# AGENTS.md — `@todo-list-poc-infra/config`
 
 Presets centrales (tsconfig + eslint + vitest). **Todo el repo extiende de aquí.**
 Ver también el [`AGENTS.md` raíz](../../AGENTS.md).
@@ -28,13 +28,13 @@ vitest/base.ts
 2. **eslint: `base` → `node`/`nextjs`.** El base trae `recommended` + tseslint, `no-unused-vars`/`no-explicit-any` en `warn`, y triple-slash **off en `.d.ts`**. `nextjs` usa `eslint-config-next` (ya trae sus plugins, no re-registres tseslint). Los servicios NestJS usan el preset `node` (no hay preset `nest`).
 3. **vitest: `base`** (`environment: node`, incluye `src/**/*.{test,spec}.ts`; sin coverage gates — están en `ROADMAP.md`; se eliminó el preset `integration`). Ya cableado: la task `test` existe en `turbo.json`, la raíz expone `pnpm test` (`turbo run test`), y `core`/`db`/`observability` ya tienen tests de ejemplo. **Para añadir tests a un paquete:**
    1. `*.test.ts` (o `.spec.ts`) junto al código.
-   2. `vitest.config.ts` con `import base from "@app/config/vitest/base"; export default base;`.
+   2. `vitest.config.ts` con `import base from "@todo-list-poc-infra/config/vitest/base"; export default base;`.
    3. En su `package.json`: `"test": "vitest run"` en scripts + `"vitest"` en devDependencies.
    Corre con `pnpm test` (todo el repo) o `pnpm --filter <pkg> test`.
 
 ## Gotchas
 
-- `eslint-config-next` es **dependency** (no dev): un paquete que use el preset `nextjs` necesita `@app/config` instalado.
+- `eslint-config-next` es **dependency** (no dev): un paquete que use el preset `nextjs` necesita `@todo-list-poc-infra/config` instalado.
 - Cambiar un preset afecta a **todos** los consumidores. La caché de `lint` de Turbo es **local** (solo hashea archivos del paquete), así que tras tocar un preset corre `pnpm lint`/`type-check` con `--force` para no servir caché obsoleta.
 
 ## Receta

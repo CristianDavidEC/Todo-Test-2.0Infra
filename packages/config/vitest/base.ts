@@ -4,7 +4,7 @@ import { defineConfig } from "vitest/config";
  * Preset base de Vitest para los paquetes del monorepo.
  *
  * Un paquete lo consume creando un `vitest.config.ts` que lo re-exporte:
- *   import base from "@app/config/vitest/base";
+ *   import base from "@todo-list-poc-infra/config/vitest/base";
  *   export default base;
  *
  * y añadiendo `vitest` a devDependencies + un script `"test": "vitest run"`.

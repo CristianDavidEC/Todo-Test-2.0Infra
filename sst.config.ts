@@ -1,6 +1,6 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-const APP_NAME = "base-apps";
+const APP_NAME = "todo-list-poc-infra";
 
 export default $config({
   async app(input) {
@@ -26,6 +26,10 @@ export default $config({
           },
         },
         neon: "0.13.0",
+        // Pulumi `command` provider → habilita el global `command.local.Command`,
+        // usado en infra/src/databases/migrate.ts para correr drizzle-kit migrate
+        // en cada deploy (DDL automático).
+        command: "1.2.1",
       },
     };
   },

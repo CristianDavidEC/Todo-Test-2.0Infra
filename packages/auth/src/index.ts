@@ -1,5 +1,5 @@
 /**
- * @app/auth
+ * @todo-list-poc-infra/auth
  *
  * Auth0 + lazy sync usuario en Postgres.
  *
@@ -9,7 +9,7 @@
  * - Lazy upsert en `users` la primera vez que un usuario autenticado hace request
  * - La lógica de autorización es pura (`authorizeRequest`); cada runtime la envuelve
  *   (Guard NestJS propio, middleware Next.js). Deps de plataforma (@nestjs/common,
- *   @auth0/nextjs-auth0, @app/db) son peer opcionales.
+ *   @auth0/nextjs-auth0, @todo-list-poc-infra/db) son peer opcionales.
  */
 
 export * from "./auth0/types";

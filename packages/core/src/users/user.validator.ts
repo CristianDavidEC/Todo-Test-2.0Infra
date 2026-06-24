@@ -1,4 +1,4 @@
-import { UserSchema, type User } from "@app/types";
+import { UserSchema, type User } from "@todo-list-poc-infra/types";
 
 export function validateUser(input: unknown): User {
   return UserSchema.parse(input);

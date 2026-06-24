@@ -1,17 +1,19 @@
 {
-  "name": "@app/types",
+  "name": "@todo-list-poc-infra/types",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
     "type-check": "tsc --noEmit",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "vitest run"
   },
   "dependencies": {
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@app/config": "workspace:*"
+    "@todo-list-poc-infra/config": "workspace:*",
+    "vitest": "^2.1.8"
   }
 }

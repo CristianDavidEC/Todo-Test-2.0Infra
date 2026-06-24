@@ -1,5 +1,5 @@
 /**
- * @app/core
+ * @todo-list-poc-infra/core
  *
  * Lógica de negocio pura. Sin dependencias de AWS / SST / Auth0 SDK.
  * Usable en frontend (Next.js), Lambdas y servicios ECS (NestJS).

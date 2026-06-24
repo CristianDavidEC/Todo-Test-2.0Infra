@@ -1,5 +1,5 @@
 {
-  "name": "@app/infra",
+  "name": "@todo-list-poc-infra/infra",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@pulumi/aws": "^6.0.0",
-    "@app/config": "workspace:*",
+    "@todo-list-poc-infra/config": "workspace:*",
     "@types/node": "^25.5.0",
     "typescript": "^5.7.0"
   }

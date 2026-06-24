@@ -1,1 +1,142 @@
 @import "tailwindcss";
+
+/*
+ * Sistema de diseño "Candy" — tokens Material-3 VERBATIM del export de Stitch
+ * (docs/design-reference/*.html, bloque tailwind-config). Fuente de verdad visual.
+ * Tailwind v4 CSS-first: estos tokens generan utilidades (bg-primary,
+ * text-on-surface, rounded-card, shadow-candy-*, font-sans…).
+ */
+@theme {
+  /* Primary */
+  --color-primary: #e040a0;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #f080c0;
+  --color-on-primary-container: #2e1a28;
+  --color-primary-fixed: #ffd6ee;
+  --color-primary-fixed-dim: #f0a0cc;
+  --color-on-primary-fixed: #3d0028;
+  --color-on-primary-fixed-variant: #a02070;
+  --color-inverse-primary: #f0a0cc;
+
+  /* Secondary */
+  --color-secondary: #7c52aa;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #eedcff;
+  --color-on-secondary-container: #2e2040;
+  --color-secondary-fixed: #eedcff;
+  --color-secondary-fixed-dim: #c8a8e8;
+  --color-on-secondary-fixed: #1a1030;
+  --color-on-secondary-fixed-variant: #4a3068;
+
+  /* Tertiary */
+  --color-tertiary: #0096cc;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #40c0ee;
+  --color-on-tertiary-container: #00334d;
+  --color-tertiary-fixed: #c8eaff;
+  --color-tertiary-fixed-dim: #80d0f0;
+  --color-on-tertiary-fixed: #001a33;
+  --color-on-tertiary-fixed-variant: #005580;
+
+  /* Error */
+  --color-error: #e53e3e;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffe8e8;
+  --color-on-error-container: #9b1c1c;
+
+  /* Background / Surface */
+  --color-background: #fef7ff;
+  --color-on-background: #2e1a28;
+  --color-surface: #fef7ff;
+  --color-on-surface: #2e1a28;
+  --color-surface-variant: #f2e8f2;
+  --color-on-surface-variant: #604868;
+  --color-surface-dim: #e0d6e0;
+  --color-surface-bright: #fef7ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fbf2fb;
+  --color-surface-container: #f8eef8;
+  --color-surface-container-high: #f2e8f2;
+  --color-surface-container-highest: #ece2ec;
+
+  /* Outline / Inverse */
+  --color-outline: #907898;
+  --color-outline-variant: #dcc8e0;
+  --color-inverse-surface: #2e1a28;
+  --color-inverse-on-surface: #fef7ff;
+
+  /* Aliases legibles usados en componentes existentes */
+  --color-ink: #2e1a28;
+  --color-ink-muted: #604868;
+
+  /* Tipografía */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radios (Stitch: DEFAULT 1rem, cards rounded-xl muy redondeados) */
+  --radius-card: 1.25rem;
+  --radius-pill: 9999px;
+
+  /* Sombras tintadas al color del elemento (card-shadow/purple/blue de Stitch) */
+  --shadow-candy-primary: 0 4px 16px rgba(224, 64, 160, 0.1);
+  --shadow-candy-secondary: 0 4px 16px rgba(124, 82, 170, 0.15);
+  --shadow-candy-tertiary: 0 4px 16px rgba(0, 150, 204, 0.15);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+/* Material Symbols (iconografía de Stitch). El <link> de la fuente va en layout. */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Sombras tintadas (clases de Stitch). */
+.card-shadow {
+  box-shadow: 0 4px 16px rgba(224, 64, 160, 0.1);
+}
+.purple-shadow {
+  box-shadow: 0 4px 16px rgba(124, 82, 170, 0.15);
+}
+.blue-shadow {
+  box-shadow: 0 4px 16px rgba(0, 150, 204, 0.15);
+}
+
+/* Glassmorphism — navbar y mockups flotantes (regla Candy). */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Microinteracción bouncy (spring) — idéntica a Stitch. */
+.bouncy {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bouncy:hover {
+  transform: scale(1.05);
+}
+.bouncy:active {
+  transform: scale(0.95);
+}
+.bouncy-hover {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bouncy-hover:hover {
+  transform: scale(1.03);
+}

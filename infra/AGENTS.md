@@ -8,7 +8,7 @@ Ver también el [`AGENTS.md` raíz](../AGENTS.md).
 
 - **SST v4 (Ion)** sobre Pulumi. Providers: `aws` (pin `us-east-1`) + `neon`.
 - [`sst.config.ts`](../sst.config.ts) (raíz) solo define `app()` y **delega**: `run()` hace `import("./infra/src/app")`. Lo único que vive ahí además del `app()` es el nombre canónico (`APP_NAME`), los `defaultTags` y la política de removal. No metas recursos en `sst.config.ts`.
-- **Tipos REALES de SST.** `infra/src` se type-checkea contra los tipos generados por SST: [`src/sst-globals.d.ts`](src/sst-globals.d.ts) referencia `.sst/platform/config.d.ts` (vía el preset `@app/config/tsconfig.sst.json`, sin `rootDir`), exponiendo `sst`/`aws`/`neon`/`$app`/`$dev`/etc. con sus tipos reales — un arg inválido en un componente **falla** el type-check. No hay tipos a mano que mantener.
+- **Tipos REALES de SST.** `infra/src` se type-checkea contra los tipos generados por SST: [`src/sst-globals.d.ts`](src/sst-globals.d.ts) referencia `.sst/platform/config.d.ts` (vía el preset `@todo-list-poc-infra/config/tsconfig.sst.json`, sin `rootDir`), exponiendo `sst`/`aws`/`neon`/`$app`/`$dev`/etc. con sus tipos reales — un arg inválido en un componente **falla** el type-check. No hay tipos a mano que mantener.
   **Prerrequisito (`.sst/` está gitignored, un clon nuevo no lo tiene):** corre `pnpm sst install` (genera `.sst/platform`). Además, hasta el primer `sst dev`/`deploy`, crea el stub que `config.d.ts` importa: `echo 'export {};' > .sst/types.generated.ts` (sst lo regenera real al desplegar). Como `.sst/**` queda fuera del hash de Turbo, tras un `sst deploy` o cambio de provider corre `pnpm type-check --force` (si no, sirve caché obsoleta).
 
 ## Estructura por dominios
@@ -38,11 +38,11 @@ src/
 
 3. **Fail-fast en env vars.** Si falta un env requerido (`NEON_ORG_ID`, `SHARED_DEV_VPC_ID`, `NEON_DEV_PROJECT_ID`), lanza `throw new Error` con **instrucciones paso a paso** (ver `neon.ts`/`vpc.ts`). Nada de defaults silenciosos para infra crítica. Para vars compartidas por varios módulos (p.ej. las `AUTH0_*` que inyecta `workers.ts`) usa el helper `requireSharedEnv(name)` ([`helpers/env.ts`](src/helpers/env.ts)): falla temprano en stages compartidos (`dev`/`staging`/`prod`) y deja pasar vacío en stages personales.
 
-4. **Linkable + env-var cruda (frontera anti-SST).** Pasa conexiones al cómputo de dos formas: `sst.Linkable` (`link: [database]`) **y** el `Output` crudo exportado (`databaseUrl`) para inyectar como env var. **`@app/db` y `@app/core` NUNCA importan `sst`** — leen `process.env.DATABASE_URL`. Mantén esa frontera al cablear cómputo nuevo.
+4. **Linkable + env-var cruda (frontera anti-SST).** Pasa conexiones al cómputo de dos formas: `sst.Linkable` (`link: [database]`) **y** el `Output` crudo exportado (`databaseUrl`) para inyectar como env var. **`@todo-list-poc-infra/db` y `@todo-list-poc-infra/core` NUNCA importan `sst`** — leen `process.env.DATABASE_URL`. Mantén esa frontera al cablear cómputo nuevo.
 
 5. **Guard `$dev` para recursos que no existen en modo dev.** `routePrivate`/Cloud Map solo se cablean desplegado: `if (!$dev) { … }` (ver `main-api.ts`). En `sst dev` el ECS corre local.
 
-6. **Credenciales = env vars (una sola fuente de verdad).** TODA config y secreto se lee de `process.env`: en local del `.env`, en deploy de las Variables/Secrets del GitHub Environment (ver [`docs/SETUP-CICD.md`](../docs/SETUP-CICD.md)). En stages compartidos usa `requireSharedEnv("X")` (fail-fast si falta). **Escape-hatch opcional:** `SECRETS_MANIFEST` ([`shared/secrets.ts`](src/shared/secrets.ts)) sigue existiendo para meter un secreto en SSM (`sst.Secret`, `pnpm sst secret set`) si un proyecto lo necesita, pero **está vacío por defecto** — la base no usa SSM.
+6. **Credenciales = env vars (una sola fuente de verdad).** TODA config y secreto se lee de `process.env`: en local del `.env`, en deploy de las Variables/Secrets del GitHub Environment. En stages compartidos usa `requireSharedEnv("X")` (fail-fast si falta). **Escape-hatch opcional:** `SECRETS_MANIFEST` ([`shared/secrets.ts`](src/shared/secrets.ts)) sigue existiendo para meter un secreto en SSM (`sst.Secret`, `pnpm sst secret set`) si un proyecto lo necesita, pero **está vacío por defecto** — la base no usa SSM.
 
 7. **Tags estándar GLOBALES (no recurso por recurso).** [`shared/tags.ts`](src/shared/tags.ts) son funciones puras (`getAllTags(appName, stage)`) que se pasan a `defaultTags.tags` del provider `aws` en `sst.config.ts`; **Pulumi los hereda a cada recurso AWS automáticamente.** No etiquetes recurso por recurso. Para un tag específico (p.ej. `Name` en sub-recursos de la VPC), añádelo en ese recurso vía `transform` — se mergea encima de los globales.
 
@@ -54,7 +54,7 @@ src/
 
 ## Gotchas
 
-- **`$app.name` = `"base-apps"`** (canónico, en `sst.config.ts` como `APP_NAME`) → se hornea en el nombre de **todo** recurso AWS. **Cambiarlo en un stage ya desplegado fuerza destroy-recreate de todo el stack.**
+- **`$app.name` = `"todo-list-poc-infra"`** (canónico, en `sst.config.ts` como `APP_NAME`) → se hornea en el nombre de **todo** recurso AWS. **Cambiarlo en un stage ya desplegado fuerza destroy-recreate de todo el stack.**
 - **Lambdas SIEMPRE fuera de VPC** (no se les pasa el campo `vpc`); ECS sí va en VPC.
 - **`web.ts` fuerza `openNextVersion: "4.0.3"`** — Next 16 usa `proxy.ts`; el default de SST no lo entiende y rompe el build de OpenNext.
 - **API Gateway es la única superficie pública**; NestJS queda privado tras VPC Link + Cloud Map (sin ALB).
@@ -68,7 +68,7 @@ src/
 ## Recetas (al añadir…)
 
 - **Ruta Lambda** → `api.route("METHOD /path", { handler, link: [...] })` en `apis/main-api.ts` + handler en `apps/functions`.
-- **Endpoint NestJS** → ya cubierto por `ANY /api/{proxy+}`; el código va en `apps/services/example-service`.
+- **Endpoint NestJS** → ya cubierto por `ANY /api/{proxy+}`; el código va en `apps/services/todo-service`.
 - **Cola/evento** → escribir `events/queues.ts` + `import "./events/queues"` en `app.ts` (fase eventos).
 - **Credencial nueva** → leerla con `requireSharedEnv("X")` + agregarla al `env:` de los 3 `deploy-*.yml` (Variable si no sensible, Secret si sensible). SSM solo si el proyecto lo justifica (manifest vacío por defecto).
 - **Recurso de dominio nuevo** → carpeta + módulo side-effect + import ordenado en `app.ts`.

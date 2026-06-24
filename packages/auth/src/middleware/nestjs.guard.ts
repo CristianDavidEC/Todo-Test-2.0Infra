@@ -1,7 +1,7 @@
 /**
  * Lógica pura de autorización Auth0 (verificación JWT + lazy sync en Postgres),
  * agnóstica de framework. La app NestJS la envuelve en un Guard `@Injectable`
- * (ver apps/services/example-service/src/auth/auth0.guard.ts) — ese es el patrón
+ * (ver apps/services/todo-service/src/auth/auth0.guard.ts) — ese es el patrón
  * canónico; este módulo NO crea el Guard para no acoplar `@nestjs/common`.
  *
  * `authorizeRequest` ejecuta:
@@ -11,11 +11,11 @@
  *   4. Devuelve `{ session, user }` (user ya es un `User` Zod validado)
  */
 
-import type { User } from "@app/types";
+import type { User } from "@todo-list-poc-infra/types";
 import { extractBearerToken, verifyAuth0Token, JwtVerificationError } from "../auth0/jwt-verifier";
 import { readCustomClaims, DEFAULT_AUTH0_NAMESPACE } from "../types/claims";
 import { rowToUser } from "../helpers/user-mapper";
-import type { UsersRepository } from "@app/db";
+import type { UsersRepository } from "@todo-list-poc-infra/db";
 import type { AuthSession } from "../types/session";
 
 export interface Auth0GuardDeps {

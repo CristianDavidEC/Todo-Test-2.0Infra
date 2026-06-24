@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { DM_Sans } from "next/font/google";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
-import { AuthNav } from "@/components/auth-nav";
 import "./globals.css";
 
+// DM Sans — fuente del sistema Candy. Expuesta como var CSS `--font-dm-sans`,
+// consumida por el token `--font-sans` en globals.css.
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  weight: ["400", "500", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "Base App — Plantilla v2.0",
-  description: "Plantilla base monorepo (SST + Next.js + NestJS) para proyectos AWS",
+  title: "CandyProject",
+  description: "CandyProject — gestión de proyectos inteligente y vibrante",
 };
 
 export default function RootLayout({
@@ -15,17 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className="min-h-screen bg-gray-950 text-gray-100 antialiased">
-        <Auth0Provider>
-          <header className="flex items-center justify-between border-b border-gray-800 px-6 py-3">
-            <Link href="/" className="text-sm font-semibold tracking-tight">
-              Base App
-            </Link>
-            <AuthNav />
-          </header>
-          {children}
-        </Auth0Provider>
+    <html lang="es" className={dmSans.variable}>
+      <head>
+        {/* Material Symbols Outlined — iconografía de las pantallas Stitch. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* Icon font (Material Symbols) — debe cargarse por <link>; next/font no
+            soporta fuentes de íconos. La advertencia no-page-custom-font no aplica. */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
+      <body className="min-h-screen bg-background font-sans text-on-surface antialiased">
+        <Auth0Provider>{children}</Auth0Provider>
       </body>
     </html>
   );

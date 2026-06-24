@@ -17,7 +17,7 @@
  */
 
 import { vpc } from "../networking/vpc";
-import { exampleService } from "../services/workers";
+import { todoService } from "../services/workers";
 import { getLogRetention } from "../helpers/stage";
 
 // Retención de logs stage-aware aplicada a TODA ruta Lambda del API (transform.route.handler).
@@ -41,7 +41,7 @@ api.route("GET /ping", {
 // `nodes.cloudmapService` no existe en modo `sst dev` (el servicio corre local),
 // así que la ruta privada solo se cablea en stages desplegados.
 if (!$dev) {
-  api.routePrivate("ANY /api/{proxy+}", exampleService.nodes.cloudmapService.arn);
+  api.routePrivate("ANY /api/{proxy+}", todoService.nodes.cloudmapService.arn);
 }
 
 // Export para que otros módulos (web frontend, etc.) referencien la URL.
