@@ -39,18 +39,18 @@ export function MemberRow({
   const initial = (member.name ?? member.email).charAt(0).toUpperCase();
 
   return (
-    <div className="bouncy-hover rounded-card border border-outline-variant bg-surface p-6 shadow-candy-secondary">
+    <div className="bouncy group rounded-card border border-outline-variant bg-surface p-6 card-shadow">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-4">
           {member.picture ? (
             <div
               className="h-16 w-16 shrink-0 rounded-full bg-cover bg-center ring-4 ring-background"
-              style={{ backgroundImage: `url(${member.picture})`, boxShadow: `0 0 0 4px ${accent}33` }}
+              style={{ backgroundImage: `url(${member.picture})`, boxShadow: `0 0 0 4px ${accent}` }}
             />
           ) : (
             <div
               className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-2xl font-black text-white ring-4 ring-background"
-              style={{ backgroundColor: accent }}
+              style={{ backgroundColor: accent, boxShadow: `0 0 0 4px ${accent}55` }}
             >
               {initial}
             </div>
@@ -58,22 +58,25 @@ export function MemberRow({
           <div className="min-w-0">
             <h4 className="truncate text-xl font-black text-on-surface">{member.name ?? "Sin nombre"}</h4>
             <p className="text-sm font-bold" style={{ color: accent }}>
-              {isOwner ? "Owner" : "Miembro"}
+              {isOwner ? "Lead / Owner" : "Colaborador"}
             </p>
           </div>
         </div>
         <span
           className={`shrink-0 rounded-pill px-3 py-1 text-xs font-bold ${
-            isOwner ? "bg-primary text-on-primary" : "bg-secondary-fixed text-on-secondary-container"
+            isOwner ? "bg-primary text-on-primary" : "bg-secondary-fixed text-on-secondary-fixed-variant"
           }`}
         >
           {isOwner ? "👑 Owner" : "👤 Miembro"}
         </span>
       </div>
 
-      <div className="rounded-card bg-surface-container-low p-3">
+      <div className="rounded-card bg-surface-container-high p-3">
         <p className="mb-1 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Email</p>
-        <p className="truncate text-sm font-bold text-on-surface">{member.email}</p>
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: accent }} />
+          <p className="truncate text-sm font-bold text-on-surface">{member.email}</p>
+        </div>
       </div>
 
       {canManage && (

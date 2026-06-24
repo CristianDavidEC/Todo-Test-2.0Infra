@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth0 } from "@/lib/auth0";
+import { PublicNav } from "@/components/public-nav";
 
 /* Iconos inline (sin dependencia de Material Symbols font). */
 function Sparkle({ className = "" }: { className?: string }) {
@@ -34,7 +35,9 @@ export default async function Home() {
 
   if (session) {
     return (
-      <main className="flex min-h-[80vh] flex-col items-center justify-center px-4 py-16">
+      <>
+        <PublicNav />
+        <main className="flex min-h-[80vh] flex-col items-center justify-center px-4 py-16">
         <div className="w-full max-w-2xl space-y-8 text-center">
           <h1 className="bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-5xl font-black tracking-tight text-transparent sm:text-6xl">
             ¡Hola, {session.user.name}!
@@ -51,12 +54,15 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-      </main>
+        </main>
+      </>
     );
   }
 
   return (
-    <main>
+    <>
+      <PublicNav />
+      <main>
       {/* Hero */}
       <section className="relative overflow-hidden pt-20 pb-32">
         <div className="mx-auto max-w-7xl px-6 text-center">
@@ -262,6 +268,7 @@ export default async function Home() {
           </div>
         </div>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }
