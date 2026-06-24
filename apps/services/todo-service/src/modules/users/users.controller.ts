@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Inject, Param, Req, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -43,7 +43,7 @@ const PUBLIC_USER_EXAMPLE = {
 @Controller("users")
 @UseGuards(Auth0Guard)
 export class UsersController {
-  constructor(private readonly users: UsersService) {}
+  constructor(@Inject(UsersService) private readonly users: UsersService) {}
 
   @Get()
   @ApiOperation({ summary: "Listar usuarios", description: "Devuelve hasta 50 usuarios." })

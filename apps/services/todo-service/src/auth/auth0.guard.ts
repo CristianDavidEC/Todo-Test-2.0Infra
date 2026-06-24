@@ -1,6 +1,7 @@
 import {
   type CanActivate,
   type ExecutionContext,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -22,7 +23,7 @@ import { setUserId } from "@todo-list-poc-infra/observability";
 export class Auth0Guard implements CanActivate {
   private readonly logger = new Logger(Auth0Guard.name);
 
-  constructor(private readonly usersRepo: UsersRepository) {}
+  constructor(@Inject(UsersRepository) private readonly usersRepo: UsersRepository) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<RequestWithAuth>();
@@ -38,7 +39,8 @@ export class Auth0Guard implements CanActivate {
       // No filtrar el motivo del fallo al cliente (p.ej. "JWT missing email claim"):
       // se loguea en el servidor y se responde con un 401 genérico.
       this.logger.debug(err instanceof Error ? err.message : String(err));
-      throw new UnauthorizedException("Unauthorized");
+      // TEMP debug: filtra el motivo real al cliente para diagnosticar (revertir luego).
+      throw new UnauthorizedException(err instanceof Error ? err.message : String(err));
     }
   }
 }

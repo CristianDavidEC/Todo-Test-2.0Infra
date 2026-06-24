@@ -12,31 +12,34 @@ export function AddMemberForm({ workspaceId }: { workspaceId: string }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, {});
 
   return (
-    <form action={formAction} className="rounded-card bg-surface p-5 shadow-candy-primary">
-      <label htmlFor="member-email" className="text-sm font-bold text-ink-muted">
-        Agregar miembro por email
-      </label>
-      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-        <input
-          id="member-email"
-          name="email"
-          type="email"
-          required
-          placeholder="persona@empresa.com"
-          className="flex-1 rounded-pill bg-background px-4 py-2.5 text-ink outline-none focus:ring-2 focus:ring-primary"
-        />
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-pill bg-primary px-6 py-2.5 font-bold text-white shadow-candy-primary transition-transform hover:scale-[1.03] disabled:opacity-60"
-        >
-          {pending ? "Agregando…" : "Agregar"}
-        </button>
+    <form action={formAction} className="rounded-card bg-gradient-to-br from-surface to-primary/5 p-6 shadow-candy-primary border border-primary/20">
+      <div className="flex flex-col gap-3">
+        <label htmlFor="member-email" className="text-sm font-bold text-ink">
+          📧 Correo electrónico del nuevo miembro
+        </label>
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
+          <input
+            id="member-email"
+            name="email"
+            type="email"
+            required
+            placeholder="persona@empresa.com"
+            className="flex-1 rounded-pill bg-white border-2 border-primary/20 px-5 py-3 text-ink outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+          />
+          <button
+            type="submit"
+            disabled={pending}
+            className="rounded-pill bg-gradient-to-r from-primary to-secondary px-8 py-3 font-bold text-white shadow-candy-primary transition-all hover:scale-[1.05] hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {pending ? "⏳ Agregando…" : "✅ Agregar"}
+          </button>
+        </div>
       </div>
+
       {state.error && (
-        <p className="mt-3 rounded-card bg-red-50 px-4 py-2 text-sm font-medium text-red-600">
-          {state.error}
-        </p>
+        <div className="mt-4 rounded-card bg-red-50 border-2 border-red-200 px-4 py-3">
+          <p className="text-sm font-bold text-red-600">⚠️ {state.error}</p>
+        </div>
       )}
     </form>
   );

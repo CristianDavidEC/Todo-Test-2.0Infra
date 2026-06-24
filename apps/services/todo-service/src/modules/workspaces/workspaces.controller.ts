@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -75,7 +76,7 @@ const MEMBER_EXAMPLE = {
 @Controller("workspaces")
 @UseGuards(Auth0Guard)
 export class WorkspacesController {
-  constructor(private readonly workspaces: WorkspacesService) {}
+  constructor(@Inject(WorkspacesService) private readonly workspaces: WorkspacesService) {}
 
   @Post()
   @ApiOperation({ summary: "Crear workspace", description: "El creador queda Owner (BR-1)." })

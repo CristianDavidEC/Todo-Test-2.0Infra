@@ -59,7 +59,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     this.logger.error(exception instanceof Error ? exception.stack : String(exception));
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: "Internal server error",
+      // TEMP debug: filtra el error real para diagnosticar (revertir luego).
+      message: exception instanceof Error ? exception.message : String(exception),
     });
   }
 }

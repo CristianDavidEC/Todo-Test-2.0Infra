@@ -2,6 +2,7 @@ import {
   type CanActivate,
   type ExecutionContext,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -33,8 +34,8 @@ interface WorkspaceRequest extends RequestWithAuth {
 @Injectable()
 export class WorkspaceMemberGuard implements CanActivate {
   constructor(
-    private readonly workspacesRepo: WorkspacesRepository,
-    private readonly reflector: Reflector,
+    @Inject(WorkspacesRepository) private readonly workspacesRepo: WorkspacesRepository,
+    @Inject(Reflector) private readonly reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

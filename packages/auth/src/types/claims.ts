@@ -41,14 +41,22 @@ export function readCustomClaims(
   claims: Auth0Claims,
   namespace: string = DEFAULT_AUTH0_NAMESPACE,
 ): Auth0CustomClaims {
+  // Los claims de perfil (email, name, …) sólo existen "bare" en el ID token; el
+  // access token de Auth0 NO los lleva y, por OIDC, Auth0 sólo admite claims
+  // custom *namespaced* en él. Por eso una Action post-login los inyecta como
+  // `${namespace}email`, etc. Leemos namespace-first con fallback al claim bare
+  // para servir ambos caminos: access token (NestJS) e ID token (Next.js).
+  const ns = <T>(key: string): T | undefined =>
+    (claims[`${namespace}${key}`] ?? claims[key]) as T | undefined;
+
   return {
     roles: claims[`${namespace}roles`] as string[] | undefined,
     permissions: claims[`${namespace}permissions`] as string[] | undefined,
     userId: claims[`${namespace}user_id`] as string | undefined,
-    email: claims["email"] as string | undefined,
-    emailVerified: claims["email_verified"] as boolean | undefined,
-    name: claims["name"] as string | undefined,
-    picture: claims["picture"] as string | undefined,
-    locale: claims["locale"] as string | undefined,
+    email: ns<string>("email"),
+    emailVerified: ns<boolean>("email_verified"),
+    name: ns<string>("name"),
+    picture: ns<string>("picture"),
+    locale: ns<string>("locale"),
   };
 }

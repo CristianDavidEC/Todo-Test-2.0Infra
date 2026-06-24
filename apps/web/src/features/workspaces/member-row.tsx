@@ -34,59 +34,63 @@ export function MemberRow({
   const error = roleState.error ?? removeState.error;
 
   return (
-    <div className="rounded-card bg-surface p-4 shadow-candy-secondary">
+    <div className="rounded-card bg-surface p-5 shadow-candy-secondary transition-all hover:shadow-lg border border-transparent hover:border-primary/20">
       <div className="flex items-center justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-primary-fixed text-sm font-bold text-primary">
+        <div className="flex min-w-0 items-center gap-4 flex-1">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-pill font-bold text-sm text-white"
+            style={{ backgroundColor: member.role === "owner" ? "#e040a0" : "#7c52aa" }}
+          >
             {(member.name ?? member.email).charAt(0).toUpperCase()}
-          </span>
-          <div className="min-w-0">
-            <p className="truncate font-bold text-ink">{member.name ?? member.email}</p>
-            <p className="truncate text-xs text-ink-muted">{member.email}</p>
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-bold text-ink text-base">{member.name ?? member.email}</p>
+            <p className="truncate text-xs text-ink-muted mt-0.5">{member.email}</p>
           </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-3 flex-wrap justify-end">
           <span
-            className={`rounded-pill px-3 py-0.5 text-xs font-bold ${
+            className={`rounded-pill px-3 py-1 text-xs font-bold transition-colors ${
               member.role === "owner"
-                ? "bg-primary-fixed text-primary"
-                : "bg-background text-ink-muted"
+                ? "bg-gradient-to-r from-primary to-secondary text-white"
+                : "bg-background text-ink-muted border border-ink/10"
             }`}
           >
-            {member.role === "owner" ? "Owner" : "Miembro"}
+            {member.role === "owner" ? "👑 Owner" : "👤 Miembro"}
           </span>
 
           {canManage && (
-            <>
+            <div className="flex items-center gap-2">
               <form action={roleAction}>
                 <input type="hidden" name="role" value={targetRole} />
                 <button
                   type="submit"
                   disabled={rolePending}
-                  className="rounded-pill border border-primary/30 px-3 py-1 text-xs font-bold text-primary transition-transform hover:scale-105 disabled:opacity-60"
+                  className="rounded-pill border-2 border-secondary px-2 py-1 text-xs font-bold text-secondary transition-all hover:bg-secondary hover:text-white hover:scale-105 disabled:opacity-60"
+                  title={targetRole === "owner" ? "Promover a Owner" : "Degradar a Miembro"}
                 >
-                  {targetRole === "owner" ? "Hacer Owner" : "Hacer Miembro"}
+                  {targetRole === "owner" ? "👑" : "👤"}
                 </button>
               </form>
               <form action={removeAction}>
                 <button
                   type="submit"
                   disabled={removePending}
-                  className="rounded-pill border border-red-300 px-3 py-1 text-xs font-bold text-red-600 transition-transform hover:scale-105 disabled:opacity-60"
+                  className="rounded-pill border-2 border-red-300 px-2 py-1 text-xs font-bold text-red-600 transition-all hover:bg-red-50 hover:scale-105 disabled:opacity-60"
+                  title="Remover del workspace"
                 >
-                  Remover
+                  ❌
                 </button>
               </form>
-            </>
+            </div>
           )}
         </div>
       </div>
 
       {error && (
-        <p className="mt-3 rounded-card bg-red-50 px-4 py-2 text-sm font-medium text-red-600">
-          {error}
-        </p>
+        <div className="mt-4 rounded-card bg-red-50 border border-red-200 px-4 py-3">
+          <p className="text-sm font-bold text-red-600">⚠️ {error}</p>
+        </div>
       )}
     </div>
   );

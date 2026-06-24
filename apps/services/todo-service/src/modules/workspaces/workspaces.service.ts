@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -34,8 +35,8 @@ import type {
 @Injectable()
 export class WorkspacesService {
   constructor(
-    private readonly workspacesRepo: WorkspacesRepository,
-    private readonly usersRepo: UsersRepository,
+    @Inject(WorkspacesRepository) private readonly workspacesRepo: WorkspacesRepository,
+    @Inject(UsersRepository) private readonly usersRepo: UsersRepository,
   ) {}
 
   /** Crea el workspace + membership Owner del creador (BR-1, BR-2). */
