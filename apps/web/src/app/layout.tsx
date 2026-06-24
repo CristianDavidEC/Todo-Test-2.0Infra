@@ -27,11 +27,16 @@ export default function RootLayout({
     <html lang="es" className={dmSans.variable}>
       <body className="min-h-screen bg-background font-sans text-ink antialiased">
         <Auth0Provider>
-          <header className="flex items-center justify-between border-b border-primary/10 px-6 py-3">
-            <Link href="/" className="text-base font-bold tracking-tight text-primary">
-              CandyProject
-            </Link>
-            <AuthNav />
+          <header className="glass sticky top-0 z-50 shadow-[0_4px_16px_rgba(224,64,160,0.1)]">
+            <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+              <Link
+                href="/"
+                className="text-2xl font-black tracking-tighter text-primary transition-transform duration-300 ease-out hover:scale-105"
+              >
+                CandyProject
+              </Link>
+              <AuthNav />
+            </div>
           </header>
           {children}
         </Auth0Provider>

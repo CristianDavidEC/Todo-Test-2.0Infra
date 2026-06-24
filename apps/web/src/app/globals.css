@@ -29,9 +29,48 @@
   --shadow-candy-primary: 0 4px 16px rgba(224, 64, 160, 0.2);
   --shadow-candy-secondary: 0 4px 16px rgba(124, 82, 170, 0.2);
   --shadow-candy-tertiary: 0 4px 16px rgba(0, 150, 204, 0.2);
+
+  /* Roles "on-*" y contenedores (paleta Candy completa del MCP). Para texto sobre
+     fills de color y para superficies tonales. */
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #ffffff;
+  --color-on-tertiary: #ffffff;
+  --color-on-surface: #2a1633; /* alias legible de ink para HTML portado de Stitch */
+  --color-on-surface-variant: #6b5b75;
+  --color-primary-container: #f080c0; /* pink medio — chips/badges destacados */
+  --color-on-primary-container: #3d0028;
+  --color-secondary-container: #eedcff; /* lila pastel — cards/tags secundarios */
+  --color-on-secondary-container: #2e2040;
+  --color-secondary-fixed: #eedcff; /* usado por badges (antes sin token → sin fill) */
+  --color-tertiary-container: #c8eaff; /* celeste pastel */
+  --color-on-tertiary-container: #00334d;
+  --color-surface-container-low: #fbf2fb; /* secciones tonales sin bordes */
+  --color-surface-container: #f8eef8; /* footer / contenedores tonales */
+  --color-surface-variant: #f2e8f2; /* tracks de progreso, fills sutiles */
+  --color-outline-variant: #dcc8e0; /* "ghost border" — se siente, no se ve */
+  --color-inverse-surface: #2a1633; /* plum oscuro — CTA invertido */
+  --color-error: #e53e3e; /* acciones destructivas / errores */
+  --color-on-error: #ffffff;
+  --color-error-container: #ffe8e8;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-ink);
+}
+
+/* Glassmorphism — navbar y mockups flotantes (regla Candy). */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Hover bouncy spring-like (regla Candy: animaciones playful, no rígidas). */
+.bouncy-hover {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bouncy-hover:hover {
+  transform: scale(1.03);
 }
