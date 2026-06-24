@@ -16,7 +16,7 @@ if (!process.env.DATABASE_URL) {
     "DATABASE_URL no está definida.\n" +
       "Ponla en packages/db/.env o en el .env de la raíz, o pásala inline:\n" +
       '  DATABASE_URL="postgresql://...neon.tech/neondb?sslmode=require" pnpm --filter @todo-list-poc-infra/db db:migrate\n' +
-      "Es el connection string de tu branch Neon (o del proyecto dev). Ver docs/SETUP-NEON.md.",
+      "Es el connection string de tu branch Neon (o del proyecto dev).",
   );
 }
 

@@ -65,7 +65,35 @@ src/
 - **Import por subpath para no inflar el bundle.** `@todo-list-poc-infra/auth/nextjs` (no el barrel `@todo-list-poc-infra/auth`) — el barrel arrastra el guard de NestJS al bundle de Next. Patrón a respetar con cualquier paquete multi-runtime.
 - **`@/*` = `src/*`** (alias en `tsconfig.json`). Usa `@/features/...`, `@/components/...`, `@/lib/...`.
 - **Auth0 inerte sin credenciales.** `isAuth0Configured` (en `lib/auth0.ts`) mantiene el sitio público vivo (no-op) mientras no haya secrets; con secrets el flujo se activa sin cambiar código. Replica ese guard en cualquier página protegida.
-- **Estilos: Tailwind v4** (utilidades en JSX). Sin CSS-in-JS ni librerías de componentes pesadas por defecto.
+- **Estilos: Tailwind v4 + sistema de diseño Candy** (utilidades en JSX). Sin CSS-in-JS ni librerías de componentes pesadas por defecto. Ver la sección **Sistema de diseño** abajo — es de cumplimiento obligatorio en cada vista.
+
+## Sistema de diseño — Candy (obligatorio en cada vista)
+
+Fuente de verdad: [`docs/DESIGN.md`](../../docs/DESIGN.md) (estilo visual) y [`docs/candyproject_prd_project_brief.md`](../../docs/candyproject_prd_project_brief.md) (producto). North star: **"Joyful Pop"** — vibrante, saturado, redondeado, microinteracciones bouncy. Mientras no haya MCP de Stitch, estos docs **son** la guía; cada vista debe replicar este estilo.
+
+**Tokens (definidos en [`src/app/globals.css`](src/app/globals.css) con `@theme` de Tailwind v4 — NO hardcodear hex):**
+
+| Token | Utilidad Tailwind | Uso |
+|---|---|---|
+| `--color-primary` `#e040a0` | `bg-primary` / `text-primary` | Hot pink — acciones primarias, marca |
+| `--color-secondary` `#7c52aa` | `bg-secondary` / `text-secondary` | Purple — secundario, tags, categorías |
+| `--color-tertiary` `#0096cc` | `bg-tertiary` / `text-tertiary` | Sky blue — info, links, highlights |
+| `--color-background` `#fef7ff` | `bg-background` | Fondo de la app (en `body`) |
+| `--color-surface` `#fff` | `bg-surface` | Fill de cards/inputs |
+| `--color-ink` / `--color-ink-muted` | `text-ink` / `text-ink-muted` | Texto principal / secundario |
+| `--color-primary-fixed` `#ffd9ec` | `bg-primary-fixed` | Pastel pink — fill de badges/tags |
+| `--radius-card` 16px | `rounded-card` | Cards/contenedores |
+| `--radius-pill` | `rounded-pill` | Botones, badges, inputs |
+| `--shadow-candy-*` | `shadow-candy-primary/secondary/tertiary` | Sombras tintadas (15-20% del color) |
+| `--font-sans` (DM Sans) | `font-sans` (default) | Tipografía única; bold en headings, medium en labels |
+
+**Patrones de componente (replica estos, ver `page.tsx`/`dashboard-view.tsx` como referencia):**
+- **Botón:** `rounded-pill bg-primary px-5 py-2.5 font-medium text-white shadow-candy-primary transition-transform hover:scale-[1.03]`. Secundario: `border border-primary/30 text-primary` sin fill.
+- **Card:** `rounded-card bg-surface p-5 shadow-candy-{primary|secondary}`; hover lift con `transition-transform hover:scale-[1.03]`.
+- **Badge/Tag:** `rounded-pill bg-primary-fixed px-3 py-1 text-xs font-bold text-primary`.
+- **Input:** `rounded-pill bg-surface` con focus ring rosa (`focus:ring-2 focus:ring-primary`).
+
+**Reglas:** todo redondeado (sin esquinas duras), nada washed-out (abraza saturación/contraste), animaciones bouncy con `ease-out` (no rígidas), sombras siempre tintadas al color del elemento. Cuando vuelva el MCP de Stitch, prevalece su output exportado pero estos tokens siguen siendo la capa base.
 
 ## Ejecución local
 
@@ -108,4 +136,5 @@ pnpm --filter @todo-list-poc-infra/web dev               # http://localhost:3000
 
 - [`AGENTS.md` raíz](../../AGENTS.md) · `.claude/skills/vercel-react-best-practices/` · `.claude/skills/next-best-practices/`
 - `@todo-list-poc-infra/auth` (Auth0/sesión) · `@todo-list-poc-infra/core` (lógica)
-- [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts) (OpenNext + Auth0 env/secrets) · `docs/` (arquitectura)
+- [`infra/src/webs/web.ts`](../../infra/src/webs/web.ts) (OpenNext + Auth0 env/secrets)
+- [`docs/DESIGN.md`](../../docs/DESIGN.md) (sistema Candy) · [`docs/DEFINICION-FUNCIONAL.md`](../../docs/DEFINICION-FUNCIONAL.md) (módulos del producto)

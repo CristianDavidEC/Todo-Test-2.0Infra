@@ -12,3 +12,4 @@
 
 export * from "./events/domain-event";
 export * from "./schemas/user";
+export * from "./schemas/workspace";

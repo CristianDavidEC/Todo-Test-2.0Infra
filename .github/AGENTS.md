@@ -1,7 +1,6 @@
 # AGENTS.md — `.github` (CI/CD)
 
 GitHub Actions con **branch-per-environment** + **OIDC** (sin llaves AWS estáticas).
-Setup de infra/repo (one-time): [`docs/SETUP-CICD.md`](../docs/SETUP-CICD.md).
 
 ## Modelo
 
@@ -35,7 +34,7 @@ Promoción: `feat/* → dev → test → main` por PR.
    deploy inyecta vía `env:` lo que el infra lee de `process.env`: Variables (no sensibles) y
    Secrets (sensibles), a nivel repo si son iguales en todo stage o a nivel Environment si
    difieren. Al añadir una env var nueva que `requireSharedEnv` exija, agrégala al bloque
-   `env:` de los 3 deploys. Ver `docs/SETUP-CICD.md` §2.1/§4.
+   `env:` de los 3 deploys.
 
 ## Gotchas
 
@@ -44,7 +43,7 @@ Promoción: `feat/* → dev → test → main` por PR.
 - **OIDC + `environment:` cambia el claim `sub`**: como los deploys usan `environment:`,
   el token OIDC trae `sub = repo:<org>/<repo>:environment:<name>` (NO `:ref:refs/heads/<branch>`).
   La trust policy del IAM role DEBE filtrar por `environment:<name>`, o falla con
-  "Not authorized to perform sts:AssumeRoleWithWebIdentity". Ver `docs/SETUP-CICD.md` §1.2.
+  "Not authorized to perform sts:AssumeRoleWithWebIdentity".
 - `requireSharedEnv` (infra) **rompe el deploy** en dev/staging/prod si una env var falta —
   por eso toda config/secreto que el synth necesite debe estar en el `env:` del workflow.
 - **`pr-checks` corre `pnpm sst install` antes de los checks.** Genera `.sst/platform/config.d.ts`

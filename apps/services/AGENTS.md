@@ -95,7 +95,7 @@ existe (`--env-file-if-exists`).
 
 `pnpm dev` corre `tsx watch --env-file-if-exists=../../../.env` (carga el `.env` de la raíz; no hay
 `.env` por servicio). Para correr 2 servicios a la vez, override de puerto inline
-(`PORT=3002 pnpm --filter <svc> dev`). Detalle de Docker: [docs/08-desarrollo-local.md](../../docs/08-desarrollo-local.md).
+(`PORT=3002 pnpm --filter <svc> dev`). Detalle de Docker: ver el `Dockerfile` de cada servicio.
 
 ## Infra wiring
 

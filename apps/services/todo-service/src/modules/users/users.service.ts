@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { UsersRepository, type UserRow } from "@todo-list-poc-infra/db";
 import type { CreateUserDto, PublicUserDto } from "./users.dto";
 
@@ -8,7 +8,7 @@ import type { CreateUserDto, PublicUserDto } from "./users.dto";
  */
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepo: UsersRepository) {}
+  constructor(@Inject(UsersRepository) private readonly usersRepo: UsersRepository) {}
 
   async list(): Promise<PublicUserDto[]> {
     const rows = await this.usersRepo.list();

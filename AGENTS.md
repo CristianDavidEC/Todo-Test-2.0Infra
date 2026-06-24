@@ -151,4 +151,4 @@ Vitest está cableado: preset `@todo-list-poc-infra/config/vitest/base`, task `t
 
 ## Documentación adicional
 
-La documentación de arquitectura está en `docs/` (8 archivos numerados 01-08 + `docs/ARCHITECTURE.md` como índice + `SETUP-*`, siendo `SETUP-ONBOARDING.md` la guía de inicio del dev). Lo pendiente/futuro está en `ROADMAP.md` (raíz).
+La arquitectura vive en los `AGENTS.md` por carpeta (este archivo + cada app/package/infra). La definición funcional del producto (módulos, modelo de dominio, orden de ejecución) está en `docs/DEFINICION-FUNCIONAL.md`.

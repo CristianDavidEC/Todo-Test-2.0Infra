@@ -42,7 +42,7 @@ src/
 
 5. **Guard `$dev` para recursos que no existen en modo dev.** `routePrivate`/Cloud Map solo se cablean desplegado: `if (!$dev) { … }` (ver `main-api.ts`). En `sst dev` el ECS corre local.
 
-6. **Credenciales = env vars (una sola fuente de verdad).** TODA config y secreto se lee de `process.env`: en local del `.env`, en deploy de las Variables/Secrets del GitHub Environment (ver [`docs/SETUP-CICD.md`](../docs/SETUP-CICD.md)). En stages compartidos usa `requireSharedEnv("X")` (fail-fast si falta). **Escape-hatch opcional:** `SECRETS_MANIFEST` ([`shared/secrets.ts`](src/shared/secrets.ts)) sigue existiendo para meter un secreto en SSM (`sst.Secret`, `pnpm sst secret set`) si un proyecto lo necesita, pero **está vacío por defecto** — la base no usa SSM.
+6. **Credenciales = env vars (una sola fuente de verdad).** TODA config y secreto se lee de `process.env`: en local del `.env`, en deploy de las Variables/Secrets del GitHub Environment. En stages compartidos usa `requireSharedEnv("X")` (fail-fast si falta). **Escape-hatch opcional:** `SECRETS_MANIFEST` ([`shared/secrets.ts`](src/shared/secrets.ts)) sigue existiendo para meter un secreto en SSM (`sst.Secret`, `pnpm sst secret set`) si un proyecto lo necesita, pero **está vacío por defecto** — la base no usa SSM.
 
 7. **Tags estándar GLOBALES (no recurso por recurso).** [`shared/tags.ts`](src/shared/tags.ts) son funciones puras (`getAllTags(appName, stage)`) que se pasan a `defaultTags.tags` del provider `aws` en `sst.config.ts`; **Pulumi los hereda a cada recurso AWS automáticamente.** No etiquetes recurso por recurso. Para un tag específico (p.ej. `Name` en sub-recursos de la VPC), añádelo en ese recurso vía `transform` — se mergea encima de los globales.
 

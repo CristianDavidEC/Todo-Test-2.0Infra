@@ -28,12 +28,6 @@ VPC Link + Cloud Map (**sin ALB**). Lambdas fuera de VPC.
 
 ## Arranque rápido
 
-👉 **¿Primera vez? Empieza por la guía de onboarding:** [docs/SETUP-ONBOARDING.md](docs/SETUP-ONBOARDING.md)
-— de cero a corriendo, paso a paso (distingue el bootstrap inicial del proyecto del
-onboarding de un dev nuevo).
-
-Resumen:
-
 ```bash
 nvm use                 # Node 22
 pnpm install
@@ -58,8 +52,6 @@ pnpm sst secret set <KEY> <value> --stage <stage>
 
 ## Documentación
 
-- **Empieza aquí:** [docs/SETUP-ONBOARDING.md](docs/SETUP-ONBOARDING.md) — guía de inicio del desarrollador.
-- **Para humanos:** [docs/](docs/) — índice en [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-- **Para agentes IA:** un `AGENTS.md` por carpeta (raíz + cada app/package/infra). Léelo
+- **Definición funcional del producto:** [docs/DEFINICION-FUNCIONAL.md](docs/DEFINICION-FUNCIONAL.md) — módulos, modelo de dominio y orden de ejecución.
+- **Para agentes IA y arquitectura:** un `AGENTS.md` por carpeta (raíz + cada app/package/infra). Léelo
   **antes** de editar esa carpeta. `CLAUDE.md` (raíz) enruta a todos.
-- **Pendiente / futuro:** [ROADMAP.md](ROADMAP.md).

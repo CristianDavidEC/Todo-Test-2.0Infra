@@ -29,7 +29,7 @@ Prefijo global `/api`. Swagger en `/api/docs` (JSON en `/api/docs-json`), **solo
   a mano (`PUBLIC_USER_EXAMPLE`) porque los DTOs son Zod, no clases.
 - **Auth0 (cableado, sin credenciales por defecto):** el login real funciona en cuanto el proyecto setea los secrets del tenant; `MeController` hace lazy-upsert vía `Auth0Guard`. Los roles
   (`/api/me/admin/ping`) dependen de una Auth0 Action que pueble los claims — **omitida por diseño** en la
-  base (depende de reglas de negocio, ver `docs/SETUP-AUTH0.md` §6); sin ella, `roles` llega vacío → 403.
+  base (depende de reglas de negocio); sin ella, `roles` llega vacío → 403.
 
 ## Notas
 
