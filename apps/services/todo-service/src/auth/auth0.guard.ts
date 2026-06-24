@@ -39,8 +39,7 @@ export class Auth0Guard implements CanActivate {
       // No filtrar el motivo del fallo al cliente (p.ej. "JWT missing email claim"):
       // se loguea en el servidor y se responde con un 401 genérico.
       this.logger.debug(err instanceof Error ? err.message : String(err));
-      // TEMP debug: filtra el motivo real al cliente para diagnosticar (revertir luego).
-      throw new UnauthorizedException(err instanceof Error ? err.message : String(err));
+      throw new UnauthorizedException("Unauthorized");
     }
   }
 }

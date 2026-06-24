@@ -6,6 +6,7 @@ import {
   AddMemberSchema,
   ChangeRoleSchema,
   CreateWorkspaceSchema,
+  UpdateWorkspaceBrandingSchema,
   type WorkspaceRole,
 } from "@todo-list-poc-infra/types";
 import {
@@ -15,6 +16,7 @@ import {
   createWorkspace,
   leaveWorkspace,
   removeMember,
+  updateBranding,
   WorkspaceApiError,
 } from "./workspaces.api";
 
@@ -107,6 +109,37 @@ export async function removeMemberAction(
   }
   revalidatePath(`/w/${workspaceId}/members`);
   return {};
+}
+
+/** Estado del form de branding: error o éxito (para feedback en Settings). */
+export interface BrandingState {
+  error?: string;
+  ok?: boolean;
+}
+
+export async function updateBrandingAction(
+  workspaceId: string,
+  _prev: BrandingState,
+  formData: FormData,
+): Promise<BrandingState> {
+  const parsed = UpdateWorkspaceBrandingSchema.safeParse({
+    name: formData.get("name"),
+    color: formData.get("color"),
+    icon: formData.get("icon"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
+  }
+
+  try {
+    await updateBranding(workspaceId, parsed.data);
+  } catch (err) {
+    return { error: toMessage(err) };
+  }
+
+  revalidatePath(`/w/${workspaceId}`);
+  revalidatePath(`/w/${workspaceId}/settings`);
+  return { ok: true };
 }
 
 export async function archiveWorkspaceAction(workspaceId: string): Promise<void> {

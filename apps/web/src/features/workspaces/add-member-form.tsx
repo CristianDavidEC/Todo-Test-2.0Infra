@@ -12,9 +12,9 @@ export function AddMemberForm({ workspaceId }: { workspaceId: string }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, {});
 
   return (
-    <form action={formAction} className="rounded-card bg-gradient-to-br from-surface to-primary/5 p-6 shadow-candy-primary border border-primary/20">
+    <form action={formAction} className="rounded-card border border-outline-variant bg-surface p-6 shadow-candy-primary">
       <div className="flex flex-col gap-3">
-        <label htmlFor="member-email" className="text-sm font-bold text-ink">
+        <label htmlFor="member-email" className="text-sm font-bold text-on-surface">
           📧 Correo electrónico del nuevo miembro
         </label>
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
@@ -24,21 +24,21 @@ export function AddMemberForm({ workspaceId }: { workspaceId: string }) {
             type="email"
             required
             placeholder="persona@empresa.com"
-            className="flex-1 rounded-pill bg-white border-2 border-primary/20 px-5 py-3 text-ink outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+            className="flex-1 rounded-pill border-2 border-outline-variant bg-surface-container-low px-5 py-3 text-on-surface outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary"
           />
           <button
             type="submit"
             disabled={pending}
-            className="rounded-pill bg-gradient-to-r from-primary to-secondary px-8 py-3 font-bold text-white shadow-candy-primary transition-all hover:scale-[1.05] hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+            className="bouncy-hover whitespace-nowrap rounded-pill bg-secondary px-8 py-3 font-bold text-on-secondary shadow-candy-secondary transition-all hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {pending ? "⏳ Agregando…" : "✅ Agregar"}
+            {pending ? "⏳ Invitando…" : "＋ Invitar miembro"}
           </button>
         </div>
       </div>
 
       {state.error && (
-        <div className="mt-4 rounded-card bg-red-50 border-2 border-red-200 px-4 py-3">
-          <p className="text-sm font-bold text-red-600">⚠️ {state.error}</p>
+        <div className="mt-4 rounded-card border border-error/30 bg-error/10 px-4 py-3">
+          <p className="text-sm font-bold text-error">⚠️ {state.error}</p>
         </div>
       )}
     </form>

@@ -29,13 +29,7 @@ export function AuthNav() {
       >
         Workspaces
       </Link>
-      <Link
-        href="/dashboard"
-        className="rounded-pill text-sm font-medium text-ink-muted transition-all hover:text-primary"
-      >
-        Dashboard
-      </Link>
-      <div className="border-l border-ink/10 pl-4 flex items-center gap-3">
+      <div className="border-l border-outline-variant pl-4 flex items-center gap-3">
         <span className="text-sm text-ink-muted">{user.name ?? user.email}</span>
         <a
           href="/auth/logout"
