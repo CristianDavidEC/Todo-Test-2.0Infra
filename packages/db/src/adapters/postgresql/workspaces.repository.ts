@@ -8,7 +8,7 @@ import {
 } from "./schema";
 import { withTransaction, type PostgresClient, type PostgresTransaction } from "./client";
 
-export type WorkspaceRole = "owner" | "member";
+export type WorkspaceRole = "owner" | "admin" | "member" | "viewer";
 
 export interface CreateWorkspaceInput {
   name: string;

@@ -1,20 +1,23 @@
 import Link from "next/link";
-import type { WorkspaceMember, WorkspaceWithRole } from "@todo-list-poc-infra/types";
+import type { Invitation, WorkspaceMember, WorkspaceWithRole } from "@todo-list-poc-infra/types";
+import { InvitationsPanel } from "@/features/invitations/invitations-panel";
 import { AddMemberForm } from "./add-member-form";
 import { MemberRow } from "./member-row";
 
 /**
- * Vista de `/w/[id]/members` (server, presentacional). Owners ven el form de
- * agregar y los controles por fila; los miembros solo ven la lista.
+ * Vista de `/w/[id]/members` (server, presentacional). Owner/Admin ven los forms de
+ * gestión (agregar, invitar, controles por fila); el resto solo ve la lista.
  */
 export function MembersView({
   workspace,
   members,
+  invitations = [],
 }: {
   workspace: WorkspaceWithRole;
   members: WorkspaceMember[];
+  invitations?: Invitation[];
 }) {
-  const isOwner = workspace.role === "owner";
+  const canManage = workspace.role === "owner" || workspace.role === "admin";
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
@@ -38,19 +41,23 @@ export function MembersView({
         </div>
       </header>
 
-      {isOwner && (
+      {canManage && (
         <section className="mt-8">
           <h2 className="text-lg font-bold text-ink mb-4">Agregar nuevo miembro</h2>
           <AddMemberForm workspaceId={workspace.id} />
           <p className="mt-3 text-xs text-ink-muted">
-            💡 Solo puedes agregar usuarios que ya estén registrados en CandyProject
+            💡 Para usuarios ya registrados. Para invitar por email a alguien nuevo, usa Invitaciones.
           </p>
         </section>
       )}
 
+      {canManage && (
+        <InvitationsPanel workspaceId={workspace.id} invitations={invitations} />
+      )}
+
       <section className="mt-8">
         <h2 className="text-lg font-bold text-ink mb-4">
-          {isOwner ? "Gestionar miembros" : "Miembros"}
+          {canManage ? "Gestionar miembros" : "Miembros"}
         </h2>
         {members.length === 0 ? (
           <div className="rounded-card bg-surface p-8 text-center shadow-candy-secondary">
@@ -63,7 +70,7 @@ export function MembersView({
                 key={m.userId}
                 workspaceId={workspace.id}
                 member={m}
-                canManage={isOwner}
+                canManage={canManage}
               />
             ))}
           </div>

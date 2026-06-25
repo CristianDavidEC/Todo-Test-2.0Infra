@@ -1,5 +1,14 @@
 import { Module } from "@nestjs/common";
-import { getPostgresClient, UsersRepository, WorkspacesRepository } from "@todo-list-poc-infra/db";
+import {
+  getPostgresClient,
+  BoardsRepository,
+  ColumnsRepository,
+  InvitationsRepository,
+  ProjectsRepository,
+  TasksRepository,
+  UsersRepository,
+  WorkspacesRepository,
+} from "@todo-list-poc-infra/db";
 
 /**
  * Capa de composición de acceso a datos.
@@ -22,7 +31,35 @@ import { getPostgresClient, UsersRepository, WorkspacesRepository } from "@todo-
       provide: WorkspacesRepository,
       useFactory: () => new WorkspacesRepository(getPostgresClient(process.env.DATABASE_URL)),
     },
+    {
+      provide: ProjectsRepository,
+      useFactory: () => new ProjectsRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
+    {
+      provide: InvitationsRepository,
+      useFactory: () => new InvitationsRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
+    {
+      provide: BoardsRepository,
+      useFactory: () => new BoardsRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
+    {
+      provide: ColumnsRepository,
+      useFactory: () => new ColumnsRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
+    {
+      provide: TasksRepository,
+      useFactory: () => new TasksRepository(getPostgresClient(process.env.DATABASE_URL)),
+    },
   ],
-  exports: [UsersRepository, WorkspacesRepository],
+  exports: [
+    UsersRepository,
+    WorkspacesRepository,
+    ProjectsRepository,
+    InvitationsRepository,
+    BoardsRepository,
+    ColumnsRepository,
+    TasksRepository,
+  ],
 })
 export class DbModule {}

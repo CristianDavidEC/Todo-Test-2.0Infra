@@ -6,8 +6,14 @@ import { z } from "zod";
  * ISO strings (la API serializa los `Date` de la BD), por eso son `z.string().datetime()`.
  */
 
-/** Roles de membership (BR-3). DB-backed, NO claims de Auth0. */
-export const WorkspaceRoleSchema = z.enum(["owner", "member"]);
+/**
+ * Roles de membership (DB-backed, NO claims de Auth0). Ampliados en M3:
+ * - owner: todo, incl. archivar workspace y asignar owner. Invariante ≥1 owner.
+ * - admin: gestiona miembros/invitaciones/proyectos; no archiva ws ni toca owners.
+ * - member: lee + edita contenido (tableros/tareas); no gestiona.
+ * - viewer: solo lectura.
+ */
+export const WorkspaceRoleSchema = z.enum(["owner", "admin", "member", "viewer"]);
 export type WorkspaceRole = z.infer<typeof WorkspaceRoleSchema>;
 
 /**

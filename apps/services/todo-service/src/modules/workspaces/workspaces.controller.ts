@@ -138,8 +138,8 @@ export class WorkspacesController {
 
   @Post(":id/members")
   @UseGuards(WorkspaceMemberGuard)
-  @WorkspaceRoles("owner")
-  @ApiOperation({ summary: "Agregar miembro por email", description: "Usuario ya registrado → member (BR-6). Solo Owner." })
+  @WorkspaceRoles("owner", "admin")
+  @ApiOperation({ summary: "Agregar miembro por email", description: "Usuario ya registrado → member (BR-6). Owner/Admin." })
   @ApiParam({ name: "id", format: "uuid" })
   @ApiCreatedResponse({ description: "Miembro agregado", schema: { example: MEMBER_EXAMPLE } })
   @ApiForbiddenResponse({ description: "Requiere rol owner" })
@@ -152,8 +152,8 @@ export class WorkspacesController {
 
   @Patch(":id/members/:userId/role")
   @UseGuards(WorkspaceMemberGuard)
-  @WorkspaceRoles("owner")
-  @ApiOperation({ summary: "Cambiar rol de un miembro", description: "Solo Owner. No puede dejar 0 Owners (BR-5)." })
+  @WorkspaceRoles("owner", "admin")
+  @ApiOperation({ summary: "Cambiar rol de un miembro", description: "Owner/Admin. Solo Owner asigna owner. No puede dejar 0 Owners (BR-5)." })
   @ApiParam({ name: "id", format: "uuid" })
   @ApiParam({ name: "userId", format: "uuid" })
   @ApiOkResponse({ description: "Rol actualizado", schema: { example: { userId: MEMBER_EXAMPLE.userId, role: "owner" } } })
@@ -161,19 +161,20 @@ export class WorkspacesController {
   @ApiNotFoundResponse({ description: "El usuario no es miembro" })
   @ApiConflictResponse({ description: "Dejaría al workspace sin Owner (BR-5)" })
   changeRole(
+    @Req() req: AuthedRequest,
     @Param("id") id: string,
     @Param("userId", ParseUUIDPipe) userId: string,
     @Body() body: unknown,
   ) {
     const dto = ChangeRoleSchema.parse(body);
-    return this.workspaces.changeRole(id, userId, dto.role);
+    return this.workspaces.changeRole(id, userId, dto.role, req.membership!.role);
   }
 
   @Delete(":id/members/:userId")
   @UseGuards(WorkspaceMemberGuard)
-  @WorkspaceRoles("owner")
+  @WorkspaceRoles("owner", "admin")
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: "Remover miembro", description: "Solo Owner. No puede dejar 0 Owners (BR-5)." })
+  @ApiOperation({ summary: "Remover miembro", description: "Owner/Admin. No puede dejar 0 Owners (BR-5)." })
   @ApiParam({ name: "id", format: "uuid" })
   @ApiParam({ name: "userId", format: "uuid" })
   @ApiForbiddenResponse({ description: "Requiere rol owner" })

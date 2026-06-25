@@ -46,6 +46,9 @@ async function bootstrap() {
       .addTag("users", "Lectura de usuarios (requiere JWT)")
       .addTag("me", "Usuario autenticado (requiere JWT)")
       .addTag("workspaces", "Workspaces y miembros (multi-tenancy, RBAC por workspace)")
+      .addTag("projects", "Proyectos dentro de un workspace (RBAC reusa rol de workspace)")
+      .addTag("invitations", "Invitaciones por email y aceptación (RBAC en BD)")
+      .addTag("board", "Tablero Kanban: columnas, tarjetas, movimientos e insights")
       .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup("docs", app, document, {

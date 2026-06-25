@@ -52,14 +52,19 @@ export function WorkspaceDetailView({ workspace }: { workspace: WorkspaceWithRol
           </div>
         </Link>
 
-        <div className="rounded-card bg-surface p-6 shadow-candy-tertiary opacity-75 border border-tertiary/20">
+        <Link
+          href={`/w/${workspace.id}/projects`}
+          className="group rounded-card bg-surface p-6 shadow-candy-tertiary transition-all hover:scale-[1.03] hover:shadow-lg"
+        >
           <div className="text-3xl mb-3">📋</div>
           <p className="text-lg font-bold text-ink">Proyectos</p>
-          <p className="mt-2 text-sm text-ink-muted">Crea y gestiona tus proyectos</p>
-          <div className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-tertiary bg-tertiary/10 px-3 py-1 rounded-pill">
-            Próximamente (M2)
+          <p className="mt-2 text-sm text-ink-muted">
+            {isOwner ? "Crea y gestiona tus proyectos" : "Ver los proyectos del workspace"}
+          </p>
+          <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-tertiary group-hover:translate-x-1 transition-transform">
+            Abrir →
           </div>
-        </div>
+        </Link>
 
         <div className="rounded-card bg-surface p-6 shadow-candy-secondary opacity-75 border border-secondary/20">
           <div className="text-3xl mb-3">⚙️</div>

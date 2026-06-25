@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -95,7 +96,12 @@ export class WorkspacesService {
     workspaceId: string,
     targetUserId: string,
     role: WorkspaceRole,
+    actorRole: string,
   ): Promise<{ userId: string; role: WorkspaceRole }> {
+    // BR-8: solo un owner puede asignar/ascender a owner (un admin no escala roles).
+    if (role === "owner" && actorRole !== "owner") {
+      throw new ForbiddenException("Solo un Owner puede asignar el rol owner");
+    }
     try {
       const row = await this.workspacesRepo.changeRole(workspaceId, targetUserId, role);
       return { userId: row.userId, role: row.role as WorkspaceRole };

@@ -13,3 +13,6 @@
 export * from "./events/domain-event";
 export * from "./schemas/user";
 export * from "./schemas/workspace";
+export * from "./schemas/project";
+export * from "./schemas/invitation";
+export * from "./schemas/board";
